@@ -23,7 +23,7 @@ val playfair = FontFamily(
     Font(R.font.playfair_display)
 )
 
-class MainActivity : ComponentActivity() {
+class MainMenu : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
