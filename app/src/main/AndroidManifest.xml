@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VerseVerwebt"
         tools:targetApi="31">
+
         <activity
             android:name=".MainMenu"
             android:exported="true"
@@ -19,10 +20,17 @@
             android:theme="@style/Theme.VerseVerwebt">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Chapter1" />
+        <activity android:name=".Chapter2" />
+        <activity android:name=".Chapter3" />
+        <activity android:name=".Chapter4" />
+        <activity android:name=".Chapter5" />
+        <activity android:name=".TableOfContents" />
+
     </application>
 
 </manifest>

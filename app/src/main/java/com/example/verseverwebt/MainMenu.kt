@@ -1,4 +1,6 @@
 package com.example.verseverwebt
+
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +27,6 @@ val playfair = FontFamily(
 )
 
 class MainMenu : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,6 +41,8 @@ class MainMenu : ComponentActivity() {
 
 @Composable
 fun Content() {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,31 +64,17 @@ fun Content() {
             fontFamily = inspiration,
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        ButtonColumn("-Start-",  18.sp)
-        ButtonColumn("Inhaltsverzeichnis",  18.sp)
-        ButtonColumn("Einstellungen",  18.sp)
-        ButtonColumn("Credits",  18.sp)
-    }
-}
-
-@Composable
-fun ButtonColumn(primaryText: String, fontSize: TextUnit) {
-    Column(
-        modifier = Modifier.padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = { /* Handle button click */ },
-            modifier = Modifier.padding(8.dp),
-            colors = ButtonDefaults.buttonColors(Color.Transparent),
-            contentPadding = PaddingValues(0.dp)
-        ) {
-            Text(
-                text = primaryText,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontFamily = playfair,
-                fontSize = fontSize
-            )
+        ButtonColumn("-Start-", 18.sp) {
+            context.startActivity(Intent(context, Chapter1::class.java))
+        }
+        ButtonColumn("Inhaltsverzeichnis", 18.sp) {
+            context.startActivity(Intent(context, TableOfContents::class.java))
+        }
+        ButtonColumn("Einstellungen", 18.sp) {
+            // Add navigation for SettingsActivity
+        }
+        ButtonColumn("Credits", 18.sp) {
+            // Add navigation for CreditsActivity
         }
     }
 }
