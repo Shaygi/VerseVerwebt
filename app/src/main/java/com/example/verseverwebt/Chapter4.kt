@@ -1,17 +1,15 @@
 package com.example.verseverwebt
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 class Chapter4 : ComponentActivity() {
@@ -29,29 +27,27 @@ class Chapter4 : ComponentActivity() {
 
 @Composable
 fun Chapter4Content() {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Button(
-            onClick = { context.startActivity(Intent(context, MainMenu::class.java)) },
-            modifier = Modifier.align(Alignment.Start)
-        ) {
-            Text("Back to Main Menu")
-        }
+        BackToMenuButton()
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Chapter 4",
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 45.sp,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .align(Alignment.CenterHorizontally)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
-        // Add more UI elements specific to Chapter 2
+        // Your chapter content here
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun Chapter4ContentPreview() {
+    VerseVerwebtTheme {
+        Chapter4Content()
+    }
+}
