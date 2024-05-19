@@ -70,7 +70,7 @@ fun Content() {
         ButtonColumn("Inhaltsverzeichnis", 18.sp) {
             context.startActivity(Intent(context, TableOfContents::class.java))
         }
-        ButtonColumn("Einstellungen", 18.sp) {
+        ButtonColumn("Leaderboard", 18.sp) {
             // Add navigation for SettingsActivity
         }
         ButtonColumn("Credits", 18.sp) {
