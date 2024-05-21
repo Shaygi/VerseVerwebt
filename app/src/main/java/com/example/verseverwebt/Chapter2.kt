@@ -14,7 +14,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import com.example.verseverwebt.theme.inspiration
+import com.example.verseverwebt.theme.playfair
+import com.example.verseverwebt.ui.pages.VerseVerwebtTheme
 
 class Chapter2 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import com.example.verseverwebt.ui.pages.VerseVerwebtTheme
 
 class Chapter5 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,13 @@ fun Chapter5Content() {
         BackToMenuButton()
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Chapter 5",
+            text = "Chapter",
+            style = MaterialTheme.typography.headlineLarge,
+            fontSize = 45.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        Text(
+            text = "Five",
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 45.sp,
             modifier = Modifier.padding(bottom = 16.dp)

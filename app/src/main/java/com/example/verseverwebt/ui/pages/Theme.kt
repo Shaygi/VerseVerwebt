@@ -1,4 +1,4 @@
-package com.example.verseverwebt.ui.theme
+package com.example.verseverwebt.ui.pages
 
 import android.app.Activity
 import android.os.Build

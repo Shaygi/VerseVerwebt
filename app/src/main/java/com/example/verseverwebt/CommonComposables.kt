@@ -11,9 +11,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.pages.VerseVerwebtTheme
 
 @Composable
-fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
+fun ButtonColumn(primaryText: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier.padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -27,8 +29,9 @@ fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
             Text(
                 text = primaryText,
                 color = MaterialTheme.colorScheme.onSurface,
-                fontFamily = playfair,
-                fontSize = fontSize
+                style = CustomTypography.bodyLarge
+                /*fontFamily = playfair,
+                fontSize = fontSize*/
             )
         }
     }

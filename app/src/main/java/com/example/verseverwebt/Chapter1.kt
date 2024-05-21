@@ -12,7 +12,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.pages.VerseVerwebtTheme
 
 class Chapter1 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,33 +42,26 @@ fun Chapter1Content() {
 
         Text(
             text = "CHAPTER",
-            fontFamily = playfair,
-            style = MaterialTheme.typography.headlineLarge,
-            fontSize = 45.sp,
+            style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
 
         )
 
         Text(
             text = "One",
-            fontFamily = inspiration,
-            style = MaterialTheme.typography.headlineLarge,
-            fontSize = 45.sp,
+            style = CustomTypography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 66.dp)
         )
         Text(
             text = "MAN HÖRT GEFLÜSTER",
-            fontFamily = playfair,
-            fontSize = 13.sp,
+            style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 26.dp)
         )
         Text(
             text = "Im Rätselmeer verborgen, liegt ein funkelnder Schatz, Klugheit und Weisheit sind der Schlüssel zum Glanz.",
-            fontFamily = playfair,
-            style = MaterialTheme.typography.bodySmall,
-            fontSize = 5.sp,
+            style = CustomTypography.bodySmall,
             textAlign = TextAlign.Center,
 
             )
