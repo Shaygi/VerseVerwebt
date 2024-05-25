@@ -43,6 +43,7 @@ fun Chapter1Content() {
     val context = LocalContext.current
     var textSize by remember { mutableStateOf(5.sp) }
 
+
     DisposableEffect(Unit) {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {

@@ -44,6 +44,9 @@ fun TableOfContentsContent() {
             fontSize = 45.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+        ButtonColumn("Chapter Intro", 18.sp) {
+            context.startActivity(Intent(context, ChapterIntro::class.java))
+        }
         ButtonColumn("Chapter 1", 18.sp) {
             context.startActivity(Intent(context, Chapter1::class.java))
         }
