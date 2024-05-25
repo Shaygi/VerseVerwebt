@@ -18,29 +18,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 class Chapter2 : ComponentActivity() {
     private lateinit var sensorManager: SensorManager
-    private lateinit var magneticSensor: Sensor
+    private var accelerometer: Sensor? = null
+    private var magneticField: Sensor? = null
+
+    private var gravity: FloatArray? = null
+    private var geomagnetic: FloatArray? = null
+    private var azimuth: Float = 0f
+
     private var westCount = 0
-    private val delay = 5000L // 5 seconds delay
+    private val delay = 1000L // 1 second delay
 
     private val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
-            if (event != null && event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-                val magneticValues = event.values
-                val x = magneticValues[0]
-                val y = magneticValues[1]
-                val azimuth = Math.atan2(y.toDouble(), x.toDouble()).toFloat()
-                if (azimuth > 270 || azimuth < 90) {
-                    westCount++
-                } else {
-                    westCount = 0
-                    chapter2Text.value = "Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen."
+            event?.let {
+                when (it.sensor.type) {
+                    Sensor.TYPE_ACCELEROMETER -> gravity = it.values.clone()
+                    Sensor.TYPE_MAGNETIC_FIELD -> geomagnetic = it.values.clone()
+                }
+
+                if (gravity != null && geomagnetic != null) {
+                    val R = FloatArray(9)
+                    val I = FloatArray(9)
+                    if (SensorManager.getRotationMatrix(R, I, gravity, geomagnetic)) {
+                        val orientation = FloatArray(3)
+                        SensorManager.getOrientation(R, orientation)
+                        azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
+                        if (azimuth < 0) {
+                            azimuth += 360
+                        }
+                        // Check if the device is pointing exactly west (within ±10 degrees of 270)
+                        if (azimuth in 260f..280f) {
+                            westCount++
+                        } else {
+                            westCount = 0
+                            chapter2Text.value = "Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen."
+                        }
+                    }
                 }
             }
         }
@@ -51,11 +71,11 @@ class Chapter2 : ComponentActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private val checkWestRunnable = object : Runnable {
         override fun run() {
-            if (westCount * delay / 5000L >= 1) {
+            if (westCount >= 5) { // Checking if the device has been pointing west for 5 seconds
                 chapter2Text.value = "gut gemacht"
             }
             westCount = 0
-            handler.postDelayed(this, delay)
+            handler.postDelayed(this, delay * 5)
         }
     }
 
@@ -71,13 +91,15 @@ class Chapter2 : ComponentActivity() {
         }
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)!!
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
     }
 
     override fun onResume() {
         super.onResume()
-        sensorManager.registerListener(sensorListener, magneticSensor, SensorManager.SENSOR_DELAY_NORMAL)
-        handler.postDelayed(checkWestRunnable, delay)
+        accelerometer?.let { sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
+        magneticField?.let { sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
+        handler.postDelayed(checkWestRunnable, delay * 5)
     }
 
     override fun onPause() {
