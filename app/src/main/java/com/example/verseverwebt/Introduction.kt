@@ -1,5 +1,6 @@
 package com.example.verseverwebt
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,16 +13,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.verseverwebt.theme.CustomTypography
-import com.example.verseverwebt.ui.pages.VerseVerwebtTheme
+import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
-class Chapter1 : ComponentActivity() {
+class Introduction : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Chapter1Content()
+                    IntroductionContent()
                 }
             }
         }
@@ -29,7 +29,7 @@ class Chapter1 : ComponentActivity() {
 }
 
 @Composable
-fun Chapter1Content() {
+fun IntroductionContent() {
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -42,26 +42,25 @@ fun Chapter1Content() {
 
         Text(
             text = "CHAPTER",
-            style = CustomTypography.titleLarge,
+            fontFamily = playfair,
+            style = MaterialTheme.typography.headlineLarge,
+            fontSize = 45.sp,
             textAlign = TextAlign.Center
 
         )
-
         Text(
-            text = "One",
-            style = CustomTypography.titleMedium,
+            text = "Intro",
+            fontFamily = inspiration,
+            style = MaterialTheme.typography.headlineLarge,
+            fontSize = 45.sp,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 66.dp)
         )
         Text(
-            text = "MAN HÖRT GEFLÜSTER",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 26.dp)
-        )
-        Text(
-            text = "Im Rätselmeer verborgen, liegt ein funkelnder Schatz, Klugheit und Weisheit sind der Schlüssel zum Glanz.",
-            style = CustomTypography.bodySmall,
+            text = "Bringe Licht ins Dunkle....",
+            fontFamily = playfair,
+            style = MaterialTheme.typography.bodySmall,
+            fontSize = 5.sp,
             textAlign = TextAlign.Center,
 
             )
@@ -72,8 +71,8 @@ fun Chapter1Content() {
 
 @Preview(showBackground = true)
 @Composable
-fun Chapter1ContentPreview() {
+fun IntroductionContentPreview() {
     VerseVerwebtTheme {
-        Chapter1Content()
+        IntroductionContent()
     }
 }
