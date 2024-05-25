@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <!-- Berechtigungen und Features hinzufügen -->
     <uses-permission android:name="android.permission.CAMERA"/>
 
@@ -30,6 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+      
         <activity android:name=".ChapterIntro" />
         <activity android:name=".Chapter1" />
         <activity android:name=".Chapter2" />

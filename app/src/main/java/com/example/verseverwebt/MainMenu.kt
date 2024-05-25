@@ -10,19 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-
-val inspiration = FontFamily(
-    Font(R.font.inspiration_regular)
-)
-val playfair = FontFamily(
-    Font(R.font.playfair_display)
-)
+import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.theme.inspiration
+import com.example.verseverwebt.theme.playfair
+import com.example.verseverwebt.ui.pages.VerseVerwebtTheme
 
 class MainMenu : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,28 +44,24 @@ fun Content() {
     ) {
         Text(
             text = "Verse verwebt",
-            style = MaterialTheme.typography.headlineLarge,
-            fontSize = 45.sp,
-            fontFamily = playfair,
+            style = CustomTypography.titleLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
             text = "Ein poetisches Abenteuer",
-            style = MaterialTheme.typography.bodyLarge,
-            fontSize = 30.sp,
-            fontFamily = inspiration,
+            style = CustomTypography.titleMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        ButtonColumn("-Start-", 18.sp) {
+        ButtonColumn("-Start-") {
             context.startActivity(Intent(context, Chapter1::class.java))
         }
-        ButtonColumn("Inhaltsverzeichnis", 18.sp) {
+        ButtonColumn("Inhaltsverzeichnis") {
             context.startActivity(Intent(context, TableOfContents::class.java))
         }
-        ButtonColumn("Leaderboard", 18.sp) {
+        ButtonColumn("Leaderboard") {
             // Add navigation for SettingsActivity
         }
-        ButtonColumn("Credits", 18.sp) {
+        ButtonColumn("Credits") {
             // Add navigation for CreditsActivity
         }
     }

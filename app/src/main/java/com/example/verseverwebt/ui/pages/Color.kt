@@ -1,4 +1,4 @@
-package com.example.verseverwebt.ui.theme
+package com.example.verseverwebt.ui.pages
 
 import androidx.compose.ui.graphics.Color
 

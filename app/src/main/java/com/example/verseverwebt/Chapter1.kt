@@ -113,5 +113,3 @@ fun Chapter1ContentPreview() {
         Chapter1Content()
     }
 }
-
-
