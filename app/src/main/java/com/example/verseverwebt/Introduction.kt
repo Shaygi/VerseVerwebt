@@ -1,6 +1,5 @@
 package com.example.verseverwebt
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -62,12 +61,9 @@ fun IntroductionContent() {
             style = MaterialTheme.typography.bodySmall,
             fontSize = 5.sp,
             textAlign = TextAlign.Center,
-
             )
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
