@@ -10,12 +10,15 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +33,7 @@ class Chapter2 : ComponentActivity() {
 
     private var gravity: FloatArray? = null
     private var geomagnetic: FloatArray? = null
-    private var azimuth: Float = 0f
+    private var azimuth: Float by mutableStateOf(0f)
 
     private var westCount = 0
     private val delay = 1000L // 1 second delay
@@ -85,7 +88,7 @@ class Chapter2 : ComponentActivity() {
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Chapter2Content()
+                    Chapter2Content(azimuth)
                 }
             }
         }
@@ -112,7 +115,7 @@ class Chapter2 : ComponentActivity() {
 private val chapter2Text = mutableStateOf("Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen.")
 
 @Composable
-fun Chapter2Content() {
+fun Chapter2Content(azimuth: Float) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -141,12 +144,29 @@ fun Chapter2Content() {
             textAlign = TextAlign.Left,
             modifier = Modifier.padding(all = 50.dp)
         )
-        Icon(
-            painter = painterResource(id = R.drawable.compas),
-            contentDescription = "Kompass",
-            tint = Color.Unspecified,
-            modifier = Modifier.size(260.dp)
-        )
+        Compass(azimuth)
+    }
+}
+
+@Composable
+fun Compass(azimuth: Float) {
+    Canvas(modifier = Modifier.size(260.dp)) {
+        drawIntoCanvas { canvas ->
+            rotate(-azimuth, pivot = center) {
+                drawLine(
+                    color = Color.Red,
+                    start = center,
+                    end = center.copy(y = 0f),
+                    strokeWidth = 8f
+                )
+                drawCircle(
+                    color = Color.Black,
+                    center = center,
+                    radius = size.minDimension / 2,
+                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 8f)
+                )
+            }
+        }
     }
 }
 
@@ -154,7 +174,7 @@ fun Chapter2Content() {
 @Composable
 fun Chapter2ContentPreview() {
     VerseVerwebtTheme {
-        Chapter2Content()
+        Chapter2Content(0f)
     }
 }
 
