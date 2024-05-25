@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.verseverwebt.ui.pages.VerseVerwebtTheme
+import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 class TableOfContents : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,19 +44,22 @@ fun TableOfContentsContent() {
             fontSize = 45.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        ButtonColumn("Chapter 1") {
+        ButtonColumn("Chapter Intro", 18.sp) {
+            context.startActivity(Intent(context, ChapterIntro::class.java))
+        }
+        ButtonColumn("Chapter 1", 18.sp) {
             context.startActivity(Intent(context, Chapter1::class.java))
         }
-        ButtonColumn("Chapter 2") {
+        ButtonColumn("Chapter 2", 18.sp) {
             context.startActivity(Intent(context, Chapter2::class.java))
         }
-        ButtonColumn("Chapter 3") {
+        ButtonColumn("Chapter 3", 18.sp) {
             context.startActivity(Intent(context, Chapter3::class.java))
         }
-        ButtonColumn("Chapter 4") {
+        ButtonColumn("Chapter 4", 18.sp) {
             context.startActivity(Intent(context, Chapter4::class.java))
         }
-        ButtonColumn("Chapter 5") {
+        ButtonColumn("Chapter 5", 18.sp) {
             context.startActivity(Intent(context, Chapter5::class.java))
         }
     }
