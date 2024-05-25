@@ -22,6 +22,9 @@ import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 class ChapterIntro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        turnOffFlashlight()
+
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -29,6 +32,10 @@ class ChapterIntro : ComponentActivity() {
                 }
             }
         }
+    }
+    private fun turnOffFlashlight() {
+        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        cameraManager.setTorchMode(cameraManager.cameraIdList[0], false)
     }
 }
 
