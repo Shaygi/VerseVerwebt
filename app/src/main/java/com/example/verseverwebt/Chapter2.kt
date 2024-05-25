@@ -55,9 +55,7 @@ class Chapter2 : ComponentActivity() {
                 }
             }
         }
-
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
-
         init {
             handler.postDelayed(object : Runnable {
                 override fun run() {

@@ -24,7 +24,6 @@ class Chapter3 : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun Chapter3Content() {
     Column(

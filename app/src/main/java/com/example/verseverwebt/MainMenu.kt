@@ -76,7 +76,6 @@ fun Content() {
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun ContentPreview() {

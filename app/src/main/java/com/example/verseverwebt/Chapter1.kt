@@ -23,7 +23,6 @@ import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 class Chapter1 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // Set the volume to 0 at the beginning
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0)

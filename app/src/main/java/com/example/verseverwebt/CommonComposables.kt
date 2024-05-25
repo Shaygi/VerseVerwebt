@@ -33,7 +33,6 @@ fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
         }
     }
 }
-
 @Composable
 fun BackToMenuButton(modifier: Modifier = Modifier) {
     val context = LocalContext.current

@@ -43,7 +43,6 @@ fun Chapter4Content() {
         // Your chapter content here
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun Chapter4ContentPreview() {

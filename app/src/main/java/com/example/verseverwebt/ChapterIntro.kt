@@ -107,7 +107,6 @@ fun ChapterIntroContent() {
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun ChapterIntroContentPreview() {
