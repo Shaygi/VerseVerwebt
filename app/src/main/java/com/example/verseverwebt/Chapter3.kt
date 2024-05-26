@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.verseverwebt.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 class Chapter3 : ComponentActivity() {
@@ -36,8 +37,7 @@ fun Chapter3Content() {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Chapter 3",
-            style = MaterialTheme.typography.headlineLarge,
-            fontSize = 45.sp,
+            style = CustomTypography.titleLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )
         // Your chapter content here

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.verseverwebt.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import java.lang.Math.toDegrees
 
@@ -109,22 +110,17 @@ fun Chapter2Content(azimuth: Float) {
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = "CHAPTER",
-            fontFamily = playfair,
-            style = MaterialTheme.typography.headlineLarge,
-            fontSize = 45.sp,
+            style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
         Text(
             text = "Two",
-            fontFamily = inspiration,
-            style = MaterialTheme.typography.headlineLarge,
-            fontSize = 45.sp,
+            style = CustomTypography.titleMedium,
             textAlign = TextAlign.Center
         )
         Text(
             text = chapter2Text.value,
-            fontFamily = playfair,
-            fontSize = 13.sp,
+            style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Left,
             modifier = Modifier.padding(all = 50.dp)
         )

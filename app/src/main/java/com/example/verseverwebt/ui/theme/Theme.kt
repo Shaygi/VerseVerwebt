@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.example.verseverwebt.theme.CustomTypography
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -64,7 +65,7 @@ fun VerseVerwebtTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = CustomTypography,
         content = content
     )
 }

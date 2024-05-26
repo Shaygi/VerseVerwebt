@@ -1,34 +1,45 @@
-package com.example.verseverwebt.ui.theme
+package com.example.verseverwebt.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.verseverwebt.R
 
-// Set of Material typography styles to start with
-val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
+val inspiration = FontFamily(
+    Font(R.font.inspiration_regular)
+)
+val playfair = FontFamily(
+    Font(R.font.playfair_display)
+)
+
+val CustomTypography = Typography(
     titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        fontSize = 45.sp,
+        letterSpacing = 0.sp,
+        fontFamily = playfair,
+
+        ),
+    titleMedium = TextStyle(
+        fontSize = 32.sp,
+        letterSpacing = 0.sp,
+        fontFamily = inspiration,
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+    bodyLarge = TextStyle(
+        fontSize = 24.sp,
+        letterSpacing = 0.sp,
+        fontFamily = playfair,
+    ),
+    bodyMedium = TextStyle(
+        fontSize = 13.sp,
+        letterSpacing = 0.sp,
+        fontFamily = playfair,
+    ),
+    bodySmall = TextStyle(
+        fontSize = 5.sp,
+        letterSpacing = 0.sp,
+        fontFamily = playfair,
     )
-    */
+
 )
