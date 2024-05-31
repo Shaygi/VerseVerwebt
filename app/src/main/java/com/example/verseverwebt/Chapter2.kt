@@ -102,8 +102,8 @@ private val chapter2Text = mutableStateOf("Im Norden steht eine Statue starr und
 @Composable
 fun Chapter2Content(azimuth: Float) {
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackToMenuButton()
@@ -122,71 +122,85 @@ fun Chapter2Content(azimuth: Float) {
             text = chapter2Text.value,
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Left,
-            modifier = Modifier.padding(all = 50.dp)
+            modifier = Modifier.padding(16.dp)
         )
+        Spacer(modifier = Modifier.height(32.dp))
         Compass(azimuth)
     }
 }
 
+
 @Composable
 fun Compass(azimuth: Float) {
-    Canvas(modifier = Modifier.size(260.dp)) {
-        rotate(-azimuth, pivot = center) {
-            // Drawing compass rose
+    Canvas(modifier = Modifier.size(300.dp)) {
+        val strokeWidth = 6.dp.toPx()
+        val compassRadius = size.minDimension / 2 - strokeWidth
 
-            // Drawing compass needle
+        // Rotating the canvas to match the azimuth
+        rotate(-azimuth, pivot = center) {
+            // Drawing the outer circle of the compass
+            drawCircle(
+                color = Color(0xFF8B4513),
+                center = center,
+                radius = compassRadius + 30,
+                style = Stroke(width = strokeWidth)
+            )
+
+            // Drawing the inner circle
+            drawCircle(
+                color = Color(0xFFD2B48C),
+                center = center,
+                radius = compassRadius - 30.dp.toPx(),
+                style = Stroke(width = strokeWidth / 2)
+            )
+
+            // Drawing the compass needle (red for north, gray for south)
             drawLine(
                 color = Color.Red,
                 start = center,
-                end = center.copy(y = center.y - size.minDimension / 2 + 10),
+                end = center.copy(y = center.y - compassRadius + 30.dp.toPx()),
                 strokeWidth = 8f
             )
             drawLine(
                 color = Color.Gray,
                 start = center,
-                end = center.copy(y = center.y + size.minDimension / 2 - 10),
+                end = center.copy(y = center.y + compassRadius - 30.dp.toPx()),
                 strokeWidth = 8f
             )
-            drawCircle(
-                color = Color.Black,
-                center = center,
-                radius = size.minDimension / 2,
-                style = Stroke(width = 4f)
-            )
-            drawCircle(
-                color = Color.Black,
-                center = center,
-                radius = 10f,
-                style = Stroke(width = 4f)
-            )
         }
-        // Drawing compass directions
-        drawIntoCanvas {
-            it.nativeCanvas.apply {
-                val textPaint = Paint().apply {
-                    color = android.graphics.Color.BLACK
-                    textSize = 40f
-                    textAlign = Paint.Align.CENTER
-                    typeface = android.graphics.Typeface.DEFAULT_BOLD
-                }
-                drawText("N", center.x, center.y - size.minDimension / 2 + 60, textPaint)
-                drawText("E", center.x + size.minDimension / 2 - 60, center.y, textPaint)
-                drawText("S", center.x, center.y + size.minDimension / 2 - 20, textPaint)
-                drawText("W", center.x - size.minDimension / 2 + 60, center.y, textPaint)
-                val smallTextPaint = Paint().apply {
-                    color = android.graphics.Color.BLACK
-                    textSize = 20f
-                    textAlign = Paint.Align.CENTER
-                    typeface = android.graphics.Typeface.DEFAULT_BOLD
-                }
-                drawText("NE", center.x + size.minDimension / 2 * 0.707f - 30, center.y - size.minDimension / 2 * 0.707f + 30, smallTextPaint)
-                drawText("SE", center.x + size.minDimension / 2 * 0.707f - 30, center.y + size.minDimension / 2 * 0.707f - 10, smallTextPaint)
-                drawText("SW", center.x - size.minDimension / 2 * 0.707f + 30, center.y + size.minDimension / 2 * 0.707f - 10, smallTextPaint)
-                drawText("NW", center.x - size.minDimension / 2 * 0.707f + 30, center.y - size.minDimension / 2 * 0.707f + 30, smallTextPaint)
+
+        // Drawing the cardinal points
+        val textPaint = android.graphics.Paint().apply {
+            color = android.graphics.Color.BLACK
+            textSize = 40f
+            textAlign = android.graphics.Paint.Align.CENTER
+            typeface = android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
+        }
+
+        drawIntoCanvas { canvas ->
+            canvas.nativeCanvas.drawText("N", center.x, center.y - compassRadius + 40f, textPaint)
+            canvas.nativeCanvas.drawText("E", center.x + compassRadius - 40f, center.y, textPaint)
+            canvas.nativeCanvas.drawText("S", center.x, center.y + compassRadius - 10f, textPaint)
+            canvas.nativeCanvas.drawText("W", center.x - compassRadius + 40f, center.y, textPaint)
+
+            // Drawing intermediate directions
+            val smallTextPaint = android.graphics.Paint().apply {
+                color = android.graphics.Color.BLACK
+                textSize = 20f
+                textAlign = android.graphics.Paint.Align.CENTER
+                typeface = android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
             }
+
+            canvas.nativeCanvas.drawText("NE", center.x + compassRadius * 0.707f, center.y - compassRadius * 0.707f + 20f, smallTextPaint)
+            canvas.nativeCanvas.drawText("SE", center.x + compassRadius * 0.707f, center.y + compassRadius * 0.707f - 10f, smallTextPaint)
+            canvas.nativeCanvas.drawText("SW", center.x - compassRadius * 0.707f, center.y + compassRadius * 0.707f - 10f, smallTextPaint)
+            canvas.nativeCanvas.drawText("NW", center.x - compassRadius * 0.707f, center.y - compassRadius * 0.707f + 20f, smallTextPaint)
         }
     }
 }
+
+
+
 
 @Preview(showBackground = true)
 @Composable

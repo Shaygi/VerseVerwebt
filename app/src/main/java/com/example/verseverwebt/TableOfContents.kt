@@ -62,5 +62,8 @@ fun TableOfContentsContent() {
         ButtonColumn("Chapter 5", 18.sp) {
             context.startActivity(Intent(context, Chapter5::class.java))
         }
+        ButtonColumn("Chapter 6", 18.sp) {
+            context.startActivity(Intent(context, Chapter6::class.java))
+        }
     }
 }
