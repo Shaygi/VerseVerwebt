@@ -28,10 +28,15 @@ class Ranking : ComponentActivity() {
 
             // Fetch users from the API
             LaunchedEffect(Unit) {
+                ApiClient.instance.calculateRankings()
                 ApiClient.instance.getRankedUsers().enqueue(object : Callback<List<User>> {
                     override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                         if (response.isSuccessful) {
                             users = response.body() ?: emptyList()
+                            Log.d("Ranking", "Fetched users: $users")
+                        }
+                        else {
+                            Log.e("Ranking", "API call failed with response code: ${response.code()}")
                         }
                     }
 
@@ -71,31 +76,37 @@ fun RankingContent(users: List<User>) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(users) { user ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "${user.rank}. ${user.name}",
-                        style = CustomTypography.bodyMedium,
-                        textAlign = TextAlign.Start
-                    )
+        if (users.isEmpty()) {
+            Text(
+                text = "No users available",
+                style = CustomTypography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(users) { user ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "${user.rank}. ${user.name}",
+                            style = CustomTypography.bodyMedium,
+                            textAlign = TextAlign.Start
+                        )
+                        Text(
+                            text = "%.2f".format(user.time1 + user.time2 + user.time3 + user.time4 + user.time5) + "s",
+                            style = CustomTypography.bodyMedium,
+                            textAlign = TextAlign.End
+                        )
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun BackToMenuButton() {
-    Button(onClick = { /* TODO: Handle back to menu action */ }) {
-        Text("Back to Menu")
     }
 }
