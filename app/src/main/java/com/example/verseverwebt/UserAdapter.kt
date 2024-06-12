@@ -1,5 +1,6 @@
 package com.example.verseverwebt
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
 
     class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.nameTextView)
-        val emailTextView: TextView = view.findViewById(R.id.emailTextView)
+        val rankTextView: TextView = view.findViewById(R.id.rankTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -18,10 +19,11 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
         return UserViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
         holder.nameTextView.text = user.name
-        holder.emailTextView.text = user.email
+        holder.rankTextView.text = "Rank: ${user.rank}"
     }
 
     override fun getItemCount(): Int = users.size

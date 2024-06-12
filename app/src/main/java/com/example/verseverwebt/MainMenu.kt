@@ -45,23 +45,6 @@ class MainMenu : ComponentActivity() {
                 }
             }
         }
-
-
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        ApiClient.instance.getUsers().enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                if (response.isSuccessful) {
-                    val users = response.body()!!
-                    recyclerView.adapter = UserAdapter(users)
-                }
-            }
-
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                Log.e("MainActivity", "Error fetching users", t)
-            }
-        })
     }
 
     @Composable
@@ -96,7 +79,7 @@ class MainMenu : ComponentActivity() {
                 context.startActivity(Intent(context, TableOfContents::class.java))
             }
             ButtonColumn("Leaderboard", 18.sp) {
-                // Add navigation for SettingsActivity
+                context.startActivity(Intent(context, Ranking::class.java))
             }
             ButtonColumn("Credits", 18.sp) {
                 // Add navigation for CreditsActivity

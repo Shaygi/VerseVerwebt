@@ -41,6 +41,8 @@
         <activity android:name=".Chapter5" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter6" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".TableOfContents" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".Ranking" android:screenOrientation="portrait" android:resizeableActivity="true" />
+
 
     </application>
 
