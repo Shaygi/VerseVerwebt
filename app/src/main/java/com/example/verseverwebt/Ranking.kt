@@ -3,34 +3,99 @@ package com.example.verseverwebt
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import com.example.verseverwebt.theme.CustomTypography
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class Ranking : ComponentActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ranking)
+        setContent {
+            var users by remember { mutableStateOf<List<User>>(emptyList()) }
 
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+            // Fetch users from the API
+            LaunchedEffect(Unit) {
+                ApiClient.instance.getRankedUsers().enqueue(object : Callback<List<User>> {
+                    override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+                        if (response.isSuccessful) {
+                            users = response.body() ?: emptyList()
+                        }
+                    }
 
-        ApiClient.instance.getRankedUsers().enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                if (response.isSuccessful) {
-                    val users = response.body()!!
-                    recyclerView.adapter = UserAdapter(users)
+                    override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                        Log.e("Ranking", "Error fetching ranked users", t)
+                    }
+                })
+            }
+
+            VerseVerwebtTheme {
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    RankingContent(users = users)
                 }
             }
+        }
+    }
+}
 
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                Log.e("Ranking", "Error fetching ranked users", t)
+@Composable
+fun RankingContent(users: List<User>) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        BackToMenuButton()
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "RANKING",
+            style = CustomTypography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(users) { user ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "${user.rank}. ${user.name}",
+                        style = CustomTypography.bodyMedium,
+                        textAlign = TextAlign.Start
+                    )
+                }
             }
-        })
+        }
+    }
+}
+
+@Composable
+fun BackToMenuButton() {
+    Button(onClick = { /* TODO: Handle back to menu action */ }) {
+        Text("Back to Menu")
     }
 }

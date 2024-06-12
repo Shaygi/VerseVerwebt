@@ -2,7 +2,6 @@ package com.example.verseverwebt
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -16,12 +15,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 val inspiration = FontFamily(
     Font(R.font.inspiration_regular)

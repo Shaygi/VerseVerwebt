@@ -11,7 +11,6 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
 
     class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.nameTextView)
-        val rankTextView: TextView = view.findViewById(R.id.rankTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -22,8 +21,7 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
-        holder.nameTextView.text = user.name
-        holder.rankTextView.text = "Rank: ${user.rank}"
+        holder.nameTextView.text = user.rank.toString() + ": " + user.name
     }
 
     override fun getItemCount(): Int = users.size
