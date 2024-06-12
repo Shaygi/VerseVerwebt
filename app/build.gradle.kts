@@ -50,7 +50,6 @@ android {
 }
 
 dependencies {
-//TODO
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -63,6 +62,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.gson)
     implementation(libs.converter.gson)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
