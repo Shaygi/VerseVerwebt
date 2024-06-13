@@ -66,27 +66,27 @@ class MainMenu : ComponentActivity() {
                 fontFamily = inspiration,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
-            ButtonColumn("-Start-", 18.sp) {
-                context.startActivity(Intent(context, Chapter1::class.java))
-            }
-            ButtonColumn("Inhaltsverzeichnis", 18.sp) {
-                context.startActivity(Intent(context, TableOfContents::class.java))
-            }
-
-            ButtonColumn("Leaderboard", 18.sp) {
-                context.startActivity(Intent(context, Ranking::class.java))
-            }
-            ButtonColumn("Credits", 18.sp) {
-                // Add navigation for CreditsActivity
-            }
 
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
             val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
 
             if (isLoggedIn) {
+                ButtonColumn("-Start-", 18.sp) {
+                    context.startActivity(Intent(context, Chapter1::class.java))
+                }
+
+                ButtonColumn("Inhaltsverzeichnis", 18.sp) {
+                    context.startActivity(Intent(context, TableOfContents::class.java))
+                }
+
+                ButtonColumn("Leaderboard", 18.sp) {
+                    context.startActivity(Intent(context, Ranking::class.java))
+                }
+
                 ButtonColumn("Profile", 18.sp) {
                     context.startActivity(Intent(context, Profile::class.java))
                 }
+
                 ButtonColumn("Logout", 18.sp) {
                     with(sharedPreferences.edit()) {
                         putBoolean("is_logged_in", false)
@@ -99,6 +99,10 @@ class MainMenu : ComponentActivity() {
                 ButtonColumn("Login", 18.sp) {
                     context.startActivity(Intent(context, Login::class.java))
                 }
+            }
+
+            ButtonColumn("Credits", 18.sp) {
+                // Add navigation for CreditsActivity
             }
         }
 
