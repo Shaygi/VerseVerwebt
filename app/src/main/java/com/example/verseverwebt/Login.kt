@@ -31,28 +31,39 @@ class Login : ComponentActivity() {
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    LoginContent(onLoginSuccess = {
-                        saveLoginState();
-                        val intent = Intent(this, MainMenu::class.java)
-                        startActivity(intent)
-                        finish()
+                    LoginContent(onLoginSuccess = { user ->
+                        saveLoginState(user)
+                        navigateToMainMenu()
                     })
                 }
             }
         }
     }
 
-    private fun saveLoginState() {
+    private fun saveLoginState(user: User) {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putBoolean("is_logged_in", true)
+            putString("user_name", user.name)
+            putInt("user_rank", user.rank)
+            putString("user_times", userTimesToString(user))
             apply()
         }
+    }
+
+    private fun userTimesToString(user: User): String {
+        return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5).joinToString(",")
+    }
+
+    private fun navigateToMainMenu() {
+        val intent = Intent(this, MainMenu::class.java)
+        startActivity(intent)
+        finish()
     }
 }
 
 @Composable
-fun LoginContent(onLoginSuccess: () -> Unit) {
+fun LoginContent(onLoginSuccess: (User) -> Unit) {
     val context = LocalContext.current
 
     var username by remember { mutableStateOf("") }
@@ -84,7 +95,7 @@ fun LoginContent(onLoginSuccess: () -> Unit) {
             label = { Text(
                 text = "Username",
                 style = CustomTypography.bodyMedium,
-                )
+            )
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -95,7 +106,7 @@ fun LoginContent(onLoginSuccess: () -> Unit) {
             label = { Text(
                 text = "Password",
                 style = CustomTypography.bodyMedium,
-                )
+            )
             },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
@@ -109,9 +120,9 @@ fun LoginContent(onLoginSuccess: () -> Unit) {
 
         Button(
             onClick = {
-                performLogin(username, password.toString(), onLoginSuccess = {
+                performLogin(username, password.toString(), onLoginSuccess = { user ->
                     dialogMessage = "Login successful!"
-                    onLoginSuccess()
+                    onLoginSuccess(user)
                     showDialog = true
                 }) { errorMessage = it }
             },
@@ -153,14 +164,14 @@ fun LoginContent(onLoginSuccess: () -> Unit) {
     }
 }
 
-fun performLogin(username: String, password: String, onLoginSuccess: () -> Unit, onError: (String) -> Unit) {
+fun performLogin(username: String, password: String, onLoginSuccess: (User) -> Unit, onError: (String) -> Unit) {
     ApiClient.instance.getUsers().enqueue(object : Callback<List<User>> {
         override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
             if (response.isSuccessful) {
                 val users = response.body() ?: emptyList()
                 val user = users.find { it.name == username && it.id.toString() == password }
                 if (user != null) {
-                    onLoginSuccess()
+                    onLoginSuccess(user)
                 } else {
                     Log.e("Login", "Invalid username or password")
                 }

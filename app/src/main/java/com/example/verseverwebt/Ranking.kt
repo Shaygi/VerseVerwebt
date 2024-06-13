@@ -28,7 +28,6 @@ class Ranking : ComponentActivity() {
         setContent {
             var users by remember { mutableStateOf<List<User>>(emptyList()) }
 
-            // Fetch users from the API
             LaunchedEffect(Unit) {
                 ApiClient.instance.calculateRankings()
                 ApiClient.instance.getRankedUsers().enqueue(object : Callback<List<User>> {

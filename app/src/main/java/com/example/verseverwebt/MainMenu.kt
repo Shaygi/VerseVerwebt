@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,7 +17,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.recyclerview.widget.RecyclerView
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 val inspiration = FontFamily(
@@ -27,8 +27,6 @@ val playfair = FontFamily(
 )
 
 class MainMenu : ComponentActivity() {
-    private lateinit var recyclerView: RecyclerView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -79,15 +77,15 @@ class MainMenu : ComponentActivity() {
                 context.startActivity(Intent(context, Ranking::class.java))
             }
             ButtonColumn("Credits", 18.sp) {
-            // Add navigation for CreditsActivity
+                // Add navigation for CreditsActivity
             }
 
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
             val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
 
-            if(isLoggedIn){
+            if (isLoggedIn) {
                 ButtonColumn("Profile", 18.sp) {
-                    //TODO: add profile activity
+                    context.startActivity(Intent(context, Profile::class.java))
                 }
                 ButtonColumn("Logout", 18.sp) {
                     with(sharedPreferences.edit()) {
@@ -100,9 +98,13 @@ class MainMenu : ComponentActivity() {
             else {
                 ButtonColumn("Login", 18.sp) {
                     context.startActivity(Intent(context, Login::class.java))
-                    (context as? MainMenu)?.recreate()
                 }
             }
+        }
+
+        LaunchedEffect(Unit) {
+            val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            sharedPreferences.getBoolean("is_logged_in", false)
         }
     }
 
