@@ -1,6 +1,7 @@
 package com.example.verseverwebt
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -15,7 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.theme.CustomTypography
-import com.example.verseverwebt.ui.theme.Pink80
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import com.example.verseverwebt.user.User
 import retrofit2.Call
@@ -29,29 +29,43 @@ class SignUp : ComponentActivity() {
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    SignUpContent(onSignUpSuccess = { saveLoginState() })
-                    finish()
+                    SignUpContent(onSignUpSuccess = { user ->
+                        saveLoginState(user)
+                        navigateToMainMenu()
+                    })
                 }
             }
         }
     }
 
-    private fun saveLoginState() {
+    private fun saveLoginState(user: User) {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putBoolean("is_logged_in", true)
+            putString("user_name", user.name)
+            putInt("user_rank", user.rank)
+            putString("user_times", userTimesToString(user))
             apply()
         }
+    }
+
+    private fun userTimesToString(user: User): String {
+        return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5).joinToString(",")
+    }
+
+    private fun navigateToMainMenu() {
+        val intent = Intent(this, MainMenu::class.java)
+        startActivity(intent)
+        finish()
     }
 }
 
 @Composable
-fun SignUpContent(onSignUpSuccess: () -> Unit) {
+fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
 
@@ -91,7 +105,7 @@ fun SignUpContent(onSignUpSuccess: () -> Unit) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(text = "Password (User ID for testing)", style = CustomTypography.bodyMedium) },
+            label = { Text(text = "Password", style = CustomTypography.bodyMedium) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -108,19 +122,15 @@ fun SignUpContent(onSignUpSuccess: () -> Unit) {
                 .padding(top = 16.dp)
         )
 
-        if (errorMessage != null) {
-            Text(text = errorMessage!!, color = Pink80, modifier = Modifier.padding(top = 16.dp))
-        }
-
         Button(
             onClick = {
                 if (password != confirmPassword) {
                     dialogMessage = "Passwords do not match"
                     showDialog = true
                 } else {
-                    performSignUp(name, email, onSignUpSuccess = {
+                    performSignUp(name, email, onSignUpSuccess = { user ->
                         dialogMessage = "Account created successfully!"
-                        onSignUpSuccess()
+                        onSignUpSuccess(user)
                         showDialog = true
                     }) { error ->
                         dialogMessage = error
@@ -151,21 +161,21 @@ fun SignUpContent(onSignUpSuccess: () -> Unit) {
     }
 }
 
-fun performSignUp(name: String, email: String, onSignUpSuccess: () -> Unit, onError: (String) -> Unit) {
+fun performSignUp(name: String, email: String, onSignUpSuccess: (User) -> Unit, onError: (String) -> Unit) {
     val newUser = User(1001, name, email, 0f, 0f, 0f, 0f, 0f, 0)
     ApiClient.instance.createUser(newUser).enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
             if (response.isSuccessful) {
-                onSignUpSuccess()
-            } else if (response.code() == 409) { // Assuming 409 is the code for conflict / email already exists
-                onError("Email already taken")
+                onSignUpSuccess(newUser)
+            } else if (response.code() == 500) {
+                Log.e("SignUp", "mail already taken")
             } else {
-                onError("Sign-Up failed with response code: ${response.code()}")
+                Log.e("SignUp", "API call failed with response code: ${response.code()}")
             }
         }
 
         override fun onFailure(call: Call<User>, t: Throwable) {
-            onError("Error signing up: ${t.message}")
+            Log.e("SignUp", "error: ${t.message}")
         }
     })
 }

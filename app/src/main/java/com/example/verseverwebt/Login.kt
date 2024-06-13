@@ -68,7 +68,6 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
 
@@ -114,17 +113,14 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
                 .padding(top = 16.dp)
         )
 
-        if (errorMessage != null) {
-            Text(text = errorMessage!!, color = Pink80, modifier = Modifier.padding(top = 16.dp))
-        }
 
         Button(
             onClick = {
-                performLogin(username, password.toString(), onLoginSuccess = { user ->
+                performLogin(username, password, onLoginSuccess = { user ->
                     dialogMessage = "Login successful!"
                     onLoginSuccess(user)
                     showDialog = true
-                }) { errorMessage = it }
+                }) { dialogMessage = it }
             },
             modifier = Modifier
                 .fillMaxWidth()
