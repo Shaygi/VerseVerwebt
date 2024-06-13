@@ -19,4 +19,6 @@ interface ApiService {
 
     @PUT("users/calculate-rankings")
     fun calculateRankings(): Call<List<User>>
+
+    //TODO: change time in db to accept null values
 }

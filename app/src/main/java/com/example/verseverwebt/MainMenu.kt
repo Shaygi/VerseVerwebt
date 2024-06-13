@@ -1,5 +1,6 @@
 package com.example.verseverwebt
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -73,16 +74,35 @@ class MainMenu : ComponentActivity() {
             ButtonColumn("Inhaltsverzeichnis", 18.sp) {
                 context.startActivity(Intent(context, TableOfContents::class.java))
             }
-            ButtonColumn("Profile", 18.sp) {
-                // TODO: Add navigation for Profile or login
-                context.startActivity(Intent(context, Login::class.java))
-            }
+
             ButtonColumn("Leaderboard", 18.sp) {
                 context.startActivity(Intent(context, Ranking::class.java))
             }
             ButtonColumn("Credits", 18.sp) {
             // Add navigation for CreditsActivity
-        }
+            }
+
+            val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
+
+            if(isLoggedIn){
+                ButtonColumn("Profile", 18.sp) {
+                    //TODO: add profile activity
+                }
+                ButtonColumn("Logout", 18.sp) {
+                    with(sharedPreferences.edit()) {
+                        putBoolean("is_logged_in", false)
+                        apply()
+                    }
+                    (context as? MainMenu)?.recreate()
+                }
+            }
+            else {
+                ButtonColumn("Login", 18.sp) {
+                    context.startActivity(Intent(context, Login::class.java))
+                    (context as? MainMenu)?.recreate()
+                }
+            }
         }
     }
 

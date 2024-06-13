@@ -1,5 +1,6 @@
 package com.example.verseverwebt
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -28,15 +29,24 @@ class SignUp : ComponentActivity() {
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    SignUpContent()
+                    SignUpContent(onSignUpSuccess = { saveLoginState() })
+                    finish()
                 }
             }
+        }
+    }
+
+    private fun saveLoginState() {
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putBoolean("is_logged_in", true)
+            apply()
         }
     }
 }
 
 @Composable
-fun SignUpContent() {
+fun SignUpContent(onSignUpSuccess: () -> Unit) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -52,8 +62,12 @@ fun SignUpContent() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        BackToMenuButton()
+
+        Spacer(modifier = Modifier.height(32.dp))
+
         Text(
-            text = "Sign In",
+            text = "Sign Up",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
@@ -61,33 +75,23 @@ fun SignUpContent() {
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text(
-                text = "Name",
-                style = CustomTypography.bodyMedium,
-            )
-            },
+            label = { Text(text = "Name", style = CustomTypography.bodyMedium) },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text(
-                text = "Email",
-                style = CustomTypography.bodyMedium,
-            )
-            },
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
+            label = { Text(text = "Email", style = CustomTypography.bodyMedium) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
         )
 
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text(
-                text = "Password",
-                style = CustomTypography.bodyMedium,
-            )
-            },
+            label = { Text(text = "Password (User ID for testing)", style = CustomTypography.bodyMedium) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,11 +101,7 @@ fun SignUpContent() {
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text(
-                text = "Confirm Password",
-                style = CustomTypography.bodyMedium,
-            )
-            },
+            label = { Text(text = "Confirm Password", style = CustomTypography.bodyMedium) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -115,14 +115,16 @@ fun SignUpContent() {
         Button(
             onClick = {
                 if (password != confirmPassword) {
-                    errorMessage = "Passwords do not match"
+                    dialogMessage = "Passwords do not match"
+                    showDialog = true
                 } else {
-                    performSignIn(name, email, onSignUpSuccess = {
+                    performSignUp(name, email, onSignUpSuccess = {
                         dialogMessage = "Account created successfully!"
-                        //TODO: get mapping with findbymail, also include pw
+                        onSignUpSuccess()
                         showDialog = true
                     }) { error ->
-                        errorMessage = error
+                        dialogMessage = error
+                        showDialog = true
                     }
                 }
             },
@@ -130,10 +132,7 @@ fun SignUpContent() {
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         ) {
-            Text(
-                text = "Sign Up",
-                style = CustomTypography.bodyMedium
-            )
+            Text(text = "Sign Up", style = CustomTypography.bodyMedium)
         }
     }
 
@@ -142,38 +141,31 @@ fun SignUpContent() {
             onDismissRequest = { showDialog = false },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {
-                    Text(
-                        text = "ok",
-                        style = CustomTypography.bodyMedium
-                    )
+                    Text(text = "OK", style = CustomTypography.bodyMedium)
                 }
             },
             text = {
-                Text(
-                    text = dialogMessage,
-                    style = CustomTypography.bodyMedium
-                )
+                Text(text = dialogMessage, style = CustomTypography.bodyMedium)
             }
         )
     }
 }
 
-fun performSignIn(name: String, email: String, onSignUpSuccess: () -> Unit, onError: (String) -> Unit) {
-    //TODO: self increment, password
+fun performSignUp(name: String, email: String, onSignUpSuccess: () -> Unit, onError: (String) -> Unit) {
     val newUser = User(1001, name, email, 0f, 0f, 0f, 0f, 0f, 0)
     ApiClient.instance.createUser(newUser).enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
             if (response.isSuccessful) {
                 onSignUpSuccess()
-            } else if (response.code() == 500) {
-                Log.e("SignUp", "Email already taken")
+            } else if (response.code() == 409) { // Assuming 409 is the code for conflict / email already exists
+                onError("Email already taken")
             } else {
-                Log.e("SignUp", "API call failed with response code: ${response.code()}")
+                onError("Sign-Up failed with response code: ${response.code()}")
             }
         }
 
         override fun onFailure(call: Call<User>, t: Throwable) {
-            Log.e("SignUp", "error")
+            onError("Error signing up: ${t.message}")
         }
     })
 }

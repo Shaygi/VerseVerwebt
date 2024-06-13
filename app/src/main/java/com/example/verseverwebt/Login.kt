@@ -1,5 +1,6 @@
 package com.example.verseverwebt
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -31,12 +32,21 @@ class Login : ComponentActivity() {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     LoginContent(onLoginSuccess = {
-                        // TODO: Navigate to Profile Activity on successful login
-                        Log.d("Ranking", "success")
+                        saveLoginState();
+                        val intent = Intent(this, MainMenu::class.java)
+                        startActivity(intent)
                         finish()
                     })
                 }
             }
+        }
+    }
+
+    private fun saveLoginState() {
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putBoolean("is_logged_in", true)
+            apply()
         }
     }
 }
@@ -48,6 +58,8 @@ fun LoginContent(onLoginSuccess: () -> Unit) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogMessage by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -97,7 +109,11 @@ fun LoginContent(onLoginSuccess: () -> Unit) {
 
         Button(
             onClick = {
-                performLogin(username, password.toString(), onLoginSuccess) { errorMessage = it }
+                performLogin(username, password.toString(), onLoginSuccess = {
+                    dialogMessage = "Login successful!"
+                    onLoginSuccess()
+                    showDialog = true
+                }) { errorMessage = it }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -121,6 +137,19 @@ fun LoginContent(onLoginSuccess: () -> Unit) {
                 style = CustomTypography.bodyMedium,
             )
         }
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text(text = "OK", style = CustomTypography.bodyMedium)
+                }
+            },
+            text = {
+                Text(text = dialogMessage, style = CustomTypography.bodyMedium)
+            }
+        )
     }
 }
 
