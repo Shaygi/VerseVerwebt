@@ -25,6 +25,8 @@ import com.example.verseverwebt.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import kotlinx.coroutines.delay
 
+//Sixth Chapter
+//Player needs to charge phone
 class Chapter6 : ComponentActivity() {
 
     private lateinit var chargingReceiver: BroadcastReceiver
@@ -34,9 +36,11 @@ class Chapter6 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //if battery is already loading the state is set false
         achieved = mutableStateOf(false)
         isCharging = mutableStateOf(false)
 
+        //listener to react to battery status changes
         chargingReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
@@ -47,8 +51,10 @@ class Chapter6 : ComponentActivity() {
             }
         }
 
+        //registers charging Receiver
         registerReceiver(chargingReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
 
+        //chapter content
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -68,22 +74,24 @@ class Chapter6 : ComponentActivity() {
 fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
     var showInitialText by remember { mutableStateOf(true) }
 
+    //initial and final text
     val initialMessage = "Eine lange Reise hast du hinter dich gebracht,\n viele Nächte warst du wach, \nes wird Zeit sich hinzulegen, \n und deine Energie zu regenerieren."
     val finalMessage = "Wieder bist du voller Kraft,\n die Reise noch lange nicht geschafft,\n nun musst du ein bisschen weiter gehen,\n um schließlich deinen Schatz zu sehen."
 
+    //background color that changes depending on the status of achievement
     val backgroundColor by animateColorAsState(
         targetValue = if (achieved) Color.White else Color.Gray,
         animationSpec = tween(durationMillis = 2000)
     )
-
+    //text color that changes depending on the status of achievement
     val textColor by animateColorAsState(
         targetValue = if (achieved) Color.Black else Color.DarkGray,
         animationSpec = tween(durationMillis = 2000)
     )
-
+    //Changes boolean if phone is charging
     LaunchedEffect(isCharging) {
         if (isCharging) {
-            delay(2000) // Optional delay before changing the text
+            delay(2000) // delay before changing the text
             showInitialText = false
         }
     }
@@ -97,19 +105,20 @@ fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
     ) {
         BackToMenuButton()
         Spacer(modifier = Modifier.height(32.dp))
-
+        //Title
         Text(
             text = "CHAPTER",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
+        //Subtitle
         Text(
             text = "Six",
             style = CustomTypography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 66.dp)
         )
-
+        //text with flashing animation
         AnimatedTextFlashing(
             text = if (showInitialText) initialMessage else finalMessage,
             color = textColor
@@ -117,6 +126,7 @@ fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
     }
 }
 
+//Function that animates the text flashing
 @Composable
 fun AnimatedTextFlashing(text: String, color: Color) {
     val infiniteTransition = rememberInfiniteTransition(label = "")
@@ -138,6 +148,7 @@ fun AnimatedTextFlashing(text: String, color: Color) {
     )
 }
 
+//function is for previewing in the IDE
 @Preview(showBackground = true)
 @Composable
 fun Chapter6ContentPreview() {

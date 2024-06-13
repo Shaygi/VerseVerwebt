@@ -24,6 +24,7 @@ val playfair = FontFamily(
     Font(R.font.playfair_display)
 )
 
+//Main menu for navigation through menu elements
 class MainMenu : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,27 +50,31 @@ fun Content() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Verse verwebt",
+            text = "Woven verses",
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 45.sp,
             fontFamily = playfair,
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
-            text = "Ein poetisches Abenteuer",
+            text = "A poetic adventure",
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 30.sp,
             fontFamily = inspiration,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+        //Navigation buttons
+        //Start button leads to the last accesable chapter
         ButtonColumn("-Start-", 18.sp) {
             context.startActivity(Intent(context, Chapter1::class.java))
         }
-        ButtonColumn("Inhaltsverzeichnis", 18.sp) {
+        //Table of contents button leads to the chapter navigation
+        ButtonColumn("Table of Contents", 18.sp) {
             context.startActivity(Intent(context, TableOfContents::class.java))
         }
+        //Leaderboard for viewing the ranklist
         ButtonColumn("Leaderboard", 18.sp) {
-            // Add navigation for SettingsActivity
+            // Add navigation for LeaderboardActivity
         }
         ButtonColumn("Credits", 18.sp) {
             // Add navigation for CreditsActivity
@@ -77,6 +82,7 @@ fun Content() {
     }
 }
 
+//function is for previewing in the IDE
 @Preview(showBackground = true)
 @Composable
 fun ContentPreview() {

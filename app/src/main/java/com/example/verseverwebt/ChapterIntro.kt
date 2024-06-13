@@ -36,7 +36,7 @@ class ChapterIntro : ComponentActivity() {
         }
     }
 
-    //Funktion zum ausschalten der Taschenlampe
+    //Function for turning off the flashlight
     private fun turnOffFlashlight() {
         // Access to Camera manager
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager

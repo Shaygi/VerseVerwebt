@@ -21,14 +21,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.verseverwebt.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
+//First Chapter as story introduction
+//player needs to rise the volume to solve the riddle
+//should be solved after a text size of 26 is reached
 class Chapter1 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Set the volume to 0 at the beginning
+        // Access to Audio manager
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        // Sets the volume to 0 at the beginning
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0)
 
+        //content of the page
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -44,20 +48,28 @@ fun Chapter1Content() {
     val context = LocalContext.current
     var textSize by remember { mutableStateOf(5.sp) }
 
-
+    // Uses DisposableEffect to free resources if the effect is not used anymore
     DisposableEffect(Unit) {
+
+        //gets audio manager from the context
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        //creates content observer to monitor changes in system audio settings
         val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
+            //called when audio changes
             override fun onChange(selfChange: Boolean) {
+                //gets current colume level of music stream
                 val volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                textSize = (5 + volume * 2).sp // Example calculation
+                //updates text size based on volume level
+                textSize = (5 + volume * 2).sp
             }
         }
+        //registers content observer to listen for changes
         context.contentResolver.registerContentObserver(
             android.provider.Settings.System.CONTENT_URI,
             true,
             contentObserver
         )
+        //cleans content observer when effect is not used
         onDispose {
             context.contentResolver.unregisterContentObserver(contentObserver)
         }
@@ -72,27 +84,27 @@ fun Chapter1Content() {
         BackToMenuButton()
 
         Spacer(modifier = Modifier.height(32.dp))
-
+        //Title
         Text(
             text = "CHAPTER",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
-
+        //Subtitle
         Text(
             text = "One",
             style = CustomTypography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 66.dp)
         )
-
+        //Riddle text
         Text(
             text = "MAN HÖRT GEFLÜSTER",
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 26.dp)
         )
-
+        //clue that changes size when volume rises
         Text(
             text = "Im Rätselmeer verborgen, liegt ein funkelnder Schatz, Klugheit und Weisheit sind der Schlüssel zum Glanz.",
             fontFamily = playfair,
@@ -102,11 +114,13 @@ fun Chapter1Content() {
         )
     }
 }
-
+//function is for previewing in the IDE
 @Preview(showBackground = true)
 @Composable
 fun Chapter1ContentPreview() {
+    // Sets the theme for the preview
     VerseVerwebtTheme {
+        // Calls the composable function to be previewed
         Chapter1Content()
     }
 }
