@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
+//Creates buttons with the same style
 @Composable
 fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
     Column(
@@ -34,6 +35,8 @@ fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
     }
 }
 
+//Button with an icon that is reused in every Chapter
+//Leads to main menu
 @Composable
 fun BackToMenuButton(modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -47,10 +50,11 @@ fun BackToMenuButton(modifier: Modifier = Modifier) {
         IconButton(
             onClick = { context.startActivity(Intent(context, MainMenu::class.java)) }
         ) {
+            //Button icon
             Icon(
-                painter = painterResource(id = R.drawable.bookmark_icon), // Verweis auf dein benutzerdefiniertes Icon
+                painter = painterResource(id = R.drawable.bookmark_icon), //path to icon
                 contentDescription = "Back to Main Menu",
-                tint = Color.Unspecified // Dies verhindert, dass das Icon eingefärbt wird
+                tint = Color.Unspecified //ensures that icon does not change color
             )
         }
     }
