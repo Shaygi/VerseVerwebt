@@ -11,11 +11,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.PurpleBookmark
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import com.example.verseverwebt.user.User
 import retrofit2.Call
@@ -31,7 +33,6 @@ class SignUp : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     SignUpContent(onSignUpSuccess = { user ->
                         saveLoginState(user)
-                        navigateToMainMenu()
                     })
                 }
             }
@@ -49,8 +50,18 @@ class SignUp : ComponentActivity() {
         }
     }
 
-    private fun userTimesToString(user: User): String {
-        return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5).joinToString(",")
+    private fun userTimesToString(user: User): String? {
+        return user.time1?.let { user.time2?.let { it1 ->
+            user.time3?.let { it2 ->
+                user.time4?.let { it3 ->
+                    user.time5?.let { it4 ->
+                        floatArrayOf(it,
+                            it1, it2, it3, it4
+                        ).joinToString(",")
+                    }
+                }
+            }
+        } }
     }
 
     private fun navigateToMainMenu() {
@@ -62,6 +73,8 @@ class SignUp : ComponentActivity() {
 
 @Composable
 fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
+    val context = LocalContext.current
+
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -140,9 +153,13 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(PurpleBookmark)
         ) {
-            Text(text = "Sign Up", style = CustomTypography.bodyMedium)
+            Text(
+                text = "Sign Up",
+                style = CustomTypography.bodyMedium
+            )
         }
     }
 
@@ -150,7 +167,14 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             confirmButton = {
-                TextButton(onClick = { showDialog = false }) {
+                TextButton(
+                    onClick = {
+                        showDialog = false
+                        if (dialogMessage == "Account created successfully!") {
+                            (context as? Login)?.navigateToMainMenu()
+                        }
+                    }
+                ) {
                     Text(text = "OK", style = CustomTypography.bodyMedium)
                 }
             },
@@ -162,7 +186,7 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
 }
 
 fun performSignUp(name: String, email: String, onSignUpSuccess: (User) -> Unit, onError: (String) -> Unit) {
-    val newUser = User(1001, name, email, 0f, 0f, 0f, 0f, 0f, 0)
+    val newUser = User(1001, name, email, "pw", null, null, null, null, null, 0)
     ApiClient.instance.createUser(newUser).enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
             if (response.isSuccessful) {

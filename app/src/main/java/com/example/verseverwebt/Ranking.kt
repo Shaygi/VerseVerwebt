@@ -89,22 +89,25 @@ fun RankingContent(users: List<User>) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(users) { user ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "${user.rank}. ${user.name}",
-                            style = CustomTypography.bodyLarge,
-                            textAlign = TextAlign.Start
-                        )
-                        Text(
-                            text = "%.2f".format(user.time1 + user.time2 + user.time3 + user.time4 + user.time5) + "s",
-                            style = CustomTypography.bodyMedium,
-                            textAlign = TextAlign.End
-                        )
+                    if(user.rank != 0) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "${user.rank}. ${user.name}",
+                                style = CustomTypography.bodyLarge,
+                                textAlign = TextAlign.Start
+                            )
+                            Text(
+                                text = "%.2f".format(
+                                    user.time1!! + user.time2!! + user.time3!! + user.time4!! + user.time5!!) + "s",
+                                style = CustomTypography.bodyMedium,
+                                textAlign = TextAlign.End
+                            )
+                        }
                     }
                 }
             }

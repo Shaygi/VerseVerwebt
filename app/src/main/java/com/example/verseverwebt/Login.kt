@@ -11,13 +11,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.theme.CustomTypography
-import com.example.verseverwebt.ui.theme.Pink80
+import com.example.verseverwebt.ui.theme.PurpleBookmark
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import com.example.verseverwebt.user.User
 import retrofit2.Call
@@ -33,7 +34,6 @@ class Login : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     LoginContent(onLoginSuccess = { user ->
                         saveLoginState(user)
-                        navigateToMainMenu()
                     })
                 }
             }
@@ -51,11 +51,21 @@ class Login : ComponentActivity() {
         }
     }
 
-    private fun userTimesToString(user: User): String {
-        return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5).joinToString(",")
+    private fun userTimesToString(user: User): String? {
+        return user.time1?.let { user.time2?.let { it1 ->
+            user.time3?.let { it2 ->
+                user.time4?.let { it3 ->
+                    user.time5?.let { it4 ->
+                        floatArrayOf(it,
+                            it1, it2, it3, it4
+                        ).joinToString(",")
+                    }
+                }
+            }
+        } }
     }
 
-    private fun navigateToMainMenu() {
+    fun navigateToMainMenu() {
         val intent = Intent(this, MainMenu::class.java)
         startActivity(intent)
         finish()
@@ -93,7 +103,7 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
             onValueChange = { username = it },
             label = { Text(
                 text = "Username",
-                style = CustomTypography.bodyMedium,
+                style = CustomTypography.bodyMedium
             )
             },
             modifier = Modifier.fillMaxWidth()
@@ -104,7 +114,7 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
             onValueChange = { password = it },
             label = { Text(
                 text = "Password",
-                style = CustomTypography.bodyMedium,
+                style = CustomTypography.bodyMedium
             )
             },
             visualTransformation = PasswordVisualTransformation(),
@@ -124,11 +134,12 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
-        ) {
+                .padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(PurpleBookmark)
+            ) {
             Text(
                 text = "Login",
-                style = CustomTypography.bodyMedium,
+                style = CustomTypography.bodyMedium
             )
         }
         Button(
@@ -137,11 +148,13 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
+            colors = ButtonDefaults.buttonColors(Color.Transparent)
         ) {
             Text(
-                text = "Sign up",
+                text = "-Sign up-",
                 style = CustomTypography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -149,7 +162,14 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             confirmButton = {
-                TextButton(onClick = { showDialog = false }) {
+                TextButton(
+                    onClick = {
+                        showDialog = false
+                        if (dialogMessage == "Login successful!") {
+                            (context as? Login)?.navigateToMainMenu()
+                        }
+                    }
+                ) {
                     Text(text = "OK", style = CustomTypography.bodyMedium)
                 }
             },
