@@ -70,7 +70,7 @@ fun RankingContent(users: List<User>) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "RANKING",
+            text = "Ranking",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
