@@ -97,7 +97,7 @@ fun RankingContent(users: List<User>) {
                     ) {
                         Text(
                             text = "${user.rank}. ${user.name}",
-                            style = CustomTypography.bodyMedium,
+                            style = CustomTypography.bodyLarge,
                             textAlign = TextAlign.Start
                         )
                         Text(
