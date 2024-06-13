@@ -73,12 +73,16 @@ class MainMenu : ComponentActivity() {
             ButtonColumn("Inhaltsverzeichnis", 18.sp) {
                 context.startActivity(Intent(context, TableOfContents::class.java))
             }
+            ButtonColumn("Profile", 18.sp) {
+                // TODO: Add navigation for Profile or login
+                context.startActivity(Intent(context, Login::class.java))
+            }
             ButtonColumn("Leaderboard", 18.sp) {
                 context.startActivity(Intent(context, Ranking::class.java))
             }
             ButtonColumn("Credits", 18.sp) {
-                // Add navigation for CreditsActivity
-            }
+            // Add navigation for CreditsActivity
+        }
         }
     }
 

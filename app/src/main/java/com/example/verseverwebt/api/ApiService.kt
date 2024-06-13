@@ -1,5 +1,6 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.api
 
+import com.example.verseverwebt.user.User
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.POST

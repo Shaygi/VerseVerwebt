@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.user
 
 data class User(
     val id: Long,
