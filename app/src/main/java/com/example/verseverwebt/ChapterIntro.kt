@@ -118,11 +118,11 @@ fun ChapterIntroContent() {
                 color = if (flashlightOn) Color.Black else Color.Gray
             )
             if(flashlightOn){
-                // Riddle text with typewriter effect
+                // Success text with typewriter effect
                 AnimatedTypewriterText(text = initialText, fontSize = 13, textAlign = TextAlign.Left, color = Color.Black)
 
             }else{
-
+                // Riddle text with Fade in effect
                 AnimatedFadeInText(
                     text = placeholderText,
                     fontSize = 20,
