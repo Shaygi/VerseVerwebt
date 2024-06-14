@@ -14,11 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import kotlinx.coroutines.delay
 
 class ChapterIntro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,20 +74,7 @@ fun ChapterIntroContent() {
     val placeholderText = "Bringe Licht ins Dunkle...."
 
     // Manages the currently visible portion of the text
-    var displayedText by remember { mutableStateOf("") }
 
-    // Creates the typewriter effect
-    LaunchedEffect(flashlightOn) {
-        if (flashlightOn) {
-            displayedText = ""
-            initialText.forEach { char ->
-                displayedText += char
-                delay(50) // Adjust the delay to control the typing speed
-            }
-        } else {
-            displayedText = placeholderText
-        }
-    }
 
     Box(
         modifier = Modifier
@@ -132,17 +117,19 @@ fun ChapterIntroContent() {
                 textAlign = TextAlign.Center,
                 color = if (flashlightOn) Color.Black else Color.Gray
             )
-            // Riddle text with typewriter effect
-            Text(
-                // Text, font size, text alignment and color changes when flashlight is on
-                text = displayedText,
-                fontFamily = playfair,
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = if (flashlightOn) 13.sp else 20.sp,
-                textAlign = if (flashlightOn) TextAlign.Left else TextAlign.Center,
-                modifier = Modifier.padding(all = 50.dp),
-                color = if (flashlightOn) Color.Black else Color.Gray
-            )
+            if(flashlightOn){
+                // Riddle text with typewriter effect
+                AnimatedTypewriterText(text = initialText, fontSize = 13, textAlign = TextAlign.Left, color = Color.Black)
+
+            }else{
+
+                AnimatedFadeInText(
+                    text = placeholderText,
+                    fontSize = 20,
+                    textAlign = TextAlign.Left,
+                    color = Color.Gray
+                )
+            }
         }
     }
 }
