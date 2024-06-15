@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import java.lang.Math.toDegrees
 
@@ -128,18 +128,19 @@ fun Chapter2Content(azimuth: Float) {
         Text(
             text = "Two",
             style = CustomTypography.titleMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 36.dp)
         )
         // Display the current text
         AnimatedTypewriterText(
             text = chapter2Text.value,
             fontSize = 13,
             //style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Left,
+            textAlign = TextAlign.Center,
             color = Color.Black,
-            modifier = Modifier.padding(all = 16.dp)
+
         )
-        //Spacer(modifier = Modifier.height((-30).dp))
+        Spacer(modifier = Modifier.height(10.dp))
         // Draw the compass
         Compass(azimuth)
     }

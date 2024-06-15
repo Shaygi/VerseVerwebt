@@ -4,7 +4,11 @@ import android.content.Intent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -28,6 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.verseverwebt.ui.theme.CustomTypography
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -52,6 +57,28 @@ fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
             )
         }
     }
+}
+
+//Function that animates the text flashing
+@Composable
+fun AnimatedTextFlashing(text: String, color: Color) {
+    val infiniteTransition = rememberInfiniteTransition(label = "")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 0.5f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ), label = ""
+    )
+
+    Text(
+        text = text,
+        style = CustomTypography.bodyMedium.copy(fontSize = 13.sp),
+        textAlign = TextAlign.Center,
+        color = color.copy(alpha = alpha),
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
 }
 
 //Button with an icon that is reused in every Chapter

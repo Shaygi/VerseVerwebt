@@ -6,7 +6,6 @@ import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -19,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 //First Chapter as story introduction
@@ -58,7 +57,7 @@ fun Chapter1Content() {
         val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
             //called when audio changes
             override fun onChange(selfChange: Boolean) {
-                //gets current colume level of music stream
+                //gets current column level of music stream
                 val volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                 //updates text size based on volume level
                 textSize = (5 + volume * 2).sp
@@ -103,7 +102,6 @@ fun Chapter1Content() {
             text = "You hear whispering:",
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 26.dp)
         )
         //clue that changes size when volume rises
         Text(
@@ -111,7 +109,8 @@ fun Chapter1Content() {
             fontFamily = playfair,
             style = MaterialTheme.typography.bodySmall,
             fontSize = textSize,
-            textAlign = TextAlign.Left,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(all = 26.dp)
         )
     }
 }

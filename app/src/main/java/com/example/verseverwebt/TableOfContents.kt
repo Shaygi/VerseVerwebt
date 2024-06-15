@@ -45,6 +45,7 @@ fun TableOfContentsContent() {
         //Title
         Text(
             text = "Table of Contents",
+            fontFamily = playfair,
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 45.sp,
             modifier = Modifier.padding(bottom = 16.dp)

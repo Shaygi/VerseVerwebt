@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 class ChapterIntro : ComponentActivity() {
@@ -74,70 +74,56 @@ fun ChapterIntroContent() {
     val initialText = "The adventure begins,\n The first mystery solved,\n But more awaits you amidst,\n Your bookmark helps you not get lost,\n To keep on your way where you have crossed."
     val placeholderText = "Enlighten the dark..."
 
-    // Manages the currently visible portion of the text
+    Column(
+        // Column alignment
 
-
-    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(if (flashlightOn) Color.Transparent else Color.Black), // Background color changes depending on the flashlight status
-        contentAlignment = Alignment.Center
-    ) {
-        // Menu Button appears when flashlight is on
-        if (flashlightOn) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                BackToMenuButton()
-            }
-        }
-        Column(
-            // Column alignment
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = if(flashlightOn) Arrangement.spacedBy(8.dp) else Arrangement.Center,
         ) {
-            // Title
-            Text(
-                // Color changes when flashlight is on
-                text = "CHAPTER",
-                fontFamily = playfair,
-                style = MaterialTheme.typography.headlineLarge,
-                fontSize = 45.sp,
+        // Title
+        if (flashlightOn) {
+            BackToMenuButton()
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+
+        Text(
+            // Color changes when flashlight is on
+            text = "CHAPTER",
+            style = CustomTypography.titleLarge,
+            textAlign = TextAlign.Center,
+            color = if (flashlightOn) Color.Black else Color.Gray
+        )
+        // Subtitle
+        Text(
+            // Color changes when flashlight is on
+            text = "Intro",
+            style = CustomTypography.titleMedium,
+            textAlign = TextAlign.Center,
+            color = if (flashlightOn) Color.Black else Color.Gray,
+            modifier = Modifier.padding(bottom = 66.dp)
+        )
+        if(flashlightOn){
+            // Success text with typewriter effect
+            AnimatedTypewriterText(
+                text = initialText,
+                fontSize = 13,
                 textAlign = TextAlign.Center,
-                color = if (flashlightOn) Color.Black else Color.Gray
-            )
-            // Subtitle
-            Text(
-                // Color changes when flashlight is on
-                text = "Intro",
-                fontFamily = inspiration,
-                style = MaterialTheme.typography.headlineLarge,
-                fontSize = 45.sp,
+                color = Color.Black,
+                )
+        }else{
+            // Riddle text with Fade in effect
+            AnimatedFadeInText(
+                text = placeholderText,
+                fontSize = 13,
                 textAlign = TextAlign.Center,
-                color = if (flashlightOn) Color.Black else Color.Gray
+                color = Color.Gray
             )
-            if(flashlightOn){
-                // Success text with typewriter effect
-                AnimatedTypewriterText(
-                    text = initialText,
-                    fontSize = 14,
-                    textAlign = TextAlign.Left,
-                    color = Color.Black,
-                    modifier = Modifier.padding(top = 60.dp)
-                )
-            }else{
-                // Riddle text with Fade in effect
-                AnimatedFadeInText(
-                    text = placeholderText,
-                    fontSize = 20,
-                    textAlign = TextAlign.Left,
-                    color = Color.Gray
-                )
-            }
         }
     }
+  
 }
 
 // Function is for previewing in the IDE
