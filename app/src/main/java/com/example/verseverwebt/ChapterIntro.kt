@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 class ChapterIntro : ComponentActivity() {
@@ -122,8 +123,9 @@ fun ChapterIntroContent() {
                 AnimatedTypewriterText(
                     text = initialText,
                     fontSize = 14,
-                    textAlign = TextAlign.Center,
-                    color = Color.Black
+                    textAlign = TextAlign.Left,
+                    color = Color.Black,
+                    modifier = Modifier.padding(top = 60.dp)
                 )
             }else{
                 // Riddle text with Fade in effect

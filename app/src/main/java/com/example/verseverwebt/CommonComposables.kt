@@ -117,7 +117,8 @@ fun AnimatedFadeInText(
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = fontSize.sp,
                 textAlign = textAlign,
-                color = color.copy(alpha = alpha.value)
+                color = color.copy(alpha = alpha.value),
+                modifier = modifier
             )
         }
     }
@@ -163,7 +164,7 @@ fun AnimatedTypewriterText(
         style = MaterialTheme.typography.bodySmall,
         fontSize = fontSize.sp,
         textAlign = textAlign,
-        modifier = modifier.padding(all = 50.dp),
+        modifier = modifier,
         color = color
     )
 }
@@ -192,7 +193,7 @@ fun DelayedFadeInText(text: String,
         style = MaterialTheme.typography.bodySmall,
         fontSize = fontSize.sp,
         textAlign = textAlign,
-        modifier = modifier.padding(all = 50.dp),
+        modifier = modifier,
         color = color)
 }
 
