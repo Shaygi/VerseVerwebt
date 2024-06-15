@@ -29,4 +29,11 @@ interface ApiService {
 
     @GET("users/{id}/intro")
     fun getIntroCompleted(@Path("id") id: Long): Call<Boolean>
+
+    @GET("users/name/{name}")
+    fun checkIfExistsName(@Path("name") name: String): Call<Boolean>
+
+    @GET("users/mail/{mail}")
+    fun checkIfExistsMail(@Path("mail") mail: String): Call<Boolean>
+
 }
