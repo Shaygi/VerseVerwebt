@@ -26,6 +26,7 @@ val playfair = FontFamily(
     Font(R.font.playfair_display)
 )
 
+//Main menu for navigation through menu elements
 class MainMenu : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class MainMenu : ComponentActivity() {
     fun Content() {
         val context = LocalContext.current
 
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -53,19 +55,19 @@ class MainMenu : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Verse verwebt",
-                style = MaterialTheme.typography.headlineLarge,
-                fontSize = 45.sp,
-                fontFamily = playfair,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            Text(
-                text = "Ein poetisches Abenteuer",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 30.sp,
-                fontFamily = inspiration,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
+            text = "Woven verses",
+            style = MaterialTheme.typography.headlineLarge,
+            fontSize = 45.sp,
+            fontFamily = playfair,
+            modifier = Modifier.padding(bottom = 16.dp)
+          )
+          Text(
+              text = "A poetic adventure",
+              style = MaterialTheme.typography.bodyLarge,
+              fontSize = 30.sp,
+              fontFamily = inspiration,
+              modifier = Modifier.padding(bottom = 16.dp)
+          )
 
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
             val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
@@ -75,7 +77,7 @@ class MainMenu : ComponentActivity() {
                     context.startActivity(Intent(context, Chapter1::class.java))
                 }
 
-                ButtonColumn("Inhaltsverzeichnis", 18.sp) {
+                ButtonColumn("Contents", 18.sp) {
                     context.startActivity(Intent(context, TableOfContents::class.java))
                 }
 
@@ -112,11 +114,12 @@ class MainMenu : ComponentActivity() {
         }
     }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun ContentPreview() {
-        VerseVerwebtTheme {
-            Content()
-        }
+//function is for previewing in the IDE
+@Preview(showBackground = true)
+@Composable
+fun ContentPreview() {
+    VerseVerwebtTheme {
+        Content()
+
     }
 }
