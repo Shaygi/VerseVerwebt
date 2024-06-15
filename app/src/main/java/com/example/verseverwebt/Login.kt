@@ -194,9 +194,6 @@ fun performLogin(username: String, password: String, onLoginSuccess: (User) -> U
                 val users = response.body() ?: emptyList()
                 val user = users.find { it.name == username && it.password == password }
                 if (user != null) {
-                    Log.e("Login", user.name +  " " + username + " " + user.password +  " " + password)
-                }
-                if (user != null) {
                     onLoginSuccess(user)
                 } else {
                     Log.e("Login", "Wrong password")
