@@ -7,6 +7,7 @@ import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -159,15 +160,15 @@ fun Chapter1Content(onCompletion: () -> Long) {
         ApiClient.instance.updateChapterTime(userId, 1, time).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (response.isSuccessful) {
-                    //message success
+                    Log.d("Chapter 1", "Saved time successfully")
 
                 } else {
-                    // message failure
+                    Log.e("Chapter 1", "Error with saving")
                 }
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                // Handle the failure
+                Log.e("Chapter 1", "Error")
             }
         })
 
