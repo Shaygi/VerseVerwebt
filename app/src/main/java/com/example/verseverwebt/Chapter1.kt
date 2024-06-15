@@ -6,6 +6,7 @@ import android.media.AudioManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -99,18 +100,18 @@ fun Chapter1Content() {
         )
         //Riddle text
         Text(
-            text = "MAN HÖRT GEFLÜSTER",
+            text = "You hear whispering:",
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 26.dp)
         )
         //clue that changes size when volume rises
         Text(
-            text = "Im Rätselmeer verborgen, liegt ein funkelnder Schatz, Klugheit und Weisheit sind der Schlüssel zum Glanz.",
+            text = "In the sea of riddles hidden, lies a sparkling prize,\nWisdom and cleverness are the keys to the skies.\nUnlocking the brilliance with insight so grand,\nTo reveal the treasure within your hand.",
             fontFamily = playfair,
             style = MaterialTheme.typography.bodySmall,
             fontSize = textSize,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Left,
         )
     }
 }

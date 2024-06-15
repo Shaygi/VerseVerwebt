@@ -91,6 +91,7 @@ fun AnimatedFadeInText(
     var displayedText by remember { mutableStateOf("") }
     var currentIndex by remember { mutableStateOf(0) }
 
+    //Effect
     LaunchedEffect(text) {
         displayedText = ""
         currentIndex = 0
@@ -116,7 +117,8 @@ fun AnimatedFadeInText(
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = fontSize.sp,
                 textAlign = textAlign,
-                color = color.copy(alpha = alpha.value)
+                color = color.copy(alpha = alpha.value),
+                modifier = modifier
             )
         }
     }
@@ -134,6 +136,7 @@ fun AnimatedTypewriterText(
     var displayedText by remember { mutableStateOf("") }
     var currentIndex by remember { mutableStateOf(0) }
 
+    //Effect
     LaunchedEffect(text) {
         displayedText = ""
         currentIndex = 0
@@ -161,7 +164,7 @@ fun AnimatedTypewriterText(
         style = MaterialTheme.typography.bodySmall,
         fontSize = fontSize.sp,
         textAlign = textAlign,
-        modifier = modifier.padding(all = 50.dp),
+        modifier = modifier,
         color = color
     )
 }
@@ -177,10 +180,11 @@ fun DelayedFadeInText(text: String,
 ) {
     var displayText by remember { mutableStateOf("") }
 
+    //Effect
     LaunchedEffect(text) {
         for (i in text.indices) {
             displayText = text.substring(0, i + 1)
-            delay(delayMillis.toLong())
+            delay(delayMillis.toLong()) //delay
         }
     }
 
@@ -189,7 +193,7 @@ fun DelayedFadeInText(text: String,
         style = MaterialTheme.typography.bodySmall,
         fontSize = fontSize.sp,
         textAlign = textAlign,
-        modifier = modifier.padding(all = 50.dp),
+        modifier = modifier,
         color = color)
 }
 
@@ -202,6 +206,7 @@ fun SlideInText(text: String,
 ) {
     val offsetX = remember { Animatable(-1000f) } // Starting offset position
 
+    //Effects
     LaunchedEffect(Unit) {
         offsetX.animateTo(
             targetValue = 0f,
@@ -229,6 +234,7 @@ fun ScaleInText(text: String,
 ) {
     val scale = remember { Animatable(0f) }
 
+    //Effect
     LaunchedEffect(Unit) {
         scale.animateTo(
             targetValue = 1f,
@@ -257,6 +263,7 @@ fun FadeSlideInText(text: String,
     val alpha = remember { Animatable(0f) }
     val offsetX = remember { Animatable(-100f) }
 
+    //Effects
     LaunchedEffect(Unit) {
         launch {
             alpha.animateTo(

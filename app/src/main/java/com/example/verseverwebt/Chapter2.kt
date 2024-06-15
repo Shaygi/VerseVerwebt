@@ -62,10 +62,11 @@ class Chapter2 : ComponentActivity() {
                         if (azimuth in 260f..280f && !achieved) westCount++ else westCount = 0
                         // If the azimuth is consistently west for 5 readings, change the text
                         if (westCount >= 5) {
+                            //level is succeeded here
                             chapter2Text.value = "gut gemacht"
                             achieved = true
                         } else if (!achieved) {
-                            chapter2Text.value = "Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen."
+                            chapter2Text.value = "In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn."
                         }
                     }
                 }
@@ -106,7 +107,7 @@ class Chapter2 : ComponentActivity() {
 }
 
 // State to hold the current text
-private val chapter2Text = mutableStateOf("Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen.")
+private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
 fun Chapter2Content(azimuth: Float) {
@@ -130,13 +131,15 @@ fun Chapter2Content(azimuth: Float) {
             textAlign = TextAlign.Center
         )
         // Display the current text
-        Text(
+        AnimatedTypewriterText(
             text = chapter2Text.value,
-            style = CustomTypography.bodyMedium,
+            fontSize = 13,
+            //style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Left,
-            modifier = Modifier.padding(16.dp)
+            color = Color.Black,
+            modifier = Modifier.padding(all = 16.dp)
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        //Spacer(modifier = Modifier.height((-30).dp))
         // Draw the compass
         Compass(azimuth)
     }
@@ -145,7 +148,7 @@ fun Chapter2Content(azimuth: Float) {
 //Function for drawing the compass
 @Composable
 fun Compass(azimuth: Float) {
-    Canvas(modifier = Modifier.size(300.dp)) {
+    Canvas(modifier = Modifier.requiredSize(280.dp)) {
         val strokeWidth = 6.dp.toPx()
         val compassRadius = size.minDimension / 2 - strokeWidth
 

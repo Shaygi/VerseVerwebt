@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
 class ChapterIntro : ComponentActivity() {
@@ -70,8 +71,8 @@ fun ChapterIntroContent() {
         }
     }
 
-    val initialText = "Das Abenteuer beginnt, das erste Rätsel gelöst, Doch im Dunkeln liegen noch viele verschlüsselt. Setze dein Lesezeichen, verirre dich nicht."
-    val placeholderText = "Bringe Licht ins Dunkle...."
+    val initialText = "The adventure begins,\n The first mystery solved,\n But more awaits you amidst,\n Your bookmark helps you not get lost,\n To keep on your way where you have crossed."
+    val placeholderText = "Enlighten the dark..."
 
     // Manages the currently visible portion of the text
 
@@ -121,9 +122,10 @@ fun ChapterIntroContent() {
                 // Success text with typewriter effect
                 AnimatedTypewriterText(
                     text = initialText,
-                    fontSize = 13,
+                    fontSize = 14,
                     textAlign = TextAlign.Left,
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier.padding(top = 60.dp)
                 )
             }else{
                 // Riddle text with Fade in effect
