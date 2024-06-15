@@ -10,22 +10,22 @@ interface ApiService {
     fun getUsers(): Call<List<User>>
 
     @POST("users")
-    fun createUser(@Body user: User): Call<User>
+    fun createUser(@Body user: User): Call<Unit>
 
     @GET("users/rankings")
     fun getRankedUsers(): Call<List<User>>
 
     @PUT("users/calculate-rankings")
-    fun calculateRankings(): Call<List<User>>
+    fun calculateRankings(): Call<Unit>
 
     @PUT("users/{id}/chapter/{chapter}/time")
-    fun updateChapterTime(@Path("id") id: Long, @Path("chapter") chapter: Int, @Body time: Float): Call<User>
+    fun updateChapterTime(@Path("id") id: Long, @Path("chapter") chapter: Int, @Body time: Float): Call<Unit>
 
     @GET("users/{id}/chapter/{chapter}/time")
     fun getChapterTime(@Path("id") id: Long, @Path("chapter") chapter: Int): Call<Float>
 
     @PUT("users/{id}/intro")
-    fun updateIntroCompleted(@Path("id") id: Long): Call<User>
+    fun updateIntroCompleted(@Path("id") id: Long): Call<Unit>
 
     @GET("users/{id}/intro")
     fun getIntroCompleted(@Path("id") id: Long): Call<Boolean>
