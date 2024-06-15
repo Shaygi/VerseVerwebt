@@ -70,7 +70,7 @@ fun ChapterIntroContent() {
         }
     }
 
-    val initialText = "The adventure begins, The first mystery solved, But more awaits you amidst, Your bookmark helps you not get lost, To keep on your way where you have crossed"
+    val initialText = "The adventure begins,\n The first mystery solved,\n But more awaits you amidst,\n Your bookmark helps you not get lost,\n To keep on your way where you have crossed."
     val placeholderText = "Enlighten the dark..."
 
     // Manages the currently visible portion of the text
@@ -121,8 +121,8 @@ fun ChapterIntroContent() {
                 // Success text with typewriter effect
                 AnimatedTypewriterText(
                     text = initialText,
-                    fontSize = 13,
-                    textAlign = TextAlign.Left,
+                    fontSize = 14,
+                    textAlign = TextAlign.Center,
                     color = Color.Black
                 )
             }else{
