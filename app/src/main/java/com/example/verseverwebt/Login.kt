@@ -51,18 +51,8 @@ class Login : ComponentActivity() {
         }
     }
 
-    private fun userTimesToString(user: User): String? {
-        return user.time1?.let { user.time2?.let { it1 ->
-            user.time3?.let { it2 ->
-                user.time4?.let { it3 ->
-                    user.time5?.let { it4 ->
-                        floatArrayOf(it,
-                            it1, it2, it3, it4
-                        ).joinToString(",")
-                    }
-                }
-            }
-        } }
+    private fun userTimesToString(user: User): String {
+        return floatArrayOf(user.time1!!, user.time2!!, user.time3!!, user.time4!!, user.time5!!).toString()
     }
 
     fun navigateToMainMenu() {

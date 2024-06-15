@@ -2,12 +2,10 @@ package com.example.verseverwebt.api
 
 import com.example.verseverwebt.user.User
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Body
+import retrofit2.http.*
 
 interface ApiService {
+
     @GET("users")
     fun getUsers(): Call<List<User>>
 
@@ -20,5 +18,15 @@ interface ApiService {
     @PUT("users/calculate-rankings")
     fun calculateRankings(): Call<List<User>>
 
-    //TODO: change time in db to accept null values
+    @PUT("users/{id}/chapter/{chapter}/time")
+    fun updateChapterTime(@Path("id") id: Long, @Path("chapter") chapter: Int, @Body time: Float): Call<User>
+
+    @GET("users/{id}/chapter/{chapter}/time")
+    fun getChapterTime(@Path("id") id: Long, @Path("chapter") chapter: Int): Call<Float>
+
+    @PUT("users/{id}/intro")
+    fun updateIntroCompleted(@Path("id") id: Long): Call<User>
+
+    @GET("users/{id}/intro")
+    fun getIntroCompleted(@Path("id") id: Long): Call<Boolean>
 }
