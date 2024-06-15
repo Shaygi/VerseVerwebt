@@ -123,7 +123,7 @@ fun ChapterIntroContent() {
             )
         }
     }
-  
+
 }
 
 // Function is for previewing in the IDE
