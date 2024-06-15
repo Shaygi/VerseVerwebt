@@ -52,7 +52,8 @@ class Login : ComponentActivity() {
     }
 
     private fun userTimesToString(user: User): String {
-        return floatArrayOf(user.time1!!, user.time2!!, user.time3!!, user.time4!!, user.time5!!).toString()
+        return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5, user.time6, user.time7)
+            .joinToString(",")
     }
 
     fun navigateToMainMenu() {
@@ -116,17 +117,33 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
 
         Button(
             onClick = {
-                performLogin(username, password, onLoginSuccess = { user ->
-                    dialogMessage = "Login successful!"
-                    onLoginSuccess(user)
-                    showDialog = true
-                }) { dialogMessage = it }
+                val apiService = ApiClient.instance
+
+                apiService.checkIfExistsName(username).enqueue(object : Callback<Boolean> {
+                    override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                        if (response.isSuccessful && response.body() == true) {
+                            performLogin(username, password, onLoginSuccess = { user ->
+                                dialogMessage = "Login successful!"
+                                onLoginSuccess(user)
+                                showDialog = true
+                            }) { dialogMessage = "Error" }
+                        } else {
+                            dialogMessage = "User with username $username does not exist"
+                            showDialog = true
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                        dialogMessage = "Error checking username: ${t.message}"
+                        showDialog = true
+                    }
+                })
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             colors = ButtonDefaults.buttonColors(PurpleBookmark)
-            ) {
+        ) {
             Text(
                 text = "Login",
                 style = CustomTypography.bodyMedium
@@ -175,11 +192,14 @@ fun performLogin(username: String, password: String, onLoginSuccess: (User) -> U
         override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
             if (response.isSuccessful) {
                 val users = response.body() ?: emptyList()
-                val user = users.find { it.name == username && it.id.toString() == password }
+                val user = users.find { it.name == username && it.password == password }
+                if (user != null) {
+                    Log.e("Login", user.name +  " " + username + " " + user.password +  " " + password)
+                }
                 if (user != null) {
                     onLoginSuccess(user)
                 } else {
-                    Log.e("Login", "Invalid username or password")
+                    Log.e("Login", "Wrong password")
                 }
             } else {
                 Log.e("Login", "API call failed with response code: ${response.code()}")
