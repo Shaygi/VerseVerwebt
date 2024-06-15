@@ -51,17 +51,8 @@ class SignUp : ComponentActivity() {
     }
 
     private fun userTimesToString(user: User): String? {
-        return user.time1?.let { user.time2?.let { it1 ->
-            user.time3?.let { it2 ->
-                user.time4?.let { it3 ->
-                    user.time5?.let { it4 ->
-                        floatArrayOf(it,
-                            it1, it2, it3, it4
-                        ).joinToString(",")
-                    }
-                }
-            }
-        } }
+        return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5, user.time6, user.time7)
+            .joinToString(",")
     }
 
     private fun navigateToMainMenu() {
@@ -137,18 +128,49 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
 
         Button(
             onClick = {
-                if (password != confirmPassword) {
+                if (password != confirmPassword || password.isEmpty()) {
                     dialogMessage = "Passwords do not match"
                     showDialog = true
                 } else {
-                    performSignUp(name, email, onSignUpSuccess = { user ->
-                        dialogMessage = "Account created successfully!"
-                        onSignUpSuccess(user)
-                        showDialog = true
-                    }) { error ->
-                        dialogMessage = error
-                        showDialog = true
-                    }
+                    val apiService = ApiClient.instance
+
+                    apiService.checkIfExistsName(name).enqueue(object : Callback<Boolean> {
+                        override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                            if (response.isSuccessful && response.body() == true) {
+                                dialogMessage = "Username already exists"
+                                showDialog = true
+                            }
+                            else {
+                                apiService.checkIfExistsMail(email).enqueue(object : Callback<Boolean> {
+                                    override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                                        if (response.isSuccessful && response.body() == true) {
+                                            dialogMessage = "Email already exists"
+                                            showDialog = true
+                                        }
+                                        else {
+                                            performSignUp(name, email, password, onSignUpSuccess = { user ->
+                                                dialogMessage = "Account created successfully!"
+                                                onSignUpSuccess(user)
+                                                showDialog = true
+                                            }) { error ->
+                                                dialogMessage = error
+                                                showDialog = true
+                                            }
+                                        }
+                                    }
+                                    override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                                        dialogMessage = "Error checking email: ${t.message}"
+                                        showDialog = true
+                                    }
+                                })
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                            dialogMessage = "Error checking username: ${t.message}"
+                            showDialog = true
+                        }
+                    })
                 }
             },
             modifier = Modifier
@@ -185,21 +207,21 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
     }
 }
 
-fun performSignUp(name: String, email: String, onSignUpSuccess: (User) -> Unit, onError: (String) -> Unit) {
-    val newUser = User(1001, name, email, "pw", null, null, null, null, null, 0)
+fun performSignUp(name: String, email: String, password: String, onSignUpSuccess: (User) -> Unit, onError: (String) -> Unit) {
+    val newUser = User(1001, name, email, password, 0f, 0f, 0f, 0f, 0f, 0f, 0f, false, 0)
     ApiClient.instance.createUser(newUser).enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
             if (response.isSuccessful) {
                 onSignUpSuccess(newUser)
             } else if (response.code() == 500) {
-                Log.e("SignUp", "mail already taken")
+                Log.e("SignUp", "Error")
             } else {
                 Log.e("SignUp", "API call failed with response code: ${response.code()}")
             }
         }
 
         override fun onFailure(call: Call<User>, t: Throwable) {
-            Log.e("SignUp", "error: ${t.message}")
+            Log.e("SignUp", "Error: ${t.message}")
         }
     })
 }
