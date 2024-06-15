@@ -70,8 +70,8 @@ fun ChapterIntroContent() {
         }
     }
 
-    val initialText = "Das Abenteuer beginnt, das erste Rätsel gelöst, Doch im Dunkeln liegen noch viele verschlüsselt. Setze dein Lesezeichen, verirre dich nicht."
-    val placeholderText = "Bringe Licht ins Dunkle...."
+    val initialText = "The adventure begins, The first mystery solved, But more awaits you amidst, Your bookmark helps you not get lost, To keep on your way where you have crossed"
+    val placeholderText = "Enlighten the dark..."
 
     // Manages the currently visible portion of the text
 

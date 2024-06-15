@@ -62,6 +62,7 @@ class Chapter2 : ComponentActivity() {
                         if (azimuth in 260f..280f && !achieved) westCount++ else westCount = 0
                         // If the azimuth is consistently west for 5 readings, change the text
                         if (westCount >= 5) {
+                            //level is succeeded here
                             chapter2Text.value = "gut gemacht"
                             achieved = true
                         } else if (!achieved) {
@@ -106,7 +107,7 @@ class Chapter2 : ComponentActivity() {
 }
 
 // State to hold the current text
-private val chapter2Text = mutableStateOf("Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen.")
+private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall, its gaze fixed East, never South at all, For its heart forever the West does yearn, In that direction, it will always turn.")
 
 @Composable
 fun Chapter2Content(azimuth: Float) {

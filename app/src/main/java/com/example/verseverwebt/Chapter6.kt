@@ -75,8 +75,8 @@ fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
     var showInitialText by remember { mutableStateOf(true) }
 
     //initial and final text
-    val initialMessage = "Eine lange Reise hast du hinter dich gebracht,\n viele Nächte warst du wach, \nes wird Zeit sich hinzulegen, \n und deine Energie zu regenerieren."
-    val finalMessage = "Wieder bist du voller Kraft,\n die Reise noch lange nicht geschafft,\n nun musst du ein bisschen weiter gehen,\n um schließlich deinen Schatz zu sehen."
+    val initialMessage = "A long journey you have left behind, Many nights awake, no rest to find. It's time to lay down and let your mind mend, To regain your energy, my dear friend."
+    val finalMessage = "You have done it! Now you regained your energy, For you can coninue your path, still a little along the way the treasure to see."
 
     //background color that changes depending on the status of achievement
     val backgroundColor by animateColorAsState(

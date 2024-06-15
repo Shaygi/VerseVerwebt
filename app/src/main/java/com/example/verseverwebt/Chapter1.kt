@@ -99,14 +99,14 @@ fun Chapter1Content() {
         )
         //Riddle text
         Text(
-            text = "MAN HÖRT GEFLÜSTER",
+            text = "You hear whispering.",
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 26.dp)
         )
         //clue that changes size when volume rises
         Text(
-            text = "Im Rätselmeer verborgen, liegt ein funkelnder Schatz, Klugheit und Weisheit sind der Schlüssel zum Glanz.",
+            text = "In the sea of riddles hidden, lies a sparkling prize, Wisdom and cleverness are the keys to the skies. Unlocking the brilliance with insight so grand, To reveal the treasure within your hand.",
             fontFamily = playfair,
             style = MaterialTheme.typography.bodySmall,
             fontSize = textSize,
