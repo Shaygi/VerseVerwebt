@@ -23,11 +23,12 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import java.lang.Math.toDegrees
 
+//Second Chapter
+//Player needs to direct phone to the west
 class Chapter2 : ComponentActivity() {
 
     private lateinit var sensorManager: SensorManager
@@ -36,31 +37,36 @@ class Chapter2 : ComponentActivity() {
 
     private var gravity: FloatArray? = null
     private var geomagnetic: FloatArray? = null
-    private var azimuth by mutableStateOf(0f)
+    private var azimuth by mutableFloatStateOf(0f)
 
     private var westCount = 0
-    private val delay = 1000L
     private var achieved = false
 
+    // Listener to respond to sensor data changes
     private val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
+                // Handle accelerometer data
                 when (it.sensor.type) {
                     Sensor.TYPE_ACCELEROMETER -> gravity = it.values.clone()
                     Sensor.TYPE_MAGNETIC_FIELD -> geomagnetic = it.values.clone()
                 }
+                // If both sensor data is available
                 if (gravity != null && geomagnetic != null) {
                     val r = FloatArray(9)
                     if (SensorManager.getRotationMatrix(r, null, gravity, geomagnetic)) {
                         val orientation = FloatArray(3)
                         SensorManager.getOrientation(r, orientation)
-                        azimuth = toDegrees(orientation[0].toDouble()).toFloat().let { if (it < 0) it + 360 else it }
+                        azimuth = toDegrees(orientation[0].toDouble()).toFloat().let { it -> if (it < 0) it + 360 else it }
+                        // Check if the azimuth is within the range for west
                         if (azimuth in 260f..280f && !achieved) westCount++ else westCount = 0
+                        // If the azimuth is consistently west for 5 readings, change the text
                         if (westCount >= 5) {
+                            //level is succeeded here
                             chapter2Text.value = "gut gemacht"
                             achieved = true
                         } else if (!achieved) {
-                            chapter2Text.value = "Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen."
+                            chapter2Text.value = "In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn."
                         }
                     }
                 }
@@ -80,6 +86,7 @@ class Chapter2 : ComponentActivity() {
             }
         }
 
+        // Initialize sensor manager and sensors
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
@@ -87,17 +94,20 @@ class Chapter2 : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        // Register sensor listener
         accelerometer?.let { sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
         magneticField?.let { sensorManager.registerListener(sensorListener, it, SensorManager.SENSOR_DELAY_NORMAL) }
     }
 
     override fun onPause() {
         super.onPause()
+        // Unregister sensor listener
         sensorManager.unregisterListener(sensorListener)
     }
 }
 
-private val chapter2Text = mutableStateOf("Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen.")
+// State to hold the current text
+private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
 fun Chapter2Content(azimuth: Float) {
@@ -108,31 +118,38 @@ fun Chapter2Content(azimuth: Float) {
     ) {
         BackToMenuButton()
         Spacer(modifier = Modifier.height(32.dp))
+        //Title
         Text(
             text = "CHAPTER",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
+        //Subtitle
         Text(
             text = "Two",
             style = CustomTypography.titleMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 36.dp)
         )
-        Text(
+        // Display the current text
+        AnimatedTypewriterText(
             text = chapter2Text.value,
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Left,
-            modifier = Modifier.padding(16.dp)
+            fontSize = 13,
+            //style = CustomTypography.bodyMedium,
+            textAlign = TextAlign.Center,
+            color = Color.Black,
+
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+        // Draw the compass
         Compass(azimuth)
     }
 }
 
-
+//Function for drawing the compass
 @Composable
 fun Compass(azimuth: Float) {
-    Canvas(modifier = Modifier.size(300.dp)) {
+    Canvas(modifier = Modifier.requiredSize(280.dp)) {
         val strokeWidth = 6.dp.toPx()
         val compassRadius = size.minDimension / 2 - strokeWidth
 
@@ -153,7 +170,6 @@ fun Compass(azimuth: Float) {
                 radius = compassRadius - 30.dp.toPx(),
                 style = Stroke(width = strokeWidth / 2)
             )
-
             // Drawing the compass needle (red for north, gray for south)
             drawLine(
                 color = Color.Red,
@@ -170,13 +186,13 @@ fun Compass(azimuth: Float) {
         }
 
         // Drawing the cardinal points
-        val textPaint = android.graphics.Paint().apply {
+        val textPaint = Paint().apply {
             color = android.graphics.Color.BLACK
             textSize = 40f
             textAlign = android.graphics.Paint.Align.CENTER
             typeface = android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
         }
-
+        // Drawing direction text
         drawIntoCanvas { canvas ->
             canvas.nativeCanvas.drawText("N", center.x, center.y - compassRadius + 40f, textPaint)
             canvas.nativeCanvas.drawText("E", center.x + compassRadius - 40f, center.y, textPaint)
@@ -184,7 +200,7 @@ fun Compass(azimuth: Float) {
             canvas.nativeCanvas.drawText("W", center.x - compassRadius + 40f, center.y, textPaint)
 
             // Drawing intermediate directions
-            val smallTextPaint = android.graphics.Paint().apply {
+            val smallTextPaint = Paint().apply {
                 color = android.graphics.Color.BLACK
                 textSize = 20f
                 textAlign = android.graphics.Paint.Align.CENTER
@@ -199,9 +215,7 @@ fun Compass(azimuth: Float) {
     }
 }
 
-
-
-
+//function is for previewing in the IDE
 @Preview(showBackground = true)
 @Composable
 fun Chapter2ContentPreview() {
