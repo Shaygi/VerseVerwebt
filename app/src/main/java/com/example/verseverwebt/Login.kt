@@ -17,7 +17,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
-import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.PurpleBookmark
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import com.example.verseverwebt.user.User
