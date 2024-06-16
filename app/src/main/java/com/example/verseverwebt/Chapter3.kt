@@ -145,7 +145,7 @@ fun Chapter3Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
             text = "Three",
             style = CustomTypography.titleMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 46.dp)
+            modifier = Modifier.padding(bottom = 66.dp)
         )
 
         Text(
@@ -236,6 +236,6 @@ fun LockAnimation (){
         },
         modifier = Modifier
             .scale(0.4f)
-            .offset(x = (-250).dp, y = 600.dp)
+            .offset(x = 0.dp, y = 600.dp)
     )
 }
