@@ -1,6 +1,7 @@
 package com.example.verseverwebt
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -20,25 +21,57 @@ import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import com.example.verseverwebt.api.ApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.awaitResponse
 
 var oneTime = 0
 
-class Chapter4 : ComponentActivity() {
+var startTime: Long = 0
+var endTime: Long = 0
 
+class Chapter4 : ComponentActivity() {
     //This function starts the Chapter4Content function and the IsDarkModeOn function
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startTime = System.currentTimeMillis()
+
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    var levelTime by remember { mutableStateOf(0L) }
+
                     Chapter4Content()
                     IsDarkModeOn()
                 }
             }
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("startTime", startTime)
+        outState.putLong("endTime", endTime)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        startTime = savedInstanceState.getLong("startTime")
+        endTime = savedInstanceState.getLong("endTime")
+    }
+}
+
+private fun stopTimer(): Long {
+    endTime = System.currentTimeMillis()
+    return endTime - startTime
 }
 
 //This function contains the design for this activity consisting of
@@ -81,7 +114,7 @@ fun Chapter4Content() {
 // This function checks whether the light screen state has been changed to the dark screen state
 // if this is the case the ChapterWin function is executed
 @Composable
-fun IsDarkModeOn (){
+fun IsDarkModeOn() {
 
     //saves the screen status when starting the activity
     var beginningDarkThemeState = false
@@ -114,15 +147,48 @@ fun IsDarkModeOn (){
 // and starts an animation function and also transfers the time values to the database
 //and starts the Winner Pop-Up
 @Composable
-fun ChapterWin (){
+fun ChapterWin () {
     StarAnimation()
-    //TODO: HIER DATENBANK POPUP & CO
+
+    val context = LocalContext.current
+
+    val levelTime = stopTimer()
+
+    val userId = getUserId(context)
+    val time = levelTime.toFloat() / 1000
+
+    val showDialog = remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        try {
+            val response = ApiClient.instance.updateChapterTime(userId, 4, time).awaitResponse()
+            if (response.isSuccessful) {
+                Log.d("Chapter 4", "Saved time successfully")
+            } else {
+                Log.e("Chapter 4", "Error with saving")
+            }
+        } catch (e: Exception) {
+            Log.e("Chapter 4", "Network request failed", e)
+        }
+    }
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text("OK")
+                }
+            },
+            title = { Text("Congratulations!") },
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+        )
+    }
 }
 
 //This function is responsible for the stars twinkling after successfully solving the puzzle
 @Composable
 fun StarAnimation() {
-
     //An animatable variable is set and used to define an animation with keyframes of different lengths
     // to create a star animation where the star slowly changes from visible to invisible
     val alpha = remember { Animatable(1f) }
@@ -277,7 +343,6 @@ fun StarAnimation() {
             )
         }
     }
-
 }
 
 // A preview of this activity Content
