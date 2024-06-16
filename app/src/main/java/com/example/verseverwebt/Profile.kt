@@ -24,13 +24,14 @@ class Profile : ComponentActivity() {
 
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userName = sharedPreferences.getString("user_name", "Unknown") ?: "Unknown"
-        val rank = sharedPreferences.getInt("user_rank", 0)
         val userId = sharedPreferences.getLong("user_id", 0L)
+
+        val rank = 0
 
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    ProfileContent(userName, rank, userId)
+                    ProfileContent(userName, userId)
                 }
             }
         }
@@ -38,7 +39,7 @@ class Profile : ComponentActivity() {
 }
 
 @Composable
-fun ProfileContent(userName: String, rank: Int, userId: Long) {
+fun ProfileContent(userName: String, userId: Long) {
     var times by remember { mutableStateOf(FloatArray(7) { 0f }) }
     var totalTime by remember { mutableStateOf(0f) }
 
@@ -90,14 +91,6 @@ fun ProfileContent(userName: String, rank: Int, userId: Long) {
 
         Text(
             text = "Total time: $totalTime",
-            style = CustomTypography.bodyLarge,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Placement: $rank",
             style = CustomTypography.bodyLarge,
             textAlign = TextAlign.Center
         )
