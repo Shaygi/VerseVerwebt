@@ -78,8 +78,9 @@ fun ProfileContent(userName: String, userId: Long) {
         Spacer(modifier = Modifier.height(16.dp))
 
         times.forEachIndexed { index, time ->
+            val textTime = "%.2f".format(time)
             Text(
-                text = "Time for Chapter ${index + 1}: $time",
+                text = "Time for Chapter ${index + 1}: $textTime",
                 style = CustomTypography.bodyMedium,
                 textAlign = TextAlign.Center
             )
@@ -87,8 +88,10 @@ fun ProfileContent(userName: String, userId: Long) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        val textTime = "%.2f".format(totalTime)
+
         Text(
-            text = "Total time: $totalTime",
+            text = "Total time: $textTime",
             style = CustomTypography.bodyLarge,
             textAlign = TextAlign.Center
         )
