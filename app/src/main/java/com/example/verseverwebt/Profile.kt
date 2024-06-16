@@ -26,8 +26,6 @@ class Profile : ComponentActivity() {
         val userName = sharedPreferences.getString("user_name", "Unknown") ?: "Unknown"
         val userId = sharedPreferences.getLong("user_id", 0L)
 
-        val rank = 0
-
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
