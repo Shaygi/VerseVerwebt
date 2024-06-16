@@ -114,7 +114,7 @@ fun RankingContent(users: List<User>, rank: Int) {
                                 textAlign = TextAlign.Start
                             )
                             Text(
-                                text = "%.2f".format(user.time1 + user.time2 + user.time3 + user.time4 + user.time5 + user.time6 + user.time7) + "s",
+                                text = "%.2f".format(user.time1 + user.time2 + user.time3 + user.time4 + user.time5 + user.time6 + user.time7) + " s",
                                 style = CustomTypography.bodyMedium,
                                 textAlign = TextAlign.End
                             )
