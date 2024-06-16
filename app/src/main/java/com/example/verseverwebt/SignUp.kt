@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
-import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.PurpleBookmark
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import com.example.verseverwebt.user.User
@@ -43,6 +43,7 @@ class SignUp : ComponentActivity() {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putBoolean("is_logged_in", true)
+            putLong("user_id", user.id)
             putString("user_name", user.name)
             putInt("user_rank", user.rank)
             putString("user_times", userTimesToString(user))
@@ -209,8 +210,8 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
 
 fun performSignUp(name: String, email: String, password: String, onSignUpSuccess: (User) -> Unit, onError: (String) -> Unit) {
     val newUser = User(1001, name, email, password, 0f, 0f, 0f, 0f, 0f, 0f, 0f, false, 0)
-    ApiClient.instance.createUser(newUser).enqueue(object : Callback<User> {
-        override fun onResponse(call: Call<User>, response: Response<User>) {
+    ApiClient.instance.createUser(newUser).enqueue(object : Callback<Unit> {
+        override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
             if (response.isSuccessful) {
                 onSignUpSuccess(newUser)
             } else if (response.code() == 500) {
@@ -220,7 +221,7 @@ fun performSignUp(name: String, email: String, password: String, onSignUpSuccess
             }
         }
 
-        override fun onFailure(call: Call<User>, t: Throwable) {
+        override fun onFailure(call: Call<Unit>, t: Throwable) {
             Log.e("SignUp", "Error: ${t.message}")
         }
     })

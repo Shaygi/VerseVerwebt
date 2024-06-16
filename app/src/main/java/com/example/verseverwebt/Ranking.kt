@@ -1,5 +1,6 @@
 package com.example.verseverwebt
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -15,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.user.User
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +28,10 @@ class Ranking : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             var users by remember { mutableStateOf<List<User>>(emptyList()) }
+            var userRank by remember { mutableStateOf(0) }
+
+            val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+            val userId = sharedPreferences.getLong("user_id", 0L)
 
             LaunchedEffect(Unit) {
                 ApiClient.instance.calculateRankings()
@@ -47,9 +52,16 @@ class Ranking : ComponentActivity() {
                 })
             }
 
+            for(user in users){
+                if(user.id == userId){
+                    userRank = user.rank
+                    Log.d("Ranking", "Rank: $userRank")
+                }
+            }
+
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    RankingContent(users = users)
+                    RankingContent(users = users, rank = userRank)
                 }
             }
         }
@@ -57,7 +69,7 @@ class Ranking : ComponentActivity() {
 }
 
 @Composable
-fun RankingContent(users: List<User>) {
+fun RankingContent(users: List<User>, rank: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +82,7 @@ fun RankingContent(users: List<User>) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Ranking",
+            text = "Leaderboard",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
@@ -112,5 +124,11 @@ fun RankingContent(users: List<User>) {
                 }
             }
         }
+
+        Text(
+            text = if (rank > 0) "Your rank: $rank" else "Your rank: N/A",
+            style = CustomTypography.bodyLarge,
+            textAlign = TextAlign.Center
+        )
     }
 }

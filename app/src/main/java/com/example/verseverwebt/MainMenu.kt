@@ -55,19 +55,19 @@ class MainMenu : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-            text = "Woven verses",
-            style = MaterialTheme.typography.headlineLarge,
-            fontSize = 45.sp,
-            fontFamily = playfair,
-            modifier = Modifier.padding(bottom = 16.dp)
-          )
-          Text(
-              text = "A poetic adventure",
-              style = MaterialTheme.typography.bodyLarge,
-              fontSize = 30.sp,
-              fontFamily = inspiration,
-              modifier = Modifier.padding(bottom = 16.dp)
-          )
+                text = "Woven verses",
+                style = MaterialTheme.typography.headlineLarge,
+                fontSize = 45.sp,
+                fontFamily = playfair,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            Text(
+                text = "A poetic adventure",
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 30.sp,
+                fontFamily = inspiration,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
             val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
@@ -96,8 +96,7 @@ class MainMenu : ComponentActivity() {
                     }
                     (context as? MainMenu)?.recreate()
                 }
-            }
-            else {
+            } else {
                 ButtonColumn("Login", 18.sp) {
                     context.startActivity(Intent(context, Login::class.java))
                 }
@@ -114,12 +113,13 @@ class MainMenu : ComponentActivity() {
         }
     }
 
-//function is for previewing in the IDE
-@Preview(showBackground = true)
-@Composable
-fun ContentPreview() {
-    VerseVerwebtTheme {
-        Content()
+    //function is for previewing in the IDE
+    @Preview(showBackground = true)
+    @Composable
+    fun ContentPreview() {
+        VerseVerwebtTheme {
+            Content()
 
+        }
     }
 }

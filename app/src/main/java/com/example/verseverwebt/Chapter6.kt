@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
@@ -17,16 +18,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import kotlinx.coroutines.delay
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 //Sixth Chapter
 //Player needs to charge phone
 class Chapter6 : ComponentActivity() {
+    var startTime: Long = 0
+    var endTime: Long = 0
 
     private lateinit var chargingReceiver: BroadcastReceiver
     private lateinit var achieved: MutableState<Boolean>
@@ -53,14 +62,33 @@ class Chapter6 : ComponentActivity() {
         //registers charging Receiver
         registerReceiver(chargingReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
 
+        // Start the timer
+        startTime = System.currentTimeMillis()
+
         //chapter content
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Chapter6Content(isCharging = isCharging.value, achieved = achieved.value)
+                    Chapter6Content(isCharging = isCharging.value, achieved = achieved.value) { stopTimer() }
                 }
             }
         }
+    }
+
+    private fun stopTimer(): Long {
+        endTime = System.currentTimeMillis()
+        return endTime - startTime
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("startTime", startTime)
+        outState.putLong("endTime", endTime)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        startTime = savedInstanceState.getLong("startTime")
+        endTime = savedInstanceState.getLong("endTime")
     }
 
     override fun onDestroy() {
@@ -70,7 +98,12 @@ class Chapter6 : ComponentActivity() {
 }
 
 @Composable
-fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
+fun Chapter6Content(isCharging: Boolean, achieved: Boolean, onCompletion: () -> Long) {
+    val context = LocalContext.current
+
+    var showDialog by remember { mutableStateOf(false) }
+    var levelTime by remember { mutableStateOf(0L) }
+
     var showInitialText by remember { mutableStateOf(true) }
 
     //initial and final text
@@ -92,6 +125,9 @@ fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
         if (isCharging) {
             delay(5000) // delay before changing the text
             showInitialText = false
+            //level completed
+            levelTime = onCompletion()
+            showDialog = true
         }
     }
 
@@ -134,6 +170,38 @@ fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
             )
         }
     }
+
+    if (showDialog) {
+        val userId = getUserId(context)
+        val time = levelTime.toFloat() / 1000
+
+        ApiClient.instance.updateChapterTime(userId, 6, time).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    Log.d("Chapter 6", "Saved time successfully")
+
+                } else {
+                    Log.e("Chapter 6", "Error with saving")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Log.e("Chapter 6", "Error")
+            }
+        })
+
+
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("OK")
+                }
+            },
+            title = { Text("Congratulations!") },
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+        )
+    }
 }
 
 //function is for previewing in the IDE
@@ -141,7 +209,7 @@ fun Chapter6Content(isCharging: Boolean, achieved: Boolean) {
 @Composable
 fun Chapter6ContentPreview() {
     VerseVerwebtTheme {
-        Chapter6Content(isCharging = false, achieved = false)
+        Chapter6Content(isCharging = false, achieved = false) { 0L }
     }
 }
 

@@ -44,6 +44,7 @@ class Login : ComponentActivity() {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putBoolean("is_logged_in", true)
+            putLong("user_id", user.id)
             putString("user_name", user.name)
             putInt("user_rank", user.rank)
             putString("user_times", userTimesToString(user))
