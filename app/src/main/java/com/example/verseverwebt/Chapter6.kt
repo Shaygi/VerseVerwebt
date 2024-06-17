@@ -25,8 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import retrofit2.awaitResponse
 
 class Chapter6 : ComponentActivity() {
 
@@ -40,6 +42,8 @@ class Chapter6 : ComponentActivity() {
     //The speechRecognizerLauncher is initialized as soon as the activity is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startTime = System.currentTimeMillis()
 
         //The registerForActivityResult function is used to register an ActivityResultLauncher with the speechRecognizerLauncher
         //This is a kind of agreement on how the activity is started and the result is handled
@@ -59,6 +63,7 @@ class Chapter6 : ComponentActivity() {
                             || recognizedText.contains("5768")
                             || recognizedText.contains("5 7 6 8")) {
                             hasWin = true
+                            levelTime = stopTimer()
                             stopSpeechRecognition()
                         }
                     }
@@ -174,9 +179,41 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
 @Composable
 fun Chapter6Win(){
     LockAnimation()
+
     //Maybe Zeitdelay
-    //TODO: HIER POP-UP & DATENBANK INTEGRATION
-}
+
+    val context = LocalContext.current
+
+    val userId = getUserId(context)
+    val time = levelTime.toFloat() / 1000
+
+    val showDialog = remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        try {
+            val response = ApiClient.instance.updateChapterTime(userId, 6, time).awaitResponse()
+            if (response.isSuccessful) {
+                Log.d("Chapter 6", "Saved time successfully")
+            } else {
+                Log.e("Chapter 6", "Error with saving")
+            }
+        } catch (e: Exception) {
+            Log.e("Chapter 6", "Network request failed", e)
+        }
+    }
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text("OK")
+                }
+            },
+            title = { Text("Congratulations!") },
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+        )
+    }}
 
 //This function is responsible for the animation of unlocking the lock
 @Composable

@@ -1,6 +1,5 @@
 package com.example.verseverwebt
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -23,15 +22,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Ranking : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             var users by remember { mutableStateOf<List<User>>(emptyList()) }
             var userRank by remember { mutableStateOf(0) }
-
-            val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            val userId = sharedPreferences.getLong("user_id", 0L)
 
             LaunchedEffect(Unit) {
                 ApiClient.instance.calculateRankings()
@@ -53,7 +48,7 @@ class Ranking : ComponentActivity() {
             }
 
             for(user in users){
-                if(user.id == userId){
+                if(user.id == logUserId){
                     userRank = user.rank
                     Log.d("Ranking", "Rank: $userRank")
                 }

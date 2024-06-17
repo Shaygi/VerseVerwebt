@@ -72,6 +72,8 @@ class MainMenu : ComponentActivity() {
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
             val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
 
+            logUserId = sharedPreferences.getLong("user_id", 0L)
+
             if (isLoggedIn) {
                 ButtonColumn("-Start-", 18.sp) {
                     context.startActivity(Intent(context, Chapter1::class.java))

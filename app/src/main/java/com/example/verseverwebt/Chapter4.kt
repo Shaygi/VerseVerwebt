@@ -31,9 +31,6 @@ import retrofit2.awaitResponse
 
 var oneTime = 0
 
-var startTime: Long = 0
-var endTime: Long = 0
-
 class Chapter4 : ComponentActivity() {
     //This function starts the Chapter4Content function and the IsDarkModeOn function
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +41,6 @@ class Chapter4 : ComponentActivity() {
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    var levelTime by remember { mutableStateOf(0L) }
-
                     Chapter4Content()
                     IsDarkModeOn()
                 }
@@ -64,11 +59,6 @@ class Chapter4 : ComponentActivity() {
         startTime = savedInstanceState.getLong("startTime")
         endTime = savedInstanceState.getLong("endTime")
     }
-}
-
-private fun stopTimer(): Long {
-    endTime = System.currentTimeMillis()
-    return endTime - startTime
 }
 
 //This function contains the design for this activity consisting of
@@ -136,6 +126,8 @@ fun IsDarkModeOn() {
 
     //If the puzzle is solved and the hasWin boolean is true, the ChapterWin function will start
     if (hasWin.value) {
+        levelTime = stopTimer()
+
         ChapterWin()
     }
 }
@@ -148,8 +140,6 @@ fun ChapterWin () {
     StarAnimation()
 
     val context = LocalContext.current
-
-    val levelTime = stopTimer()
 
     val userId = getUserId(context)
     val time = levelTime.toFloat() / 1000

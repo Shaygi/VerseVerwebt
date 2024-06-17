@@ -33,9 +33,6 @@ import retrofit2.Response
 //Sixth Chapter
 //Player needs to charge phone
 class Chapter5 : ComponentActivity() {
-    var startTime: Long = 0
-    var endTime: Long = 0
-
     private lateinit var chargingReceiver: BroadcastReceiver
     private lateinit var achieved: MutableState<Boolean>
     private lateinit var isCharging: MutableState<Boolean>
@@ -68,7 +65,7 @@ class Chapter5 : ComponentActivity() {
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Chapter5Content(isCharging = isCharging.value, achieved = achieved.value) { stopTimer() }
+                    Chapter5Content(isCharging = isCharging.value, achieved = achieved.value)
                 }
             }
         }
@@ -97,11 +94,10 @@ class Chapter5 : ComponentActivity() {
 }
 
 @Composable
-fun Chapter5Content(isCharging: Boolean, achieved: Boolean, onCompletion: () -> Long) {
+fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
     val context = LocalContext.current
 
     var showDialog by remember { mutableStateOf(false) }
-    var levelTime by remember { mutableStateOf(0L) }
 
     var showInitialText by remember { mutableStateOf(true) }
 
@@ -125,7 +121,7 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean, onCompletion: () -> 
             delay(5000) // delay before changing the text
             showInitialText = false
             //level completed
-            levelTime = onCompletion()
+            levelTime = stopTimer()
             showDialog = true
         }
     }
@@ -208,7 +204,7 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean, onCompletion: () -> 
 @Composable
 fun Chapter5ContentPreview() {
     VerseVerwebtTheme {
-        Chapter5Content(isCharging = false, achieved = false) { 0L }
+        Chapter5Content(isCharging = false, achieved = false)
     }
 }
 

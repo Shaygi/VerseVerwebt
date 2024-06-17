@@ -28,9 +28,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Chapter1 : ComponentActivity() {
-    var startTime: Long = 0
-    var endTime: Long = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Access to Audio manager
@@ -81,7 +78,6 @@ fun Chapter1Content(onCompletion: () -> Long) {
 
     var textSize by remember { mutableStateOf(5.sp) }
     var showDialog by remember { mutableStateOf(false) }
-    var levelTime by remember { mutableStateOf(0L) }
 
     DisposableEffect(Unit) {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -94,7 +90,7 @@ fun Chapter1Content(onCompletion: () -> Long) {
                 val volume = maxOf(systemVolume, musicVolume)
                 textSize = (5 + volume * 2).sp
                 if (textSize >= 26.sp) {
-                    levelTime = onCompletion()
+                    levelTime = stopTimer()
                     showDialog = true
                 }
             }
@@ -179,4 +175,14 @@ fun Chapter1ContentPreview() {
     VerseVerwebtTheme {
         Chapter1Content { 0L }
     }
+}
+
+var startTime: Long = 0
+var endTime: Long = 0
+
+var levelTime: Long = 0
+
+fun stopTimer(): Long {
+    endTime = System.currentTimeMillis()
+    return endTime - startTime
 }

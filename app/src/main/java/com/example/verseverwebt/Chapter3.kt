@@ -5,6 +5,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -13,23 +14,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import retrofit2.awaitResponse
 
 //The class inherits from the SensorEventListener
 class Chapter3 : ComponentActivity(), SensorEventListener {
-
     //a variable of the type SensorManager is created here for future use
     private lateinit var sensorManager: SensorManager
 
@@ -46,6 +53,8 @@ class Chapter3 : ComponentActivity(), SensorEventListener {
 
         //the light sensor is initialized using a get function of the manger when creating the acitivity
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
+
+        startTime = System.currentTimeMillis()
 
         //This function starts the Chapter3Content function and set the Conetnt for this activity
         setContent {
@@ -121,6 +130,7 @@ fun Chapter3Content(hasWin: Boolean) {
 
     //When the puzzle has been solved, the Chapter Win function is triggered
     if(hasWin){
+        levelTime = stopTimer()
         Chapter3Win()
     }
 }
@@ -128,5 +138,35 @@ fun Chapter3Content(hasWin: Boolean) {
 // and then starts a success pop-up
 @Composable
 fun Chapter3Win(){
-    //TODO: HIER POP-UP & DATENBANK INTEGRATION
-}
+    val context = LocalContext.current
+
+    val userId = getUserId(context)
+    val time = levelTime.toFloat() / 1000
+
+    val showDialog = remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        try {
+            val response = ApiClient.instance.updateChapterTime(userId, 3, time).awaitResponse()
+            if (response.isSuccessful) {
+                Log.d("Chapter 3", "Saved time successfully")
+            } else {
+                Log.e("Chapter 3", "Error with saving")
+            }
+        } catch (e: Exception) {
+            Log.e("Chapter 3", "Network request failed", e)
+        }
+    }
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text("OK")
+                }
+            },
+            title = { Text("Congratulations!") },
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+        )
+    }}

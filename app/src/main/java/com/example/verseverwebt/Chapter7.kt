@@ -17,10 +17,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
+import retrofit2.awaitResponse
 
 class Chapter7 : ComponentActivity() {
 
@@ -31,6 +34,8 @@ class Chapter7 : ComponentActivity() {
     var hasWin by mutableStateOf(false)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startTime = System.currentTimeMillis()
 
         //A handler is created, this is connected to the main thread and can thus perceive constant ui updates
         val handler = Handler(Looper.getMainLooper())
@@ -44,6 +49,7 @@ class Chapter7 : ComponentActivity() {
                 Log.d("Chapter 7", "Screenshot wurde gemacht ")
                 //Sets the winner booelan true
                 hasWin = true
+                levelTime = stopTimer()
             }
         }
 
@@ -127,5 +133,35 @@ fun Chapter7Content(hasWin: Boolean) {
 // and then starts a success pop-up
 @Composable
 fun Chapter7Win() {
-    //TODO: HIER POP-UP & DATENBANK INTEGRATION
-}
+    val context = LocalContext.current
+
+    val userId = getUserId(context)
+    val time = levelTime.toFloat() / 1000
+
+    val showDialog = remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        try {
+            val response = ApiClient.instance.updateChapterTime(userId, 7, time).awaitResponse()
+            if (response.isSuccessful) {
+                Log.d("Chapter 7", "Saved time successfully")
+            } else {
+                Log.e("Chapter 7", "Error with saving")
+            }
+        } catch (e: Exception) {
+            Log.e("Chapter 7", "Network request failed", e)
+        }
+    }
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            confirmButton = {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text("OK")
+                }
+            },
+            title = { Text("Congratulations!") },
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+        )
+    }}
