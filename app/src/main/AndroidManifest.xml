@@ -40,8 +40,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChapterIntro" android:screenOrientation="portrait" android:resizeableActivity="true" />
-        <activity android:name=".Chapter2" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter1" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".Chapter2" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter3" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter4" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter5" android:screenOrientation="portrait" android:resizeableActivity="true" />
