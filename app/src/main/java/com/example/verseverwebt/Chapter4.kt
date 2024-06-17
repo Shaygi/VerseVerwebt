@@ -95,6 +95,9 @@ fun Chapter4Content() {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(start = 50.dp, end = 50.dp)
         )
+
+       Seitenzahl("-40-")
+
     }
 }
 

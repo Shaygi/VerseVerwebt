@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -124,9 +125,13 @@ fun Chapter3Content(hasWin: Boolean) {
                     "And continue your quest, with all your might.",
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+            modifier = Modifier
+                .padding(start = 50.dp, end = 50.dp)
         )
+
+        Seitenzahl("30")
     }
+
 
     //The button that takes you to the next activity
     ToTheNextPage(nextClass = Chapter4::class.java, hasWin = hasWin )

@@ -174,6 +174,8 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchi
         Spacer(modifier = Modifier.height(10.dp))
         // Draw the compass
         Compass(azimuth)
+
+        Seitenzahl("20")
     }
 
     //The button that takes you to the next activity

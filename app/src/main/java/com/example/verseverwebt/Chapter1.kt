@@ -136,6 +136,8 @@ fun Chapter1Content(onCompletion: () -> Long) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(all = 26.dp)
         )
+
+        Seitenzahl("10")
     }
 
     //The button that takes you to the next activity

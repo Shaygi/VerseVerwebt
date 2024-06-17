@@ -147,6 +147,22 @@ fun ToTheNextPage(nextClass: Class<*> , hasWin: Boolean) {
     }
 }
 
+@Composable
+fun Seitenzahl(seitenzahl: String) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(
+            text = seitenzahl,
+            style = CustomTypography.bodyMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+        )
+    }
+
+}
 //Text animation function that fades in the text
 @Composable
 fun AnimatedFadeInText(

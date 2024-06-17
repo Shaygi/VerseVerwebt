@@ -171,6 +171,8 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
                 contentDescription = "Lock1_Closed"
             )
         }
+
+        Seitenzahl("-60-")
     }
 
     //The button that takes you to the next activity
