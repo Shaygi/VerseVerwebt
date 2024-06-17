@@ -27,9 +27,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//First Chapter as story introduction
-//player needs to rise the volume to solve the riddle
-//should be solved after a text size of 26 is reached
 class Chapter1 : ComponentActivity() {
     var startTime: Long = 0
     var endTime: Long = 0
@@ -38,13 +35,14 @@ class Chapter1 : ComponentActivity() {
         super.onCreate(savedInstanceState)
         // Access to Audio manager
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        // Sets the volume to 0 at the beginning
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0)
+        // Sets the system volume and media volume to 0 at the beginning
+        audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, 0, 0) //For real mobile phone
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0) //For emulator
 
         // Start the timer
         startTime = System.currentTimeMillis()
 
-        //content of the page
+        // Content of the page
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -53,10 +51,12 @@ class Chapter1 : ComponentActivity() {
             }
         }
     }
+
     private fun stopTimer(): Long {
         endTime = System.currentTimeMillis()
         return endTime - startTime
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong("startTime", startTime)
@@ -70,7 +70,6 @@ class Chapter1 : ComponentActivity() {
     }
 }
 
-// Function to retrieve userId from SharedPreferences
 fun getUserId(context: Context): Long {
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     return sharedPreferences.getLong("user_id", 0L)
@@ -84,66 +83,55 @@ fun Chapter1Content(onCompletion: () -> Long) {
     var showDialog by remember { mutableStateOf(false) }
     var levelTime by remember { mutableStateOf(0L) }
 
-    // Uses DisposableEffect to free resources if the effect is not used anymore
     DisposableEffect(Unit) {
-        //gets audio manager from the context
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        //creates content observer to monitor changes in system audio settings
         val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
-            //called when audio changes
             override fun onChange(selfChange: Boolean) {
-                //gets current column level of music stream
-                val volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                //updates text size based on volume level
+                // Gets current volume levels
+                val systemVolume = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM)
+                val musicVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                // Uses the maximum volume to set the text size
+                val volume = maxOf(systemVolume, musicVolume)
                 textSize = (5 + volume * 2).sp
-                if(textSize >= 26.sp){
-                    //level completed
+                if (textSize >= 26.sp) {
                     levelTime = onCompletion()
                     showDialog = true
                 }
             }
         }
-        //registers content observer to listen for changes
         context.contentResolver.registerContentObserver(
             android.provider.Settings.System.CONTENT_URI,
             true,
             contentObserver
         )
-        //cleans content observer when effect is not used
         onDispose {
             context.contentResolver.unregisterContentObserver(contentObserver)
         }
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackToMenuButton()
-
         Spacer(modifier = Modifier.height(32.dp))
-        //Title
         Text(
             text = "CHAPTER",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
-        //Subtitle
         Text(
             text = "One",
             style = CustomTypography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 66.dp)
         )
-        //Riddle text
         Text(
             text = "You hear whispering:",
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
         )
-        //clue that changes size when volume rises
         Text(
             text = "In the sea of riddles hidden, lies a sparkling prize,\nWisdom and cleverness are the keys to the skies.\nUnlocking the brilliance with insight so grand,\nTo reveal the treasure within your hand.",
             fontFamily = playfair,
@@ -153,6 +141,7 @@ fun Chapter1Content(onCompletion: () -> Long) {
             modifier = Modifier.padding(all = 26.dp)
         )
     }
+
     if (showDialog) {
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000
@@ -161,7 +150,6 @@ fun Chapter1Content(onCompletion: () -> Long) {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (response.isSuccessful) {
                     Log.d("Chapter 1", "Saved time successfully")
-
                 } else {
                     Log.e("Chapter 1", "Error with saving")
                 }
@@ -171,7 +159,6 @@ fun Chapter1Content(onCompletion: () -> Long) {
                 Log.e("Chapter 1", "Error")
             }
         })
-
 
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -185,13 +172,11 @@ fun Chapter1Content(onCompletion: () -> Long) {
         )
     }
 }
-//function is for previewing in the IDE
+
 @Preview(showBackground = true)
 @Composable
 fun Chapter1ContentPreview() {
-    // Sets the theme for the preview
     VerseVerwebtTheme {
-        // Calls the composable function to be previewed
         Chapter1Content { 0L }
     }
 }
