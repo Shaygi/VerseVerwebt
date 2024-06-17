@@ -26,7 +26,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Login : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -44,9 +43,9 @@ class Login : ComponentActivity() {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putBoolean("is_logged_in", true)
-            putLong("user_id", user.id)
             putString("user_name", user.name)
             putInt("user_rank", user.rank)
+            putLong("user_id", user.id)
             putString("user_times", userTimesToString(user))
             apply()
         }
@@ -70,8 +69,9 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
+
+    var showDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -196,6 +196,7 @@ fun performLogin(username: String, password: String, onLoginSuccess: (User) -> U
                 val user = users.find { it.name == username && it.password == password }
                 if (user != null) {
                     onLoginSuccess(user)
+                    logUserId = user.id
                 } else {
                     Log.e("Login", "Wrong password")
                 }

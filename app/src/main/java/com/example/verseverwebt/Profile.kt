@@ -24,12 +24,11 @@ class Profile : ComponentActivity() {
 
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userName = sharedPreferences.getString("user_name", "Unknown") ?: "Unknown"
-        val userId = sharedPreferences.getLong("user_id", 0L)
 
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    ProfileContent(userName, userId)
+                    ProfileContent(userName, logUserId)
                 }
             }
         }

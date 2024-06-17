@@ -46,6 +46,7 @@ class SignUp : ComponentActivity() {
             putLong("user_id", user.id)
             putString("user_name", user.name)
             putInt("user_rank", user.rank)
+            putLong("user_id", user.id)
             putString("user_times", userTimesToString(user))
             apply()
         }
@@ -71,8 +72,9 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
+
+    var showDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -213,7 +215,7 @@ fun performSignUp(name: String, email: String, password: String, onSignUpSuccess
     ApiClient.instance.createUser(newUser).enqueue(object : Callback<Unit> {
         override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
             if (response.isSuccessful) {
-                onSignUpSuccess(newUser)
+                //yay
             } else if (response.code() == 500) {
                 Log.e("SignUp", "Error")
             } else {
@@ -225,4 +227,30 @@ fun performSignUp(name: String, email: String, password: String, onSignUpSuccess
             Log.e("SignUp", "Error: ${t.message}")
         }
     })
+
+    ApiClient.instance.getUsers().enqueue(object : Callback<List<User>> {
+        override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+            if (response.isSuccessful) {
+                val users = response.body()
+                if (users != null) {
+                    for (user in users){
+                        if(user.name == name){
+                            onSignUpSuccess(user)
+                        }
+                    }
+                }
+            } else if (response.code() == 500) {
+                Log.e("SignUp", "Error")
+            } else {
+                Log.e("SignUp", "API call failed with response code: ${response.code()}")
+            }        }
+
+        override fun onFailure(call: Call<List<User>>, t: Throwable) {
+            //cry
+        }
+    })
 }
+
+//Variable for loggedin User
+
+var logUserId: Long = 0
