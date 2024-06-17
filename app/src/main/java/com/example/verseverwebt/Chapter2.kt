@@ -175,6 +175,10 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchi
         // Draw the compass
         Compass(azimuth)
     }
+
+    //The button that takes you to the next activity
+    ToTheNextPage(nextClass = Chapter3::class.java, hasWin = true)
+
     if (showDialog) {
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000

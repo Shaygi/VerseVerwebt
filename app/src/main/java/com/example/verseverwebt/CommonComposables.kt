@@ -12,6 +12,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 //import androidx.compose.foundation.layout.BoxScopeInstance.align
 import androidx.compose.material.icons.Icons
@@ -32,6 +33,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -113,6 +115,35 @@ fun BackToMenuButton(modifier: Modifier = Modifier) {
                 tint = Color.Unspecified //ensures that icon does not change color
             )
         }
+    }
+}
+
+//A function that defines a Button that can be used for each chapter to go to the next page
+@Composable
+fun ToTheNextPage(nextClass: Class<*> , hasWin: Boolean) {
+    val context = LocalContext.current
+
+    val picture : Painter = if(!isSystemInDarkTheme()){
+        painterResource(id = R.drawable.next_white)
+    }else {
+        painterResource(id = R.drawable.next_black)
+    }
+    Box(
+        modifier = Modifier.fillMaxSize() // Die Box füllt den gesamten verfügbaren Platz
+    ) {
+        Image(
+            painter = picture,
+            contentDescription = "eselohr",
+            modifier = Modifier
+                .align(Alignment.BottomEnd) // Bild unten rechts ausrichten
+                .then(
+                    if (hasWin) {
+                        Modifier.clickable { context.startActivity(Intent(context, nextClass)) }
+                    } else {
+                        Modifier // Keine Aktion, wenn `hasWin` false ist
+                    }
+                )
+        )
     }
 }
 

@@ -172,6 +172,9 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
             )
         }
     }
+
+    //The button that takes you to the next activity
+    ToTheNextPage(nextClass = Chapter7::class.java, hasWin = hasWin)
 }
 
 //This function is triggered as soon as the puzzle has been solved

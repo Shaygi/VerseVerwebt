@@ -128,6 +128,9 @@ fun Chapter3Content(hasWin: Boolean) {
         )
     }
 
+    //The button that takes you to the next activity
+    ToTheNextPage(nextClass = Chapter4::class.java, hasWin = hasWin )
+
     //When the puzzle has been solved, the Chapter Win function is triggered
     if(hasWin){
         levelTime = stopTimer()

@@ -138,6 +138,9 @@ fun Chapter1Content(onCompletion: () -> Long) {
         )
     }
 
+    //The button that takes you to the next activity
+    ToTheNextPage(nextClass = Chapter2::class.java, hasWin = true )
+
     if (showDialog) {
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000
