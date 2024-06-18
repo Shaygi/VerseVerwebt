@@ -79,7 +79,7 @@ fun ChapterIntroContent() {
 
         modifier = Modifier
             .fillMaxSize()
-            .background(if (flashlightOn) Color.Transparent else Color.Black), // Background color changes depending on the flashlight status
+            .background(if (flashlightOn) Color.White else Color.Black), // Background color changes depending on the flashlight status
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = if(flashlightOn) Arrangement.spacedBy(8.dp) else Arrangement.Center,
         ) {
