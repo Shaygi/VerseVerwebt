@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -118,18 +119,18 @@ fun Chapter3Content(hasWin: Boolean) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 66.dp)
         )
-        Text(
-            text = "The sun shines bright, stealing your sight," +
-                    "You must find a way, to not go astray." +
-                    "Shield your eyes from the blinding light," +
-                    "And continue your quest, with all your might.",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(start = 50.dp, end = 50.dp)
+
+        // Display the current text
+        AnimatedTypewriterText2(
+            text = "The sun shines bright, stealing your sight, " +
+                    "You must find a way, to not go astray. " +
+                    "Shield your eyes from the blinding light, " +
+                    "And continue your quest, with all your might. ",
+            fontSize = 13,
+            textAlign = TextAlign.Center
         )
 
-        Seitenzahl("30")
+        Seitenzahl("-30-")
     }
 
 

@@ -137,7 +137,7 @@ fun Chapter1Content(onCompletion: () -> Long) {
             modifier = Modifier.padding(all = 26.dp)
         )
 
-        Seitenzahl("10")
+        Seitenzahl("-10-")
     }
 
     //The button that takes you to the next activity

@@ -137,22 +137,21 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
             modifier = Modifier.padding(bottom = 66.dp)
         )
 
-        Text(
-            text = "Deep within the cave, your journey's nearly through," +
-                    "A treasure chest awaits, but locked from view." +
-                    "Gleaming gems and gold, a sight so grand," +
-                    "Yet a secret code you must understand." +
+        AnimatedTypewriterText2(
+            text = "Deep within the cave, your journey's nearly through, " +
+                    "A treasure chest awaits, but locked from view. " +
+                    "Gleaming gems and gold, a sight so grand, " +
+                    "Yet a secret code you must understand. " +
                     "\n \n" +
-                    "Among the echoes, listen well," +
-                    "To ancient rhymes that secrets tell:" +
-                    "In the whispers of time the Voices unfold," +
+                    "Among the echoes, listen well, " +
+                    "To ancient rhymes that secrets tell:  " +
+                    "In the whispers of time the Voices unfold, " +
                     "Begin with five, as legends foretold." +
-                    "Two steps forth, then one step before." +
-                    "Forward again, two steps more," +
-                    "The path unveiled, the treasure's door.",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+                    "Two steps forth, then one step before. " +
+                    "Forward again, two steps more, " +
+                    "The path unveiled, the treasure's door. ",
+            fontSize = 13,
+            textAlign = TextAlign.Center
         )
 
         ElevatedButton(

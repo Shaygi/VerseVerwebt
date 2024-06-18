@@ -103,16 +103,16 @@ fun Chapter7Content(hasWin: Boolean) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 66.dp)
         )
-        Text(
-            text = "Treasure found, a gleam on the horizon so wide," +
-                    "Cherish the moment before it slips with the tide." +
-                    "Be quick to capture your treasure," +
-                    "Hold it closely as a memory forever," +
-                    "Quickly capture the evidence," +
-                    "So you can keep it in your remembrance.",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+
+        AnimatedTypewriterText2(
+            text = "Treasure found, a gleam on the horizon so wide, " +
+                    "Cherish the moment before it slips with the tide. " +
+                    "Be quick to capture your treasure, " +
+                    "Hold it closely as a memory forever, " +
+                    "Quickly capture the evidence, " +
+                    "So you can keep it in your remembrance. ",
+            fontSize = 13,
+            textAlign = TextAlign.Center
         )
         Image(
             painter = painterResource(id = R.drawable.treasure),
@@ -120,8 +120,7 @@ fun Chapter7Content(hasWin: Boolean) {
             modifier = Modifier
                 .scale(0.6f)
         )
-
-        Seitenzahl("- 70 -")
+        Seitenzahl("-70-")
     }
 
     //When the puzzle has been solved, the Chapter Win function is triggered
