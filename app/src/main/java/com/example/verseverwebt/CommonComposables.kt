@@ -253,6 +253,51 @@ fun AnimatedTypewriterText(
     )
 }
 
+//Text animation function with a typewriter effect
+@Composable
+fun AnimatedTypewriterText2(
+    text: String,
+    fontSize: Int,
+    textAlign: TextAlign,
+    modifier: Modifier = Modifier
+) {
+    var displayedText by remember { mutableStateOf("") }
+    var currentIndex by remember { mutableStateOf(0) }
+
+    //Effect
+    LaunchedEffect(text) {
+        displayedText = ""
+        currentIndex = 0
+        for (char in text) {
+            displayedText += char
+            currentIndex++
+            delay(50) // Adjust the delay to control the typing speed
+        }
+    }
+
+    val visibleChars = displayedText.mapIndexed { index, char ->
+        val alpha = animateFloatAsState(if (index < currentIndex) 1f else 0f)
+        char to alpha.value
+    }
+
+    Text(
+        text = buildAnnotatedString {
+            visibleChars.forEach { (char, alpha) ->
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground.copy(alpha = alpha))) {
+                    append(char)
+                }
+            }
+        },
+        fontFamily = playfair,
+        style = MaterialTheme.typography.bodySmall,
+        fontSize = fontSize.sp,
+        textAlign = textAlign,
+        modifier = modifier
+            .padding(start = 50.dp, end = 50.dp)
+    )
+}
+
+
 //Text animation function that fades in the text with a delay
 @Composable
 fun DelayedFadeInText(text: String,

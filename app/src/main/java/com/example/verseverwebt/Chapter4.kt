@@ -86,16 +86,14 @@ fun Chapter4Content() {
             modifier = Modifier.padding(bottom = 66.dp)
         )
 
-        Text(
-            text = "In the veil of night, where darkness reigns,\n" +
-                    "A gentle touch, and the sky exclaims.\n" +
-                    "What is it, that in the hidden sparks stars alight,\n" +
-                    "Making them shine in the splendor of night?",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(start = 50.dp, end = 50.dp)
+        AnimatedTypewriterText2(
+            text = "In the veil of night, where darkness reigns, " +
+                    "A gentle touch, and the sky exclaims. " +
+                    "What is it, that in the hidden sparks stars alight, " +
+                    "Making them shine in the splendor of night? ",
+            fontSize = 13,
+            textAlign = TextAlign.Center
         )
-
        Seitenzahl("-40-")
 
     }
