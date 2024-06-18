@@ -164,9 +164,8 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
                 color = textColor
             )
         }
-
-        Seitenzahl("-50-")
     }
+    Seitenzahl("-50-")
 
     //The button that takes you to the next activity
     ToTheNextPage(nextClass = Chapter6::class.java, hasWin = true)

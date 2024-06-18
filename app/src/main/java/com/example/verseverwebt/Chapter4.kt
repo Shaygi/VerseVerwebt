@@ -21,8 +21,6 @@ import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -94,9 +92,9 @@ fun Chapter4Content() {
             fontSize = 13,
             textAlign = TextAlign.Center
         )
-       Seitenzahl("-40-")
-
     }
+
+    Seitenzahl("-40-")
 }
 
 // This function checks whether the light screen state has been changed to the dark screen state

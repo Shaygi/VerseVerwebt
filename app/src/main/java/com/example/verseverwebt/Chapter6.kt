@@ -134,7 +134,7 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
             text = "Six",
             style = CustomTypography.titleMedium,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 66.dp)
+            modifier = Modifier.padding(bottom = 36.dp)
         )
 
         AnimatedTypewriterText2(
@@ -163,6 +163,7 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
         //As long as the puzzle has not been solved, a closed image is displayed
         // but if it is, the ChapterWin function is triggered with the animation and more
         if(hasWin){
+            LockAnimation()
             Chapter6Win()
         }else {
             Image(
@@ -171,8 +172,9 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
             )
         }
 
-        Seitenzahl("-60-")
     }
+
+    Seitenzahl("-60-")
 
     //The button that takes you to the next activity
     ToTheNextPage(nextClass = Chapter7::class.java, hasWin = hasWin)
@@ -182,9 +184,6 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
 // and then starts an animation and a success pop-up
 @Composable
 fun Chapter6Win(){
-    LockAnimation()
-
-    //Maybe Zeitdelay
 
     val context = LocalContext.current
 
@@ -269,6 +268,9 @@ fun LockAnimation (){
                 setImageDrawable(animationDrawable)
                 animationDrawable.start()
             }
-        }
+        },
+        modifier = Modifier
+            .offset (y = (-190).dp)
+            .scale(0.7f)
     )
 }

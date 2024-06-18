@@ -175,8 +175,9 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchi
         // Draw the compass
         Compass(azimuth)
 
-        Seitenzahl("-20-")
     }
+
+    Seitenzahl("-20-")
 
     //The button that takes you to the next activity
     ToTheNextPage(nextClass = Chapter3::class.java, hasWin = true)

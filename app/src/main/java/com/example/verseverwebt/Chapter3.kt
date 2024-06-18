@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -97,6 +95,7 @@ class Chapter3 : ComponentActivity(), SensorEventListener {
 @Composable
 fun Chapter3Content(hasWin: Boolean) {
 
+
     //Vertical text elements and a menu button
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -130,9 +129,9 @@ fun Chapter3Content(hasWin: Boolean) {
             textAlign = TextAlign.Center
         )
 
-        Seitenzahl("-30-")
-    }
 
+    }
+    Seitenzahl("-30-")
 
     //The button that takes you to the next activity
     ToTheNextPage(nextClass = Chapter4::class.java, hasWin = hasWin )

@@ -120,8 +120,9 @@ fun Chapter7Content(hasWin: Boolean) {
             modifier = Modifier
                 .scale(0.6f)
         )
-        Seitenzahl("-70-")
     }
+
+    Seitenzahl("-70-")
 
     //When the puzzle has been solved, the Chapter Win function is triggered
     if(hasWin){
