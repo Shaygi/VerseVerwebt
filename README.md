@@ -22,8 +22,9 @@ No additional installations are required.
 ## Installation
 
 1. Clone the repository:
-   git clone https://github.com/Shaygi/VerseVerwebt.git
-
+~~~git
+git clone https://github.com/Shaygi/VerseVerwebt.git
+~~~
 2. Open the project in Android Studio.
 
 3. Build and run the project on the Pixel 3a API 34 emulator.
