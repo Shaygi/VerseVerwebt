@@ -270,7 +270,7 @@ fun LockAnimation (){
             }
         },
         modifier = Modifier
-            .offset (y = (-190).dp)
+            .offset (y = (-30).dp)
             .scale(0.7f)
     )
 }
