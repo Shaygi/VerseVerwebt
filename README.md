@@ -16,6 +16,9 @@ To test the game using the Android Studio emulator, follow these steps:
 - Use a Pixel 3a API 34 emulator for testing.
 - In the emulator's advanced settings, set both the front and back camera emulation to "Emulated" to enable access to the flashlight in the control center.
 - Add the dark theme button to the control center for quicker access during gameplay.
+- In addition, the microphone must be activated in the microphone settings depending on the selected input.
+- If the light (lux) value is below 200 in the visual sensor settings, this should be raised for the best gaming experience.
+- If you do not see the button for the DarkTheme when opening the control center, you must add it via the Edit Tool to facilitate access during the game.
 
 No additional installations are required.
 
@@ -36,11 +39,11 @@ git clone https://github.com/Shaygi/VerseVerwebt.git
 2. Chapter Puzzles: Progress through the seven chapters, each with a unique puzzle:
    Chapter 1: Increase the system volume to solve the riddle.
    Chapter 2: Detect the phone's orientation.
-   Chapter 3: Decrease the phone's brightness.
+   Chapter 3: Reduce the room light. Light/Lux value in the extended emulator settings. On the physical cell phone, you can darken the room or cover the light sensor (near the front camera) with your hand.
    Chapter 4: Activate the dark mode.
    Chapter 5: Check the phone's battery status.
-   Chapter 6: Use the microphone to input the correct word.
-   Chapter 7: Take a screenshot to solve the riddle.
+   Chapter 6: Use the microphone to input the correct Code. To do this, press the microphone button and say the code word "5768" in the Google pop-up. 
+   Chapter 7: Take a screenshot to solve the riddle. To do this, use the Screenshot button in the Task Manager / Recently used apps or the key combination on the physical cell phone. The screenshot option via the emulator does not work due to a different storage location. 
 
 3. Leaderboard: Your total time to solve the puzzles will be recorded and displayed on the leaderboard.
 
