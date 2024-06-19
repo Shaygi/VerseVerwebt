@@ -5,8 +5,11 @@ Woven verses is a unique puzzle game that interacts with your phone's control ce
 ## Features
 
 Log in/Register: Players can create an account or log in to track their progress.
+
 Chapter Puzzles: Each of the seven chapters presents a unique puzzle that requires interaction with the phone's control center and sensors.
+
 Leaderboard: The time taken to solve each puzzle is recorded, and the total time is displayed on a leaderboard.
+
 Book-Style Design: The game is designed to resemble a book, enhancing the immersive experience.
 
 ## Getting started
