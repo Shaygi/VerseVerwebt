@@ -14,9 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
+//table of contest for navigation through the chapters
+//chapters get unlocked when the previous chapter is cleared
 class TableOfContents : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //content of the page
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -29,6 +32,7 @@ class TableOfContents : ComponentActivity() {
 
 @Composable
 fun TableOfContentsContent() {
+    //current context
     val context = LocalContext.current
 
     Column(
@@ -38,12 +42,15 @@ fun TableOfContentsContent() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        //Title
         Text(
             text = "Table of Contents",
+            fontFamily = playfair,
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 45.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+        //Chapter buttons that navigate to the activities
         ButtonColumn("Chapter Intro", 18.sp) {
             context.startActivity(Intent(context, ChapterIntro::class.java))
         }
@@ -64,6 +71,9 @@ fun TableOfContentsContent() {
         }
         ButtonColumn("Chapter 6", 18.sp) {
             context.startActivity(Intent(context, Chapter6::class.java))
+        }
+        ButtonColumn("Chapter 7", 18.sp) {
+            context.startActivity(Intent(context, Chapter7::class.java))
         }
     }
 }

@@ -20,15 +20,17 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.verseverwebt.theme.CustomTypography
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import java.lang.Math.toDegrees
 
 class Chapter2 : ComponentActivity() {
+    private var startTime: Long = 0
+    private var endTime: Long = 0
 
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
@@ -36,12 +38,14 @@ class Chapter2 : ComponentActivity() {
 
     private var gravity: FloatArray? = null
     private var geomagnetic: FloatArray? = null
+
     private var azimuth by mutableStateOf(0f)
+    private var westCount by mutableStateOf(0)
+    private var achieved by mutableStateOf(false)
 
-    private var westCount = 0
-    private val delay = 1000L
-    private var achieved = false
+    private lateinit var onAchieved: () -> Unit
 
+    // Listener to respond to sensor data changes
     private val sensorListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
@@ -55,12 +59,14 @@ class Chapter2 : ComponentActivity() {
                         val orientation = FloatArray(3)
                         SensorManager.getOrientation(r, orientation)
                         azimuth = toDegrees(orientation[0].toDouble()).toFloat().let { if (it < 0) it + 360 else it }
+                        //Log.d("Chapter2", "Azimuth: $azimuth")
                         if (azimuth in 260f..280f && !achieved) westCount++ else westCount = 0
                         if (westCount >= 5) {
-                            chapter2Text.value = "gut gemacht"
+                            //chapter2Text.value = "gut gemacht"
                             achieved = true
+                            onAchieved()
                         } else if (!achieved) {
-                            chapter2Text.value = "Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen."
+                            chapter2Text.value = "In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn."
                         }
                     }
                 }
@@ -72,10 +78,21 @@ class Chapter2 : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startTime = System.currentTimeMillis()
+
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Chapter2Content(azimuth)
+                    var showDialog by remember { mutableStateOf(false) }
+                    var levelTime by remember { mutableStateOf(0L) }
+
+                    onAchieved = {
+                        levelTime = stopTimer()
+                        showDialog = true
+                    }
+
+                    Chapter2Content(azimuth, showDialog, levelTime) { showDialog = it }
                 }
             }
         }
@@ -83,6 +100,18 @@ class Chapter2 : ComponentActivity() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("startTime", startTime)
+        outState.putLong("endTime", endTime)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        startTime = savedInstanceState.getLong("startTime")
+        endTime = savedInstanceState.getLong("endTime")
     }
 
     override fun onResume() {
@@ -97,64 +126,97 @@ class Chapter2 : ComponentActivity() {
     }
 }
 
-private val chapter2Text = mutableStateOf("Im Norden steht eine Statue starr und kalt, ihr Blick richtet sich nach Osten, doch niemals in den Süden, denn ihr Herz wird sich immer nach dem Westen sehnen.")
+private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
-fun Chapter2Content(azimuth: Float) {
+fun Chapter2Content(
+    azimuth: Float,
+    showDialog: Boolean,
+    levelTime: Long,
+    updateShowDialog: (Boolean) -> Unit
+) {
+    val context = LocalContext.current
+
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackToMenuButton()
         Spacer(modifier = Modifier.height(32.dp))
+        // Title
         Text(
             text = "CHAPTER",
             style = CustomTypography.titleLarge,
             textAlign = TextAlign.Center
         )
+        // Subtitle
         Text(
             text = "Two",
             style = CustomTypography.titleMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(bottom = 36.dp)
         )
-        Text(
+        // Display the current text
+        AnimatedTypewriterText(
             text = chapter2Text.value,
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Left,
-            modifier = Modifier.padding(16.dp)
+            fontSize = 13,
+            textAlign = TextAlign.Center,
+            color = Color.Black,
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+        // Draw the compass
         Compass(azimuth)
+
+    }
+
+    Seitenzahl("-20-")
+
+    //The button that takes you to the next activity
+    ToTheNextPage(nextClass = Chapter3::class.java, hasWin = true)
+
+    if (showDialog) {
+        val userId = getUserId(context)
+        val time = levelTime.toFloat() / 1000
+
+        saveTimeIfNotSaved(userId, 2, time)
+
+        AlertDialog(
+            onDismissRequest = { updateShowDialog(false) },
+            confirmButton = {
+                TextButton(onClick = {
+                    updateShowDialog(false)
+                }) {
+                    Text("OK")
+                }
+            },
+            title = { Text("Congratulations!") },
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+        )
     }
 }
 
-
 @Composable
 fun Compass(azimuth: Float) {
-    Canvas(modifier = Modifier.size(300.dp)) {
+    Canvas(modifier = Modifier.requiredSize(280.dp)) {
         val strokeWidth = 6.dp.toPx()
         val compassRadius = size.minDimension / 2 - strokeWidth
 
-        // Rotating the canvas to match the azimuth
         rotate(-azimuth, pivot = center) {
-            // Drawing the outer circle of the compass
             drawCircle(
                 color = Color(0xFF8B4513),
                 center = center,
                 radius = compassRadius + 30,
                 style = Stroke(width = strokeWidth)
             )
-
-            // Drawing the inner circle
             drawCircle(
                 color = Color(0xFFD2B48C),
                 center = center,
                 radius = compassRadius - 30.dp.toPx(),
                 style = Stroke(width = strokeWidth / 2)
             )
-
-            // Drawing the compass needle (red for north, gray for south)
             drawLine(
                 color = Color.Red,
                 start = center,
@@ -169,25 +231,22 @@ fun Compass(azimuth: Float) {
             )
         }
 
-        // Drawing the cardinal points
-        val textPaint = android.graphics.Paint().apply {
+        val textPaint = Paint().apply {
             color = android.graphics.Color.BLACK
             textSize = 40f
-            textAlign = android.graphics.Paint.Align.CENTER
+            textAlign = Paint.Align.CENTER
             typeface = android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
         }
-
         drawIntoCanvas { canvas ->
             canvas.nativeCanvas.drawText("N", center.x, center.y - compassRadius + 40f, textPaint)
             canvas.nativeCanvas.drawText("E", center.x + compassRadius - 40f, center.y, textPaint)
             canvas.nativeCanvas.drawText("S", center.x, center.y + compassRadius - 10f, textPaint)
             canvas.nativeCanvas.drawText("W", center.x - compassRadius + 40f, center.y, textPaint)
 
-            // Drawing intermediate directions
-            val smallTextPaint = android.graphics.Paint().apply {
+            val smallTextPaint = Paint().apply {
                 color = android.graphics.Color.BLACK
                 textSize = 20f
-                textAlign = android.graphics.Paint.Align.CENTER
+                textAlign = Paint.Align.CENTER
                 typeface = android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
             }
 
@@ -199,16 +258,10 @@ fun Compass(azimuth: Float) {
     }
 }
 
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun Chapter2ContentPreview() {
     VerseVerwebtTheme {
-        Chapter2Content(0f)
+        Chapter2Content(0f, false, 0L) {}
     }
 }
-
-
-

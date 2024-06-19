@@ -4,6 +4,11 @@
 
     <!-- Berechtigungen und Features hinzufügen -->
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- Deklariere die Nutzung der Kamera und des Blitzlichts -->
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
@@ -11,6 +16,7 @@
 
 
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -34,14 +40,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChapterIntro" android:screenOrientation="portrait" android:resizeableActivity="true" />
-        <activity android:name=".Chapter2" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter1" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".Chapter2" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter3" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter4" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter5" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Chapter6" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".Chapter7" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".TableOfContents" android:screenOrientation="portrait" android:resizeableActivity="true" />
-
+        <activity android:name=".Ranking" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".Login" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".SignUp" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".Profile" android:screenOrientation="portrait" android:resizeableActivity="true" />
     </application>
 
 </manifest>

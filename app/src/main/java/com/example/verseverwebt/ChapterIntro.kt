@@ -1,8 +1,10 @@
 package com.example.verseverwebt
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -14,17 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.api.ApiClient
+import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChapterIntro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // Turn flashlight off on create
         turnOffFlashlight()
-
+        // Content of the page
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -33,90 +39,122 @@ class ChapterIntro : ComponentActivity() {
             }
         }
     }
+
+    // Function for turning off the flashlight
     private fun turnOffFlashlight() {
+        // Access to Camera manager
         val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        // Sets flashlight mode to false
         cameraManager.setTorchMode(cameraManager.cameraIdList[0], false)
     }
 }
 
 @Composable
 fun ChapterIntroContent() {
+    // Saves status of the flashlight
     var flashlightOn by remember { mutableStateOf(false) }
-
+    // Current context
     val context = LocalContext.current
+    // Camera service from current context
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
+    // Uses DisposableEffect to free resources if the effect is not used anymore
     DisposableEffect(Unit) {
+        // Creates a TorchCallback instance to react to changes from the flashlight mode
         val torchCallback = object : CameraManager.TorchCallback() {
+            // Is called if flashlight mode changes
             override fun onTorchModeChanged(cameraId: String, enabled: Boolean) {
-                flashlightOn = enabled
+                flashlightOn = enabled // Updates the status of the flashlight
             }
         }
-
+        // Registers TorchCallback at CameraManager
         cameraManager.registerTorchCallback(torchCallback, null)
+
+        // Frees resources if the effect is not used anymore
         onDispose {
+            // Removes the TorchCallback from CameraManager
             cameraManager.unregisterTorchCallback(torchCallback)
         }
     }
 
-    Box(
+    val initialText = "The adventure begins,\n The first mystery solved,\n But more awaits you amidst,\n Your bookmark helps you not get lost,\n To keep on your way where you have crossed."
+    val placeholderText = "Enlighten the dark..."
+
+    Column(
+        // Column alignment
+
         modifier = Modifier
             .fillMaxSize()
-            .background(if (flashlightOn) Color.Transparent else Color.Black),
-        contentAlignment = Alignment.Center
-    ) {
-        if (flashlightOn) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                BackToMenuButton()
-            }
-        }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            .background(if (flashlightOn) Color.White else Color.Black), // Background color changes depending on the flashlight status
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = if(flashlightOn) Arrangement.spacedBy(8.dp) else Arrangement.Center,
         ) {
-            Text(
-                text = "CHAPTER",
-                fontFamily = playfair,
-                style = MaterialTheme.typography.headlineLarge,
-                fontSize = 45.sp,
-                textAlign = TextAlign.Center,
-                color = if (flashlightOn) Color.Black else Color.Gray
-            )
-            Text(
-                text = "Intro",
-                fontFamily = inspiration,
-                style = MaterialTheme.typography.headlineLarge,
-                fontSize = 45.sp,
-                textAlign = TextAlign.Center,
+        // Title
+        if (flashlightOn) {
+            BackToMenuButton()
+            Spacer(modifier = Modifier.height(32.dp))
 
-                color = if (flashlightOn) Color.Black else Color.Gray
-            )
-            Text(
-                text = if (flashlightOn) "Das Abenteuer beginnt, das erste Rätsel gelöst, Doch im Dunkeln liegen noch viele verschlüsselt. Setze dein Lesezeichen, verirre dich nicht." else "Bringe Licht ins Dunkle....",
-                fontFamily = playfair,
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = if (flashlightOn) 13.sp else 20.sp,
-                textAlign = if (flashlightOn) TextAlign.Left else TextAlign.Center,
-                modifier = Modifier.padding(all = 50.dp),
-                color = if (flashlightOn) Color.Black else Color.Gray
+            ApiClient.instance.updateIntroCompleted(getUserId(context)).enqueue(object :
+                Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    if (response.isSuccessful) {
+                        Log.d("ChapterIntro", "Saved bool successfully")
+                    } else {
+                        Log.e("ChapterIntro", "Error with saving bool")
+                    }
+                }
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    Log.e("ChapterIntro", "Error with saving bool")
+                }
+            })
+        }
+
+        Text(
+            // Color changes when flashlight is on
+            text = "CHAPTER",
+            style = CustomTypography.titleLarge,
+            textAlign = TextAlign.Center,
+            color = if (flashlightOn) Color.Black else Color.Gray
+        )
+        // Subtitle
+        Text(
+            // Color changes when flashlight is on
+            text = "Intro",
+            style = CustomTypography.titleMedium,
+            textAlign = TextAlign.Center,
+            color = if (flashlightOn) Color.Black else Color.Gray,
+            modifier = Modifier.padding(bottom = 66.dp)
+        )
+        if(flashlightOn){
+            // Success text with typewriter effect
+            AnimatedTypewriterText(
+                text = initialText,
+                fontSize = 13,
+                textAlign = TextAlign.Center,
+                color = Color.Black,
+                )
+        }else{
+            // Riddle text with Fade in effect
+            AnimatedFadeInText(
+                text = placeholderText,
+                fontSize = 13,
+                textAlign = TextAlign.Center,
+                color = Color.Gray
             )
         }
     }
 }
 
+// Function is for previewing in the IDE
 @Preview(showBackground = true)
 @Composable
 fun ChapterIntroContentPreview() {
+    // Sets the theme for the preview
     VerseVerwebtTheme {
+        // Calls the composable function to be previewed
         ChapterIntroContent()
     }
 }
-
-
 
 
 
