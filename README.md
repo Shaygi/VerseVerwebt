@@ -37,15 +37,22 @@ git clone https://github.com/Shaygi/VerseVerwebt.git
 1. Introductory Puzzle: Solve the initial puzzle to get started.
 
 2. Chapter Puzzles: Progress through the seven chapters, each with a unique puzzle:
+   
    Chapter 1: Increase the system volume to solve the riddle.
+
    Chapter 2: Detect the phone's orientation.
+   
    Chapter 3: Reduce the room light. Light/Lux value in the extended emulator settings. On the physical cell phone, you can darken the room or cover the light sensor (near the front camera) with your hand.
+   
    Chapter 4: Activate the dark mode.
+   
    Chapter 5: Check the phone's battery status.
-   Chapter 6: Use the microphone to input the correct Code. To do this, press the microphone button and say the code word "5768" in the Google pop-up. 
+   
+   Chapter 6: Use the microphone to input the correct Code. To do this, press the microphone button and say the code word "5768" in the Google pop-up.
+   
    Chapter 7: Take a screenshot to solve the riddle. To do this, use the Screenshot button in the Task Manager / Recently used apps or the key combination on the physical cell phone. The screenshot option via the emulator does not work due to a different storage location. 
 
-3. Leaderboard: Your total time to solve the puzzles will be recorded and displayed on the leaderboard.
+4. Leaderboard: Your total time to solve the puzzles will be recorded and displayed on the leaderboard.
 
 ## Notes
 
