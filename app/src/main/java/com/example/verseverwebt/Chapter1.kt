@@ -43,15 +43,10 @@ class Chapter1 : ComponentActivity() {
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Chapter1Content { stopTimer() }
+                    Chapter1Content()
                 }
             }
         }
-    }
-
-    private fun stopTimer(): Long {
-        endTime = System.currentTimeMillis()
-        return endTime - startTime
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -67,13 +62,8 @@ class Chapter1 : ComponentActivity() {
     }
 }
 
-fun getUserId(context: Context): Long {
-    val sharedPreferences: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    return sharedPreferences.getLong("user_id", 0L)
-}
-
 @Composable
-fun Chapter1Content(onCompletion: () -> Long) {
+fun Chapter1Content() {
     val context = LocalContext.current
 
     var textSize by remember { mutableStateOf(5.sp) }
@@ -147,19 +137,7 @@ fun Chapter1Content(onCompletion: () -> Long) {
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000
 
-        ApiClient.instance.updateChapterTime(userId, 1, time).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (response.isSuccessful) {
-                    Log.d("Chapter 1", "Saved time successfully")
-                } else {
-                    Log.e("Chapter 1", "Error with saving")
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Log.e("Chapter 1", "Error")
-            }
-        })
+        saveTimeIfNotSaved(userId, 1, time)
 
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -178,9 +156,11 @@ fun Chapter1Content(onCompletion: () -> Long) {
 @Composable
 fun Chapter1ContentPreview() {
     VerseVerwebtTheme {
-        Chapter1Content { 0L }
+        Chapter1Content()
     }
 }
+
+//global variables and functions for time
 
 var startTime: Long = 0
 var endTime: Long = 0
@@ -190,4 +170,40 @@ var levelTime: Long = 0
 fun stopTimer(): Long {
     endTime = System.currentTimeMillis()
     return endTime - startTime
+}
+
+fun saveTimeIfNotSaved(userId: Long, i: Int, time: Float) {
+    ApiClient.instance.getChapterTime(userId, i).enqueue(object : Callback<Float> {
+        override fun onResponse(call: Call<Float>, response: Response<Float>) {
+            if (response.isSuccessful) {
+                val existingTime = response.body() ?: 0f
+                if (existingTime == 0f) {
+                    ApiClient.instance.updateChapterTime(userId, i, time).enqueue(object : Callback<Unit> {
+                        override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                            if (response.isSuccessful) {
+                                Log.d("Chapter $i", "Saved time successfully")
+                            } else {
+                                Log.e("Chapter $i", "Error with saving")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Unit>, t: Throwable) {
+                            Log.e("Chapter $i", "Error")
+                        }
+                    })
+                }
+            } else {
+                Log.e("Chapter $i", "Error with getting chapter time")
+            }
+        }
+
+        override fun onFailure(call: Call<Float>, t: Throwable) {
+            Log.e("Chapter $i", "Error with getting chapter time")
+        }
+    })
+}
+
+fun getUserId(context: Context): Long {
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    return sharedPreferences.getLong("user_id", 0L)
 }

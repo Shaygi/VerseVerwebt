@@ -23,6 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.awaitResponse
 
 class Chapter7 : ComponentActivity() {
@@ -142,18 +145,8 @@ fun Chapter7Win() {
 
     val showDialog = remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        try {
-            val response = ApiClient.instance.updateChapterTime(userId, 7, time).awaitResponse()
-            if (response.isSuccessful) {
-                Log.d("Chapter 7", "Saved time successfully")
-            } else {
-                Log.e("Chapter 7", "Error with saving")
-            }
-        } catch (e: Exception) {
-            Log.e("Chapter 7", "Network request failed", e)
-        }
-    }
+    saveTimeIfNotSaved(userId, 7, time)
+
 
     if (showDialog.value) {
         AlertDialog(

@@ -25,6 +25,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.verseverwebt.api.ApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.awaitResponse
 
 var oneTime = 0
@@ -148,18 +151,8 @@ fun ChapterWin () {
 
     val showDialog = remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        try {
-            val response = ApiClient.instance.updateChapterTime(userId, 4, time).awaitResponse()
-            if (response.isSuccessful) {
-                Log.d("Chapter 4", "Saved time successfully")
-            } else {
-                Log.e("Chapter 4", "Error with saving")
-            }
-        } catch (e: Exception) {
-            Log.e("Chapter 4", "Network request failed", e)
-        }
-    }
+    saveTimeIfNotSaved(userId, 4, time)
+
 
     if (showDialog.value) {
         AlertDialog(

@@ -174,21 +174,7 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000
 
-        ApiClient.instance.updateChapterTime(userId, 5, time).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (response.isSuccessful) {
-                    Log.d("Chapter 5", "Saved time successfully")
-
-                } else {
-                    Log.e("Chapter 5", "Error with saving")
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Log.e("Chapter 5", "Error")
-            }
-        })
-
+        saveTimeIfNotSaved(userId, 5, time)
 
         AlertDialog(
             onDismissRequest = { showDialog = false },

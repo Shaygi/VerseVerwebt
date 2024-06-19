@@ -33,6 +33,9 @@ import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.awaitResponse
 
 //The class inherits from the SensorEventListener
@@ -153,18 +156,8 @@ fun Chapter3Win(){
 
     val showDialog = remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        try {
-            val response = ApiClient.instance.updateChapterTime(userId, 3, time).awaitResponse()
-            if (response.isSuccessful) {
-                Log.d("Chapter 3", "Saved time successfully")
-            } else {
-                Log.e("Chapter 3", "Error with saving")
-            }
-        } catch (e: Exception) {
-            Log.e("Chapter 3", "Network request failed", e)
-        }
-    }
+    saveTimeIfNotSaved(userId, 3, time)
+
 
     if (showDialog.value) {
         AlertDialog(

@@ -7,7 +7,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
@@ -25,17 +24,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.Math.toDegrees
 
 class Chapter2 : ComponentActivity() {
-    var startTime: Long = 0
-    var endTime: Long = 0
+    private var startTime: Long = 0
+    private var endTime: Long = 0
 
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
@@ -97,7 +92,7 @@ class Chapter2 : ComponentActivity() {
                         showDialog = true
                     }
 
-                    Chapter2Content(azimuth, showDialog, levelTime, onAchieved) { showDialog = it }
+                    Chapter2Content(azimuth, showDialog, levelTime) { showDialog = it }
                 }
             }
         }
@@ -105,11 +100,6 @@ class Chapter2 : ComponentActivity() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-    }
-
-    private fun stopTimer(): Long {
-        endTime = System.currentTimeMillis()
-        return endTime - startTime
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -139,7 +129,12 @@ class Chapter2 : ComponentActivity() {
 private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
-fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchieved: () -> Unit, updateShowDialog: (Boolean) -> Unit) {
+fun Chapter2Content(
+    azimuth: Float,
+    showDialog: Boolean,
+    levelTime: Long,
+    updateShowDialog: (Boolean) -> Unit
+) {
     val context = LocalContext.current
 
     Column(
@@ -186,19 +181,7 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchi
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000
 
-        ApiClient.instance.updateChapterTime(userId, 2, time).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (response.isSuccessful) {
-                    Log.d("Chapter 2", "Saved time successfully")
-                } else {
-                    Log.e("Chapter 2", "Error with saving")
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Log.e("Chapter 2", "Error")
-            }
-        })
+        saveTimeIfNotSaved(userId, 2, time)
 
         AlertDialog(
             onDismissRequest = { updateShowDialog(false) },
@@ -279,6 +262,6 @@ fun Compass(azimuth: Float) {
 @Composable
 fun Chapter2ContentPreview() {
     VerseVerwebtTheme {
-        Chapter2Content(0f, false, 0L, {}, {})
+        Chapter2Content(0f, false, 0L) {}
     }
 }
