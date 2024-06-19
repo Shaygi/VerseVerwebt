@@ -37,7 +37,7 @@ git clone https://github.com/Shaygi/VerseVerwebt.git
 
 ## Gameplay
 
-1. Introductory Puzzle: Solve the initial puzzle to get started.
+1. Introductory Puzzle: Solve the initial puzzle by turning on the flashlight to get started.
 
 2. Chapter Puzzles: Progress through the seven chapters, each with a unique puzzle:
    
