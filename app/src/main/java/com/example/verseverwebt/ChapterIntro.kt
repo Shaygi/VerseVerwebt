@@ -1,6 +1,7 @@
 package com.example.verseverwebt
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
@@ -87,6 +89,8 @@ fun ChapterIntroContent() {
         if (flashlightOn) {
             BackToMenuButton()
             Spacer(modifier = Modifier.height(32.dp))
+
+            ApiClient.instance.updateIntroCompleted(getUserId(LocalContext.current))
         }
 
         Text(
