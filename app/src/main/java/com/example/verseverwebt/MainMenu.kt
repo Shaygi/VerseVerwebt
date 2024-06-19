@@ -166,7 +166,7 @@ class MainMenu : ComponentActivity() {
             if (introCompletedResponse.isSuccessful) {
                 val introCompleted = introCompletedResponse.body()
                 return@withContext if (introCompleted == false) {
-                    0
+                    -1
                 } else {
                     10
                 }

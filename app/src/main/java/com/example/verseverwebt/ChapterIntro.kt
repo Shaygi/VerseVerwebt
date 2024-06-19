@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -20,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChapterIntro : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +94,19 @@ fun ChapterIntroContent() {
             BackToMenuButton()
             Spacer(modifier = Modifier.height(32.dp))
 
-            ApiClient.instance.updateIntroCompleted(getUserId(LocalContext.current))
+            ApiClient.instance.updateIntroCompleted(getUserId(context)).enqueue(object :
+                Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    if (response.isSuccessful) {
+                        Log.d("ChapterIntro", "Saved bool successfully")
+                    } else {
+                        Log.e("ChapterIntro", "Error with saving bool")
+                    }
+                }
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    Log.e("ChapterIntro", "Error with saving bool")
+                }
+            })
         }
 
         Text(
@@ -127,7 +143,6 @@ fun ChapterIntroContent() {
             )
         }
     }
-
 }
 
 // Function is for previewing in the IDE

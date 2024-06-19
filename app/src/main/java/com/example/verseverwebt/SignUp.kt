@@ -57,7 +57,7 @@ class SignUp : ComponentActivity() {
             .joinToString(",")
     }
 
-    private fun navigateToMainMenu() {
+    fun navigateToMainMenu() {
         val intent = Intent(this, MainMenu::class.java)
         startActivity(intent)
         finish()
@@ -196,7 +196,7 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
                     onClick = {
                         showDialog = false
                         if (dialogMessage == "Account created successfully!") {
-                            (context as? Login)?.navigateToMainMenu()
+                            (context as? SignUp)?.navigateToMainMenu()
                         }
                     }
                 ) {
