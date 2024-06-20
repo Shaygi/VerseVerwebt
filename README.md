@@ -66,6 +66,8 @@ Advanced Settings:
 Extended Controls: 
 
 ![ExtendedSettings](https://github.com/Shaygi/VerseVerwebt/assets/104787845/ffe02999-e0b6-4276-b4f0-361e07013e13)
+![ExtendedControls](https://github.com/Shaygi/VerseVerwebt/assets/104787845/b9da8009-f5df-402f-8e6c-29ac867bf556)
+
 
 Edit the Control Center: 
 
