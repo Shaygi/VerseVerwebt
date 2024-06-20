@@ -24,7 +24,7 @@ class Credits : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Content of the page
+        //This function starts the CreditContent function and set the Conetnt for this activity
         setContent {
             VerseVerwebtTheme {
                 Surface(
