@@ -57,6 +57,24 @@ git clone https://github.com/Shaygi/VerseVerwebt.git
 
 4. Leaderboard: Your total time to solve the puzzles will be recorded and displayed on the leaderboard.
 
+## PICTURES AS HELP
+Advanced Settings:
+
+![Setting](https://github.com/Shaygi/VerseVerwebt/assets/104787845/12ae4895-5088-470f-a49b-35d9fb33f475)
+![AdvancedSetting](https://github.com/Shaygi/VerseVerwebt/assets/104787845/13a0a0bc-1b0a-4c36-adcb-36b9a09cea5b)
+
+Extended Controls: 
+
+![ExtendedSettings](https://github.com/Shaygi/VerseVerwebt/assets/104787845/ffe02999-e0b6-4276-b4f0-361e07013e13)
+![ExtendedControls](https://github.com/Shaygi/VerseVerwebt/assets/104787845/b9da8009-f5df-402f-8e6c-29ac867bf556)
+
+
+Edit the Control Center: 
+
+![DarkTheme](https://github.com/Shaygi/VerseVerwebt/assets/104787845/b683f421-0bef-409b-85eb-f2b0c5968a2c)
+
+
+
 ## Notes
 
 Ensure that the emulator's control center is properly configured for optimal gameplay.
@@ -65,6 +83,7 @@ The game is designed to work seamlessly on a Pixel 3a API 34 emulator, and some 
 ## Licence
 
 This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
+![Uploading DarkTheme.jpg…]()
 
 ## Acknowledgements
 
