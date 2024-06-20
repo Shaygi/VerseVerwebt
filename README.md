@@ -57,6 +57,10 @@ git clone https://github.com/Shaygi/VerseVerwebt.git
 
 4. Leaderboard: Your total time to solve the puzzles will be recorded and displayed on the leaderboard.
 
+## PICTURES AS HELP
+![ExtendedSettings](https://github.com/Shaygi/VerseVerwebt/assets/104787845/ffe02999-e0b6-4276-b4f0-361e07013e13)
+
+
 ## Notes
 
 Ensure that the emulator's control center is properly configured for optimal gameplay.
