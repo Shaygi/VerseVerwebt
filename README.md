@@ -58,6 +58,11 @@ git clone https://github.com/Shaygi/VerseVerwebt.git
 4. Leaderboard: Your total time to solve the puzzles will be recorded and displayed on the leaderboard.
 
 ## PICTURES AS HELP
+Advanced Settings:
+
+![Setting](https://github.com/Shaygi/VerseVerwebt/assets/104787845/12ae4895-5088-470f-a49b-35d9fb33f475)
+![AdvancedSetting](https://github.com/Shaygi/VerseVerwebt/assets/104787845/13a0a0bc-1b0a-4c36-adcb-36b9a09cea5b)
+
 Extended Controls: 
 
 ![ExtendedSettings](https://github.com/Shaygi/VerseVerwebt/assets/104787845/ffe02999-e0b6-4276-b4f0-361e07013e13)
@@ -65,6 +70,7 @@ Extended Controls:
 Edit the Control Center: 
 
 ![DarkTheme](https://github.com/Shaygi/VerseVerwebt/assets/104787845/b683f421-0bef-409b-85eb-f2b0c5968a2c)
+
 
 
 ## Notes
