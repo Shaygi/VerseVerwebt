@@ -54,12 +54,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
     Column(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier.padding(5.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = onClick,
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(5.dp),
             colors = ButtonDefaults.buttonColors(Color.Transparent),
             contentPadding = PaddingValues(0.dp)
         ) {
@@ -426,6 +426,7 @@ fun BackgroundMusic() {
     val context = LocalContext.current
 
     var mediaPlayer: MediaPlayer? by remember { mutableStateOf(null) }
+
 
     mediaPlayer = MediaPlayer.create(context, R.raw.bookmusic).apply {
         isLooping = true

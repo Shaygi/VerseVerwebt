@@ -38,17 +38,18 @@ fun TableOfContentsContent() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        BackToMenuButton()
         //Title
         Text(
-            text = "Table of Contents",
+            text = "Contents",
             fontFamily = playfair,
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 45.sp,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 10.dp)
         )
         //Chapter buttons that navigate to the activities
         ButtonColumn("Chapter Intro", 18.sp) {

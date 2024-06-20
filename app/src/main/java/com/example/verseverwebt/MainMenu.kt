@@ -25,6 +25,7 @@ val inspiration = FontFamily(
 val playfair = FontFamily(
     Font(R.font.playfair_display)
 )
+var musicPlaying = false;
 
 //Main menu for navigation through menu elements
 class MainMenu : ComponentActivity() {
@@ -44,7 +45,12 @@ class MainMenu : ComponentActivity() {
 
     @Composable
     fun Content() {
-        BackgroundMusic()
+
+        if (musicPlaying == false){
+            BackgroundMusic()
+            musicPlaying = true
+        }
+
         val context = LocalContext.current
 
 
