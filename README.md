@@ -20,7 +20,7 @@ To test the game using the Android Studio emulator, follow these steps:
 - In the emulator's advanced settings, set both the front and back camera emulation to "Emulated" to enable access to the flashlight in the control center.
 - Add the dark theme button to the control center for quicker access during gameplay.
 - In addition, the microphone must be activated in the microphone settings depending on the selected input.
-- If the light (lux) value is below 200 in the visual sensor settings, this should be raised for the best gaming experience.
+- If the light value (lux) in the visual sensor settings is below 200, this should be increased to simulate room light for the best gaming experience.
 - If you do not see the button for the DarkTheme when opening the control center, you must add it via the Edit Tool to facilitate access during the game.
 
 No additional installations are required.
