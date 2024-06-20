@@ -44,6 +44,7 @@ class MainMenu : ComponentActivity() {
 
     @Composable
     fun Content() {
+        BackgroundMusic()
         val context = LocalContext.current
 
 

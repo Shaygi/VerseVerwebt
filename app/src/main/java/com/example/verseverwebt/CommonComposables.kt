@@ -1,6 +1,7 @@
 package com.example.verseverwebt
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.rounded.Mic
 //import androidx.compose.foundation.layout.ColumnScopeInstance.weight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -417,5 +419,24 @@ fun FadeSlideInText(text: String,
         modifier = Modifier.alpha(alpha.value).offset(x = offsetX.value.dp),
         color = color
     )
+}
+
+@Composable
+fun BackgroundMusic() {
+    val context = LocalContext.current
+
+    var mediaPlayer: MediaPlayer? by remember { mutableStateOf(null) }
+
+    mediaPlayer = MediaPlayer.create(context, R.raw.bookmusic).apply {
+        isLooping = true
+    }
+    mediaPlayer?.start()
+
+    DisposableEffect(Unit) {
+        // Cleanup-Aktion
+        onDispose {
+            mediaPlayer?.release()
+        }
+    }
 }
 
