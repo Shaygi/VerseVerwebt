@@ -59,9 +59,11 @@ git clone https://github.com/Shaygi/VerseVerwebt.git
 
 ## PICTURES AS HELP
 Extended Controls: 
+
 ![ExtendedSettings](https://github.com/Shaygi/VerseVerwebt/assets/104787845/ffe02999-e0b6-4276-b4f0-361e07013e13)
 
 Edit the Control Center: 
+
 ![DarkTheme](https://github.com/Shaygi/VerseVerwebt/assets/104787845/b683f421-0bef-409b-85eb-f2b0c5968a2c)
 
 
