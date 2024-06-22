@@ -29,7 +29,7 @@ No additional installations are required.
 
 1. Clone the repository:
 ~~~git
-git clone https://github.com/Shaygi/VerseVerwebt.git
+git clone https://github.com/Shaygi/WovenVersesFrontend.git
 ~~~
 2. Open the project in Android Studio.
 
@@ -83,7 +83,7 @@ The game is designed to work seamlessly on a Pixel 3a API 34 emulator, and some 
 ## Licence
 
 This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
-![Uploading DarkTheme.jpg…]()
+![Uploading DarkTheme.jpg…](https://github.com/Shaygi/WovenVersesFrontend/blob/beta/Screenshot_20240616_181923.png)
 
 ## Acknowledgements
 
