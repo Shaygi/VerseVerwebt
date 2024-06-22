@@ -177,7 +177,9 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
     Seitenzahl("-60-")
 
     //The button that takes you to the next activity
-    ToTheNextPage(nextClass = Chapter7::class.java, hasWin = hasWin)
+    if(hasWin == true) {
+        ToTheNextPage(nextClass = Chapter7::class.java, hasWin = hasWin)
+    }
 }
 
 //This function is triggered as soon as the puzzle has been solved

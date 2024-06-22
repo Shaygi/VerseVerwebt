@@ -146,7 +146,9 @@ fun Chapter1Content(onCompletion: () -> Long) {
     Seitenzahl("-10-")
 
     //The button that takes you to the next activity
-    ToTheNextPage(nextClass = Chapter2::class.java, hasWin = achieved )
+    if(achieved == true) {
+        ToTheNextPage(nextClass = Chapter2::class.java, hasWin = achieved)
+    }
 
     if (showDialog) {
         val userId = getUserId(context)

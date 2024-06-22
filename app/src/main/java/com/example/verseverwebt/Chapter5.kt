@@ -96,7 +96,7 @@ class Chapter5 : ComponentActivity() {
 @Composable
 fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
     val context = LocalContext.current
-
+   
     var showDialog by remember { mutableStateOf(false) }
 
     var showInitialText by remember { mutableStateOf(true) }
@@ -130,7 +130,7 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
         modifier = Modifier
             .fillMaxSize()
             .background(color = backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackToMenuButton()
@@ -169,8 +169,9 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
     Seitenzahl("-50-")
 
     //The button that takes you to the next activity
-    ToTheNextPage(nextClass = Chapter6::class.java, hasWin = achieved)
-
+    if(achieved == true) {
+        ToTheNextPage(nextClass = Chapter6::class.java, hasWin = achieved)
+    }
     if (showDialog) {
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000

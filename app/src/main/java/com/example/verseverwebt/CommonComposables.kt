@@ -1,9 +1,10 @@
 package com.example.verseverwebt
 
+import android.app.UiModeManager
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
+import android.util.Log
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -15,15 +16,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-//import androidx.compose.foundation.layout.BoxScopeInstance.align
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Bookmark
-import androidx.compose.material.icons.rounded.Mic
-//import androidx.compose.foundation.layout.BoxScopeInstance.align
-//import androidx.compose.foundation.layout.ColumnScopeInstance.weight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,12 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -48,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.verseverwebt.ui.theme.CustomTypography
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 //Creates buttons with the same style
 @Composable
@@ -130,6 +119,7 @@ fun ToTheNextPage(nextClass: Class<*> , hasWin: Boolean) {
     }else {
         painterResource(id = R.drawable.next_black)
     }
+
     Box(
         modifier = Modifier.fillMaxSize() // Die Box füllt den gesamten verfügbaren Platz
     ) {
@@ -140,12 +130,25 @@ fun ToTheNextPage(nextClass: Class<*> , hasWin: Boolean) {
                 .align(Alignment.BottomEnd) // Bild unten rechts ausrichten
                 .then(
                     if (hasWin) {
-                        Modifier.clickable { context.startActivity(Intent(context, nextClass)) }
+                        Modifier.clickable {
+                            playTurnPageSound(context)
+                            context.startActivity(Intent(context, nextClass))
+                        }
                     } else {
                         Modifier // Keine Aktion, wenn `hasWin` false ist
                     }
                 )
         )
+    }
+}
+
+fun playTurnPageSound(context: Context) {
+    val mediaPlayer = MediaPlayer.create(context, R.raw.turnpage).apply {
+        isLooping = false
+    }
+    mediaPlayer.start()
+    mediaPlayer.setOnCompletionListener {
+        mediaPlayer.release()
     }
 }
 
@@ -300,144 +303,5 @@ fun AnimatedTypewriterText2(
 }
 
 
-//Text animation function that fades in the text with a delay
-@Composable
-fun DelayedFadeInText(text: String,
-                      fontSize: Int,
-                      textAlign: TextAlign,
-                      color: Color,
-                      modifier: Modifier = Modifier,
-                      delayMillis: Int = 50
-) {
-    var displayText by remember { mutableStateOf("") }
 
-    //Effect
-    LaunchedEffect(text) {
-        for (i in text.indices) {
-            displayText = text.substring(0, i + 1)
-            delay(delayMillis.toLong()) //delay
-        }
-    }
-
-    Text(text = displayText,
-        fontFamily = playfair,
-        style = MaterialTheme.typography.bodySmall,
-        fontSize = fontSize.sp,
-        textAlign = textAlign,
-        modifier = modifier,
-        color = color)
-}
-
-//Text animation function that slides in the text
-@Composable
-fun SlideInText(text: String,
-                fontSize: Int,
-                textAlign: TextAlign,
-                color: Color,
-) {
-    val offsetX = remember { Animatable(-1000f) } // Starting offset position
-
-    //Effects
-    LaunchedEffect(Unit) {
-        offsetX.animateTo(
-            targetValue = 0f,
-            animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
-        )
-    }
-
-    Text(
-        text = text,
-        fontFamily = playfair,
-        style = MaterialTheme.typography.bodySmall,
-        fontSize = fontSize.sp,
-        textAlign = textAlign,
-        modifier = Modifier.offset(x = offsetX.value.dp),
-        color = color
-    )
-}
-
-//Text animation function that scales in the text
-@Composable
-fun ScaleInText(text: String,
-                fontSize: Int,
-                textAlign: TextAlign,
-                color: Color,
-) {
-    val scale = remember { Animatable(0f) }
-
-    //Effect
-    LaunchedEffect(Unit) {
-        scale.animateTo(
-            targetValue = 1f,
-            animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
-        )
-    }
-
-    Text(
-        text = text,
-        fontFamily = playfair,
-        style = MaterialTheme.typography.bodySmall,
-        fontSize = fontSize.sp,
-        textAlign = textAlign,
-        modifier = Modifier.scale(scale.value),
-        color = color
-    )
-}
-
-//Text animation function that fades and slides in the text
-@Composable
-fun FadeSlideInText(text: String,
-                    fontSize: Int,
-                    textAlign: TextAlign,
-                    color: Color,
-) {
-    val alpha = remember { Animatable(0f) }
-    val offsetX = remember { Animatable(-100f) }
-
-    //Effects
-    LaunchedEffect(Unit) {
-        launch {
-            alpha.animateTo(
-                targetValue = 1f,
-                animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
-            )
-        }
-        launch {
-            offsetX.animateTo(
-                targetValue = 0f,
-                animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing)
-            )
-        }
-    }
-
-    Text(
-        text = text,
-        fontFamily = playfair,
-        style = MaterialTheme.typography.bodySmall,
-        fontSize = fontSize.sp,
-        textAlign = textAlign,
-        modifier = Modifier.alpha(alpha.value).offset(x = offsetX.value.dp),
-        color = color
-    )
-}
-
-@Composable
-fun BackgroundMusic() {
-    val context = LocalContext.current
-
-    var mediaPlayer: MediaPlayer? by remember { mutableStateOf(null) }
-
-
-    mediaPlayer = MediaPlayer.create(context, R.raw.bookmusic).apply {
-        isLooping = true
-    }
-    mediaPlayer?.start()
-
-    DisposableEffect(Unit) {
-        // Cleanup-Aktion
-        onDispose {
-            mediaPlayer?.release()
-        }
-    }
-}
 
