@@ -46,7 +46,7 @@ class Chapter2 : ComponentActivity() {
 
     private var azimuth by mutableStateOf(0f)
     private var westCount by mutableStateOf(0)
-    private var achieved by mutableStateOf(false)
+    var achieved by mutableStateOf(false)
 
     private lateinit var onAchieved: () -> Unit
 
@@ -64,10 +64,8 @@ class Chapter2 : ComponentActivity() {
                         val orientation = FloatArray(3)
                         SensorManager.getOrientation(r, orientation)
                         azimuth = toDegrees(orientation[0].toDouble()).toFloat().let { if (it < 0) it + 360 else it }
-                        //Log.d("Chapter2", "Azimuth: $azimuth")
                         if (azimuth in 260f..280f && !achieved) westCount++ else westCount = 0
                         if (westCount >= 5) {
-                            //chapter2Text.value = "gut gemacht"
                             achieved = true
                             onAchieved()
                         } else if (!achieved) {
@@ -97,7 +95,7 @@ class Chapter2 : ComponentActivity() {
                         showDialog = true
                     }
 
-                    Chapter2Content(azimuth, showDialog, levelTime, onAchieved) { showDialog = it }
+                    Chapter2Content(azimuth, showDialog,achieved, levelTime, onAchieved) { showDialog = it }
                 }
             }
         }
@@ -139,7 +137,7 @@ class Chapter2 : ComponentActivity() {
 private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
-fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchieved: () -> Unit, updateShowDialog: (Boolean) -> Unit) {
+fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, levelTime: Long, onAchieved: () -> Unit, updateShowDialog: (Boolean) -> Unit) {
     val context = LocalContext.current
 
     Column(
@@ -180,7 +178,7 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchi
     Seitenzahl("-20-")
 
     //The button that takes you to the next activity
-    ToTheNextPage(nextClass = Chapter3::class.java, hasWin = true)
+    ToTheNextPage(nextClass = Chapter3::class.java, hasWin = achieved)
 
     if (showDialog) {
         val userId = getUserId(context)
@@ -217,7 +215,7 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, levelTime: Long, onAchi
 
 @Composable
 fun Compass(azimuth: Float) {
-    Canvas(modifier = Modifier.requiredSize(280.dp)) {
+    Canvas(modifier = Modifier.requiredSize(250.dp)) {
         val strokeWidth = 6.dp.toPx()
         val compassRadius = size.minDimension / 2 - strokeWidth
 
@@ -279,6 +277,6 @@ fun Compass(azimuth: Float) {
 @Composable
 fun Chapter2ContentPreview() {
     VerseVerwebtTheme {
-        Chapter2Content(0f, false, 0L, {}, {})
+        Chapter2Content(0f, false,false, 0L, {}, {})
     }
 }

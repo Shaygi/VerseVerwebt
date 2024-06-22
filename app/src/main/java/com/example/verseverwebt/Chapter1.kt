@@ -28,6 +28,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Chapter1 : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Access to Audio manager
@@ -79,6 +81,8 @@ fun Chapter1Content(onCompletion: () -> Long) {
     var textSize by remember { mutableStateOf(5.sp) }
     var showDialog by remember { mutableStateOf(false) }
 
+    var achieved by remember { mutableStateOf(false) }
+
     DisposableEffect(Unit) {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
@@ -89,9 +93,10 @@ fun Chapter1Content(onCompletion: () -> Long) {
                 // Uses the maximum volume to set the text size
                 val volume = maxOf(systemVolume, musicVolume)
                 textSize = (5 + volume * 2).sp
-                if (textSize >= 26.sp) {
+                if (textSize >= 20.sp) {
                     levelTime = stopTimer()
                     showDialog = true
+                    achieved = true
                 }
             }
         }
@@ -141,7 +146,7 @@ fun Chapter1Content(onCompletion: () -> Long) {
     Seitenzahl("-10-")
 
     //The button that takes you to the next activity
-    ToTheNextPage(nextClass = Chapter2::class.java, hasWin = true )
+    ToTheNextPage(nextClass = Chapter2::class.java, hasWin = achieved )
 
     if (showDialog) {
         val userId = getUserId(context)
@@ -171,14 +176,6 @@ fun Chapter1Content(onCompletion: () -> Long) {
             title = { Text("Congratulations!") },
             text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Chapter1ContentPreview() {
-    VerseVerwebtTheme {
-        Chapter1Content { 0L }
     }
 }
 
