@@ -52,6 +52,7 @@
         <activity android:name=".Login" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".SignUp" android:screenOrientation="portrait" android:resizeableActivity="true" />
         <activity android:name=".Profile" android:screenOrientation="portrait" android:resizeableActivity="true" />
+        <activity android:name=".Credits" android:screenOrientation="portrait" android:resizeableActivity="true" />
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.example.verseverwebt
 
 import android.content.Context
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -10,6 +11,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,7 +22,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,7 +45,7 @@ class Chapter2 : ComponentActivity() {
 
     private var azimuth by mutableStateOf(0f)
     private var westCount by mutableStateOf(0)
-    private var achieved by mutableStateOf(false)
+    var achieved by mutableStateOf(false)
 
     private lateinit var onAchieved: () -> Unit
 
@@ -59,10 +63,8 @@ class Chapter2 : ComponentActivity() {
                         val orientation = FloatArray(3)
                         SensorManager.getOrientation(r, orientation)
                         azimuth = toDegrees(orientation[0].toDouble()).toFloat().let { if (it < 0) it + 360 else it }
-                        //Log.d("Chapter2", "Azimuth: $azimuth")
                         if (azimuth in 260f..280f && !achieved) westCount++ else westCount = 0
                         if (westCount >= 5) {
-                            //chapter2Text.value = "gut gemacht"
                             achieved = true
                             onAchieved()
                         } else if (!achieved) {
@@ -92,7 +94,8 @@ class Chapter2 : ComponentActivity() {
                         showDialog = true
                     }
 
-                    Chapter2Content(azimuth, showDialog, levelTime) { showDialog = it }
+                    Chapter2Content(azimuth, showDialog,achieved, levelTime, onAchieved) { showDialog = it }
+
                 }
             }
         }
@@ -129,19 +132,16 @@ class Chapter2 : ComponentActivity() {
 private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
-fun Chapter2Content(
-    azimuth: Float,
-    showDialog: Boolean,
-    levelTime: Long,
-    updateShowDialog: (Boolean) -> Unit
-) {
+
+fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, levelTime: Long, onAchieved: () -> Unit, updateShowDialog: (Boolean) -> Unit) {
+
     val context = LocalContext.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackToMenuButton()
@@ -160,11 +160,10 @@ fun Chapter2Content(
             modifier = Modifier.padding(bottom = 36.dp)
         )
         // Display the current text
-        AnimatedTypewriterText(
+        AnimatedTypewriterText2(
             text = chapter2Text.value,
             fontSize = 13,
             textAlign = TextAlign.Center,
-            color = Color.Black,
         )
         Spacer(modifier = Modifier.height(10.dp))
         // Draw the compass
@@ -175,7 +174,9 @@ fun Chapter2Content(
     Seitenzahl("-20-")
 
     //The button that takes you to the next activity
-    ToTheNextPage(nextClass = Chapter3::class.java, hasWin = true)
+    if(achieved == true) {
+        ToTheNextPage(nextClass = Chapter3::class.java, hasWin = achieved)
+    }
 
     if (showDialog) {
         val userId = getUserId(context)
@@ -200,7 +201,28 @@ fun Chapter2Content(
 
 @Composable
 fun Compass(azimuth: Float) {
-    Canvas(modifier = Modifier.requiredSize(280.dp)) {
+    val context = LocalContext.current
+    val textColor = if (isSystemInDarkTheme()) {
+        MaterialTheme.colorScheme.onBackground.toArgb()
+    } else {
+        MaterialTheme.colorScheme.onBackground.toArgb()
+    }
+
+    val textPaint = Paint().apply {
+        color = textColor
+        textSize = with(LocalDensity.current) { 40f }
+        textAlign = Paint.Align.CENTER
+        typeface = Typeface.create("serif", Typeface.BOLD)
+    }
+
+    val smallTextPaint = Paint().apply {
+        color = textColor
+        textSize = with(LocalDensity.current) { 20f }
+        textAlign = Paint.Align.CENTER
+        typeface = Typeface.create("serif", Typeface.BOLD)
+    }
+
+    Canvas(modifier = Modifier.requiredSize(250.dp)) {
         val strokeWidth = 6.dp.toPx()
         val compassRadius = size.minDimension / 2 - strokeWidth
 
@@ -230,38 +252,16 @@ fun Compass(azimuth: Float) {
                 strokeWidth = 8f
             )
         }
-
-        val textPaint = Paint().apply {
-            color = android.graphics.Color.BLACK
-            textSize = 40f
-            textAlign = Paint.Align.CENTER
-            typeface = android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
-        }
         drawIntoCanvas { canvas ->
             canvas.nativeCanvas.drawText("N", center.x, center.y - compassRadius + 40f, textPaint)
             canvas.nativeCanvas.drawText("E", center.x + compassRadius - 40f, center.y, textPaint)
             canvas.nativeCanvas.drawText("S", center.x, center.y + compassRadius - 10f, textPaint)
             canvas.nativeCanvas.drawText("W", center.x - compassRadius + 40f, center.y, textPaint)
 
-            val smallTextPaint = Paint().apply {
-                color = android.graphics.Color.BLACK
-                textSize = 20f
-                textAlign = Paint.Align.CENTER
-                typeface = android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
-            }
-
             canvas.nativeCanvas.drawText("NE", center.x + compassRadius * 0.707f, center.y - compassRadius * 0.707f + 20f, smallTextPaint)
             canvas.nativeCanvas.drawText("SE", center.x + compassRadius * 0.707f, center.y + compassRadius * 0.707f - 10f, smallTextPaint)
             canvas.nativeCanvas.drawText("SW", center.x - compassRadius * 0.707f, center.y + compassRadius * 0.707f - 10f, smallTextPaint)
             canvas.nativeCanvas.drawText("NW", center.x - compassRadius * 0.707f, center.y - compassRadius * 0.707f + 20f, smallTextPaint)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Chapter2ContentPreview() {
-    VerseVerwebtTheme {
-        Chapter2Content(0f, false, 0L) {}
     }
 }

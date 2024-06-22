@@ -1,5 +1,7 @@
 package com.example.verseverwebt
 
+import android.app.UiModeManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -60,6 +62,7 @@ class Chapter4 : ComponentActivity() {
         startTime = savedInstanceState.getLong("startTime")
         endTime = savedInstanceState.getLong("endTime")
     }
+
 }
 
 //This function contains the design for this activity consisting of
@@ -127,8 +130,9 @@ fun IsDarkModeOn() {
     }
 
     //The button that takes you to the next activity
-    ToTheNextPage(nextClass = Chapter5::class.java, hasWin = hasWin.value)
-
+    if(hasWin.value == true) {
+        ToTheNextPage(nextClass = Chapter5::class.java, hasWin = hasWin.value)
+    }
     //If the puzzle is solved and the hasWin boolean is true, the ChapterWin function will start
     if (hasWin.value) {
         levelTime = stopTimer()

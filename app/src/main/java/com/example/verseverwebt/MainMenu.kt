@@ -53,6 +53,7 @@ class MainMenu : ComponentActivity() {
 
     @Composable
     fun Content() {
+
         val context = LocalContext.current
 
 
@@ -128,7 +129,7 @@ class MainMenu : ComponentActivity() {
             }
 
             ButtonColumn("Credits", 18.sp) {
-                // Add navigation for CreditsActivity
+                context.startActivity(Intent(context, Credits::class.java))
             }
         }
 
