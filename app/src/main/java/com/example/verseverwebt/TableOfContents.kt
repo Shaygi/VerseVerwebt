@@ -45,7 +45,7 @@ fun TableOfContentsContent() {
         BackToMenuButton()
         //Title
         Text(
-            text = "Contents",
+            text = "Chapters",
             fontFamily = playfair,
             style = MaterialTheme.typography.headlineLarge,
             fontSize = 45.sp,

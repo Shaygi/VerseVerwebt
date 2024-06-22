@@ -80,7 +80,7 @@ class MainMenu : ComponentActivity() {
                     context.startActivity(Intent(context, Chapter1::class.java))
                 }
 
-                ButtonColumn("Contents", 18.sp) {
+                ButtonColumn("Chapters", 18.sp) {
                     context.startActivity(Intent(context, TableOfContents::class.java))
                 }
 
