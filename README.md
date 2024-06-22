@@ -83,7 +83,8 @@ The game is designed to work seamlessly on a Pixel 3a API 34 emulator, and some 
 ## Licence
 
 This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
-![Uploading DarkTheme.jpg…](https://github.com/Shaygi/WovenVersesFrontend/blob/beta/Screenshot_20240616_181923.png =100x20)
+![Uploading DarkTheme.jpg…](https://github.com/Shaygi/WovenVersesFrontend/blob/beta/Screenshot_20240616_181923.png)
+<img src="https://github.com/Shaygi/WovenVersesFrontend/blob/beta/Screenshot_20240616_181923.png" alt="DarkTheme.jpg" style="width:200px;"/>
 
 ## Acknowledgements
 
