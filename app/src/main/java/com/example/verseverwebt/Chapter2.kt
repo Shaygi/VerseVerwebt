@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
@@ -171,11 +170,11 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, level
 
     }
 
-    Seitenzahl("-20-")
+    PageNumber("-20-")
 
-    //The button that takes you to the next activity
-    if(achieved == true) {
-        ToTheNextPage(nextClass = Chapter3::class.java, hasWin = achieved)
+    //The button is now available to switch to the next chapter
+    if(achieved) {
+        ToTheNextPage(nextClass = Chapter3::class.java)
     }
 
     if (showDialog) {
@@ -201,7 +200,7 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, level
 
 @Composable
 fun Compass(azimuth: Float) {
-    val context = LocalContext.current
+
     val textColor = if (isSystemInDarkTheme()) {
         MaterialTheme.colorScheme.onBackground.toArgb()
     } else {

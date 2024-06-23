@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
@@ -28,7 +27,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Chapter1 : ComponentActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +48,6 @@ class Chapter1 : ComponentActivity() {
             }
         }
     }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong("startTime", startTime)
@@ -133,11 +130,11 @@ fun Chapter1Content() {
         )
 
     }
-    Seitenzahl("-10-")
+    PageNumber("-10-")
 
-    //The button that takes you to the next activity
-    if(achieved == true) {
-        ToTheNextPage(nextClass = Chapter2::class.java, hasWin = achieved)
+    //The button is now available to switch to the next chapter
+    if(achieved) {
+        ToTheNextPage(nextClass = Chapter2::class.java)
     }
 
     if (showDialog) {
@@ -164,7 +161,6 @@ fun Chapter1Content() {
 
 var startTime: Long = 0
 var endTime: Long = 0
-
 var levelTime: Long = 0
 
 fun stopTimer(): Long {

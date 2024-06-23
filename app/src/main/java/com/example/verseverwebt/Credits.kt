@@ -24,7 +24,7 @@ class Credits : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //This function starts the CreditContent function and set the Conetnt for this activity
+        //This function starts the CreditContent function and set the Content for this activity
         setContent {
             VerseVerwebtTheme {
                 Surface(
@@ -97,7 +97,7 @@ fun CreditsContent() {
             modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
         )
     }
-    Seitenzahl("-80-")
+    PageNumber("-80-")
 }
 
 

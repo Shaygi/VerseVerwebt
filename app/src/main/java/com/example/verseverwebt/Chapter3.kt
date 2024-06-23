@@ -1,11 +1,11 @@
 package com.example.verseverwebt
 
+
+import android.hardware.SensorManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,36 +29,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
 
 //The class inherits from the SensorEventListener
 class Chapter3 : ComponentActivity(), SensorEventListener {
     //a variable of the type SensorManager is created here for future use
     private lateinit var sensorManager: SensorManager
-
     //a variable of the type lightSensor is created here for future use
     private lateinit var lightSensor: Sensor
 
     // A changeable boolean variable that returns the winner status
-    var hasWin by mutableStateOf(false)
+    private var hasWin by mutableStateOf(false)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //the sensor manager is initialized when the activity is created
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
-        //the light sensor is initialized using a get function of the manger when creating the acitivity
+        //the light sensor is initialized using a get function of the manger when creating the activity
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
 
         startTime = System.currentTimeMillis()
 
-        //This function starts the Chapter3Content function and set the Conetnt for this activity
+        //This function starts the Chapter3Content function and set the Content for this activity
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -134,19 +127,17 @@ fun Chapter3Content(hasWin: Boolean) {
 
 
     }
-    Seitenzahl("-30-")
-
-    //The button that takes you to the next activity
-    if(hasWin == true) {
-        ToTheNextPage(nextClass = Chapter4::class.java, hasWin = hasWin)
-    }
+    PageNumber("-30-")
 
     //When the puzzle has been solved, the Chapter Win function is triggered
+    //And the next button is available to switch to the next chapter
     if(hasWin){
+        ToTheNextPage(nextClass = Chapter4::class.java)
         levelTime = stopTimer()
         Chapter3Win()
     }
 }
+
 //This function is triggered as soon as the puzzle has been solved
 // and then starts a success pop-up
 @Composable

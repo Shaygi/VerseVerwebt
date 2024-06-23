@@ -1,7 +1,6 @@
 package com.example.verseverwebt
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.util.Log

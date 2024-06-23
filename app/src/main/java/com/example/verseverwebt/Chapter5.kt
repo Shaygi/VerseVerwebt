@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
@@ -20,15 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import kotlinx.coroutines.delay
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 //Sixth Chapter
 //Player needs to charge phone
@@ -108,12 +102,12 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
     //background color that changes depending on the status of achievement
     val backgroundColor by animateColorAsState(
         targetValue = if (achieved) Color.White else Color.Gray,
-        animationSpec = tween(durationMillis = 2000)
+        animationSpec = tween(durationMillis = 2000), label = ""
     )
     //text color that changes depending on the status of achievement
     val textColor by animateColorAsState(
         targetValue = if (achieved) Color.Black else Color.DarkGray,
-        animationSpec = tween(durationMillis = 2000)
+        animationSpec = tween(durationMillis = 2000), label = ""
     )
     //Changes boolean if phone is charging
     LaunchedEffect(isCharging) {
@@ -166,11 +160,11 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
             )
         }
     }
-    Seitenzahl("-50-")
+    PageNumber("-50-")
 
-    //The button that takes you to the next activity
-    if(achieved == true) {
-        ToTheNextPage(nextClass = Chapter6::class.java, hasWin = achieved)
+    //The button is available to switch to the next chapter
+    if(achieved) {
+        ToTheNextPage(nextClass = Chapter6::class.java)
     }
     if (showDialog) {
         val userId = getUserId(context)

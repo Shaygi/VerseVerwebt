@@ -251,6 +251,6 @@ fun performSignUp(name: String, email: String, password: String, onSignUpSuccess
     })
 }
 
-//Variable for loggedin User
+//Variable for loggedIn User
 
 var logUserId: Long = 0

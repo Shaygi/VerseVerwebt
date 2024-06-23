@@ -21,12 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
 
 class Chapter7 : ComponentActivity() {
 
@@ -49,8 +44,8 @@ class Chapter7 : ComponentActivity() {
             override fun onChange(newScreenshot: Boolean, uri: Uri?) {
                 //Calls the onChange function of the base class
                 super.onChange(newScreenshot, uri)
-                Log.d("Chapter 7", "Screenshot wurde gemacht ")
-                //Sets the winner booelan true
+                Log.d("Chapter 7", "Screenshot was taken ")
+                //Sets the winner boolean true
                 hasWin = true
                 levelTime = stopTimer()
             }
@@ -63,7 +58,7 @@ class Chapter7 : ComponentActivity() {
             contentObserver
         )
 
-        //This function starts the Chapter7Content function and set the Conetnt for this activity
+        //This function starts the Chapter7Content function and set the Content for this activity
         setContent {
             VerseVerwebtTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -125,11 +120,10 @@ fun Chapter7Content(hasWin: Boolean) {
         )
     }
 
-    Seitenzahl("-70-")
+    PageNumber("-70-")
 
     //When the puzzle has been solved, the Chapter Win function is triggered
     if(hasWin){
-        Text("erfolg")
         Chapter7Win()
     }
 }

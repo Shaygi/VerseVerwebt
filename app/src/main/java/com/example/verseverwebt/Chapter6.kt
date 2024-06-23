@@ -3,11 +3,10 @@ package com.example.verseverwebt
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
-import android.speech.RecognizerIntent
-import android.util.Log
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import android.speech.RecognizerIntent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -25,18 +24,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
 
 class Chapter6 : ComponentActivity() {
 
     // A changeable boolean variable that returns the winner status
-    var hasWin by mutableStateOf(false)
+    private var hasWin by mutableStateOf(false)
 
     //An ActivityResultLauncher object is created
     //This uses the API for activity results to provide the result
@@ -74,7 +68,7 @@ class Chapter6 : ComponentActivity() {
             }
         }
 
-        //This function starts the Chapter6Content function and set the Conetnt for this activity
+        //This function starts the Chapter6Content function and set the Content for this activity
         setContent {
             VerseVerwebtTheme {
                 Surface(
@@ -177,11 +171,11 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
 
     }
 
-    Seitenzahl("-60-")
+    PageNumber("-60-")
 
-    //The button that takes you to the next activity
-    if(hasWin == true) {
-        ToTheNextPage(nextClass = Chapter7::class.java, hasWin = hasWin)
+    //The button is available to switch to the next chapter
+    if(hasWin) {
+        ToTheNextPage(nextClass = Chapter7::class.java)
     }
 }
 

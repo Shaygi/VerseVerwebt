@@ -1,9 +1,6 @@
 package com.example.verseverwebt
 
-import android.app.UiModeManager
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -26,11 +23,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import com.example.verseverwebt.api.ApiClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
 
 var oneTime = 0
 
@@ -100,7 +92,7 @@ fun Chapter4Content() {
         )
     }
 
-    Seitenzahl("-40-")
+    PageNumber("-40-")
 }
 
 // This function checks whether the light screen state has been changed to the dark screen state
@@ -129,14 +121,11 @@ fun IsDarkModeOn() {
         }
     }
 
-    //The button that takes you to the next activity
-    if(hasWin.value == true) {
-        ToTheNextPage(nextClass = Chapter5::class.java, hasWin = hasWin.value)
-    }
     //If the puzzle is solved and the hasWin boolean is true, the ChapterWin function will start
+    //And the button is available to switch to the next chapter
     if (hasWin.value) {
+        ToTheNextPage(nextClass = Chapter5::class.java)
         levelTime = stopTimer()
-
         ChapterWin()
     }
 }
@@ -175,7 +164,7 @@ fun ChapterWin () {
 //This function is responsible for the stars twinkling after successfully solving the puzzle
 @Composable
 fun StarAnimation() {
-    //An animatable variable is set and used to define an animation with keyframes of different lengths
+    //An anim-able variable is set and used to define an animation with keyframes of different lengths
     // to create a star animation where the star slowly changes from visible to invisible
     val alpha = remember { Animatable(1f) }
 
@@ -216,7 +205,7 @@ fun StarAnimation() {
         }
     }
 
-    //A second time star images are generated with a different animatable variable
+    //A second time star images are generated with a different anim-able variable
     // and a different size
     val betta = remember { Animatable(1f) }
 
@@ -254,7 +243,7 @@ fun StarAnimation() {
         }
     }
 
-    //A third time star images are generated with a different animatable variable
+    //A third time star images are generated with a different anim-able variable
     // and a different size
     val gamma = remember { Animatable(1f) }
 
@@ -292,7 +281,7 @@ fun StarAnimation() {
         }
     }
 
-    //A fourth time star images are generated with a different animatable variable
+    //A fourth time star images are generated with a different anim-able variable
     // and a different size
     val delta = remember { Animatable(1f) }
 

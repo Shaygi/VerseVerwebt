@@ -1,10 +1,8 @@
 package com.example.verseverwebt
 
-import android.app.UiModeManager
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -111,37 +109,36 @@ fun BackToMenuButton(modifier: Modifier = Modifier) {
 
 //A function that defines a Button that can be used for each chapter to go to the next page
 @Composable
-fun ToTheNextPage(nextClass: Class<*> , hasWin: Boolean) {
+fun ToTheNextPage(nextClass: Class<*>) {
     val context = LocalContext.current
 
+    //Depending on the DarkTheme, a different image is used for the button
     val picture : Painter = if(!isSystemInDarkTheme()){
         painterResource(id = R.drawable.next_white)
     }else {
         painterResource(id = R.drawable.next_black)
     }
 
+    //a clickable image is created
     Box(
-        modifier = Modifier.fillMaxSize() // Die Box füllt den gesamten verfügbaren Platz
+        modifier = Modifier.fillMaxSize()
     ) {
         Image(
             painter = picture,
-            contentDescription = "eselohr",
+            contentDescription = "nextButton",
             modifier = Modifier
-                .align(Alignment.BottomEnd) // Bild unten rechts ausrichten
+                .align(Alignment.BottomEnd)
                 .then(
-                    if (hasWin) {
-                        Modifier.clickable {
-                            playTurnPageSound(context)
-                            context.startActivity(Intent(context, nextClass))
-                        }
-                    } else {
-                        Modifier // Keine Aktion, wenn `hasWin` false ist
+                    Modifier.clickable {
+                        playTurnPageSound(context)
+                        context.startActivity(Intent(context, nextClass))
                     }
                 )
         )
     }
 }
 
+//This function plays a sound that imitates the turning of a book
 fun playTurnPageSound(context: Context) {
     val mediaPlayer = MediaPlayer.create(context, R.raw.turnpage).apply {
         isLooping = false
@@ -152,13 +149,15 @@ fun playTurnPageSound(context: Context) {
     }
 }
 
+
+//This function creates the page number and can be reused for each chapter
 @Composable
-fun Seitenzahl(seitenzahl: String) {
+fun PageNumber(pageNumber: String) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         Text(
-            text = seitenzahl,
+            text = pageNumber,
             style = CustomTypography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -168,6 +167,7 @@ fun Seitenzahl(seitenzahl: String) {
     }
 
 }
+
 //Text animation function that fades in the text
 @Composable
 fun AnimatedFadeInText(
@@ -259,6 +259,7 @@ fun AnimatedTypewriterText(
 }
 
 //Text animation function with a typewriter effect
+//but with some other parameter
 @Composable
 fun AnimatedTypewriterText2(
     text: String,
