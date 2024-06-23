@@ -3,12 +3,9 @@ package com.example.verseverwebt
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +22,7 @@ class Credits : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         //This function starts the CreditContent function and set the Content for this activity
+
         setContent {
             VerseVerwebtTheme {
                 Surface(
@@ -40,64 +38,97 @@ class Credits : ComponentActivity() {
 
 @Composable
 fun CreditsContent() {
-
-    //Vertical text elements and a menu button
-    Column(
-        modifier = Modifier.fillMaxSize(),
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BackToMenuButton()
+        item { BackToMenuButton() }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        item { Spacer(modifier = Modifier.height(32.dp)) }
 
-        Text(
-            text = "THE",
-            style = CustomTypography.titleLarge,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = "CREDITS",
-            style = CustomTypography.titleMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 66.dp)
-        )
-        Text(
-            text = "Developer: ",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            text = "Sophie Brand, Shirin Erol, Lena Müller ",
-            style = CustomTypography.bodyLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
-        )
-        Text(
-            text = "Project leader: ",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = " Prof. Dr. Thorsten Teschke ",
-            style = CustomTypography.bodyLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
-        )
-        Text(
-            text = "Use images:  ",
-            style = CustomTypography.bodyLarge,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            text = "https://www.vecteezy.com/png/8507495-lens-flare-light-special-effect \n" +
-                    "https://www.vecteezy.com/png/26758496-treasure-png-with-ai-generated \n",
-            style = CustomTypography.bodyMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
-        )
+        item {
+            Text(
+                text = "THE",
+                style = CustomTypography.titleLarge,
+                textAlign = TextAlign.Center
+            )
+        }
+        item {
+            Text(
+                text = "CREDITS",
+                style = CustomTypography.titleMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 66.dp)
+            )
+        }
+        item {
+            Text(
+                text = "Developer: ",
+                style = CustomTypography.bodyMedium,
+                textAlign = TextAlign.Center,
+            )
+        }
+        item {
+            Text(
+                text = "Sophie Brand, Shirin Erol, Lena Müller ",
+                style = CustomTypography.bodyLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
+            )
+        }
+        item {
+            Text(
+                text = "Project leader: ",
+                style = CustomTypography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+        }
+        item {
+            Text(
+                text = " Prof. Dr. Thorsten Teschke ",
+                style = CustomTypography.bodyLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
+            )
+        }
+        item {
+            Text(
+                text = "Used images:  ",
+                style = CustomTypography.bodyLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
+        item {
+            Text(
+                text = "https://www.vecteezy.com/png/8507495-lens-flare-light-special-effect \n" +
+                        "https://www.vecteezy.com/png/26758496-treasure-png-with-ai-generated \n",
+                style = CustomTypography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
+            )
+        }
+        item {
+            Text(
+                text = "Used sounds:  ",
+                style = CustomTypography.bodyLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
+        item {
+            Text(
+                text = "https://pixabay.com/de/sound-effects/handle-paper-foley-4-184013/",
+                style = CustomTypography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
+            )
+        }
+        item {
+            Seitenzahl("-80-")
+        }
     }
-    PageNumber("-80-")
 }
 
 

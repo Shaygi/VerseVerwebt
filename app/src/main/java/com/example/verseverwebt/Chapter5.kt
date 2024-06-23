@@ -27,7 +27,11 @@ import kotlinx.coroutines.delay
 //Sixth Chapter
 //Player needs to charge phone
 class Chapter5 : ComponentActivity() {
+
+    //a BroadcastReceiver object is created
+    //is used to handle broadcast events related to the charging status
     private lateinit var chargingReceiver: BroadcastReceiver
+
     private lateinit var achieved: MutableState<Boolean>
     private lateinit var isCharging: MutableState<Boolean>
 
@@ -109,6 +113,7 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
         targetValue = if (achieved) Color.Black else Color.DarkGray,
         animationSpec = tween(durationMillis = 2000), label = ""
     )
+
     //Changes boolean if phone is charging
     LaunchedEffect(isCharging) {
         if (isCharging) {
