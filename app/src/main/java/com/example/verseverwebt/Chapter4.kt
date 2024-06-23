@@ -93,7 +93,6 @@ fun Chapter4Content() {
             fontSize = 13,
             textAlign = TextAlign.Center
         )
-        PermissionQuery()
     }
 
     PageNumber("-40-")
