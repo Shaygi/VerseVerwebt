@@ -319,12 +319,3 @@ fun StarAnimation() {
         }
     }
 }
-
-// A preview of this activity Content
-@Preview(showBackground = true)
-@Composable
-fun Chapter4ContentPreview() {
-    VerseVerwebtTheme {
-        Chapter4Content()
-    }
-}

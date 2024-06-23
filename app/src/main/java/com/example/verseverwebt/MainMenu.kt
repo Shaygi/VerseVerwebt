@@ -174,14 +174,4 @@ class MainMenu : ComponentActivity() {
         }
         100
     }
-
-    //function is for previewing in the IDE
-    @Preview(showBackground = true)
-    @Composable
-    fun ContentPreview() {
-        VerseVerwebtTheme {
-            Content()
-
-        }
-    }
 }

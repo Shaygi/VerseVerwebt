@@ -126,7 +126,7 @@ fun CreditsContent() {
             )
         }
         item {
-            Seitenzahl("-80-")
+            PageNumber("-80-")
         }
     }
 }

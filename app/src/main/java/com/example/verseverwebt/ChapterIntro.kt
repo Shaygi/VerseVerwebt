@@ -144,16 +144,4 @@ fun ChapterIntroContent() {
     }
 }
 
-// Function is for previewing in the IDE
-@Preview(showBackground = true)
-@Composable
-fun ChapterIntroContentPreview() {
-    // Sets the theme for the preview
-    VerseVerwebtTheme {
-        // Calls the composable function to be previewed
-        ChapterIntroContent()
-    }
-}
-
-
 
