@@ -128,10 +128,15 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         )
+        PermissionQuery()
 
         Button(
             onClick = {
-                if (password != confirmPassword || password.isEmpty()) {
+                if(!PermissionManager.isPermissionAllowed()){
+                    dialogMessage = "You have to agree the Permissions"
+                    showDialog = true
+                }
+                else if (password != confirmPassword || password.isEmpty()) {
                     dialogMessage = "Passwords do not match"
                     showDialog = true
                 } else {
@@ -249,6 +254,53 @@ fun performSignUp(name: String, email: String, password: String, onSignUpSuccess
             //cry
         }
     })
+}
+
+//This function creates a checkbox query and starts the permission query
+@Composable
+fun PermissionQuery() {
+    val context = LocalContext.current
+
+    var checked by remember { mutableStateOf(false) }
+
+    //activates or deactivates the checkbox depending on whether the permission was granted or denied
+    LaunchedEffect(PermissionManager.isPermissionAllowed()) {
+        checked = PermissionManager.isPermissionAllowed()
+    }
+
+    //Text and checkbox are created in one line
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+
+    ){
+        Text(
+            text = "Please grant sensor permission:",
+            style = CustomTypography.bodyMedium,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        Checkbox(
+            checked = checked,
+            onCheckedChange = { isChecked ->
+                checked = isChecked
+
+                //as soon as the checkbox is pressed, the permission query is started
+                if (isChecked) {
+                    PermissionManager.requestUserPermissions(
+                        context as ComponentActivity,
+                        onPermissionsGranted = {
+                            checked = true
+                        },
+                        onPermissionsDenied = {
+                        checked = false
+                    })
+                }
+            }
+        )
+    }
+
 }
 
 //Variable for loggedIn User

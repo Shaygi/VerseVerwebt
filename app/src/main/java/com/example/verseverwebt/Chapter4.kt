@@ -1,6 +1,7 @@
 package com.example.verseverwebt
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -20,6 +21,8 @@ import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -90,6 +93,7 @@ fun Chapter4Content() {
             fontSize = 13,
             textAlign = TextAlign.Center
         )
+        PermissionQuery()
     }
 
     PageNumber("-40-")
@@ -319,3 +323,4 @@ fun StarAnimation() {
         }
     }
 }
+
