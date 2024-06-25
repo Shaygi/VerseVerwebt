@@ -73,6 +73,10 @@ Edit the Control Center:
 
 ![DarkTheme](https://github.com/Shaygi/VerseVerwebt/assets/104787845/b683f421-0bef-409b-85eb-f2b0c5968a2c)
 
+Screenshot Function:
+![Screenshot_20240625_162342](https://github.com/Shaygi/WovenVersesFrontend/assets/104787845/52a6dbf6-ed09-48fb-beea-b3efb3d93575)
+
+
 
 
 ## Notes
