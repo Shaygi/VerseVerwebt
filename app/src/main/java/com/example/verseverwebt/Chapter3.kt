@@ -82,7 +82,10 @@ class Chapter3 : ComponentActivity(), SensorEventListener {
 
         // Checks whether the lux sensor light value is below 200
         val lightValue = event?.values?.get(0) ?: 0f
-        hasWin = lightValue <= 200
+        if (lightValue <= 50){
+            hasWin = true
+        }
+        //hasWin = lightValue <= 100
     }
 
 }
