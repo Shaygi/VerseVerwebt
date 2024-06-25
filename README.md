@@ -74,6 +74,7 @@ Edit the Control Center:
 ![DarkTheme](https://github.com/Shaygi/VerseVerwebt/assets/104787845/b683f421-0bef-409b-85eb-f2b0c5968a2c)
 
 Screenshot Function:
+
 ![Screenshot_20240625_162342](https://github.com/Shaygi/WovenVersesFrontend/assets/104787845/0fe7c17a-079c-4e85-8732-7626f087cbbe)
 
 
