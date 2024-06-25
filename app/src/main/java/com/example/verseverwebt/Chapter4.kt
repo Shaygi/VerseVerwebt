@@ -127,7 +127,7 @@ fun IsDarkModeOn() {
     //If the puzzle is solved and the hasWin boolean is true, the ChapterWin function will start
     //And the button is available to switch to the next chapter
     if (hasWin.value) {
-        beginningDarkThemeState = false
+        oneTime = 0
         ToTheNextPage(nextClass = Chapter5::class.java)
         levelTime = stopTimer()
         ChapterWin()
