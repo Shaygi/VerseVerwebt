@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.user
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.ui.general.BackToMenuButton
+import com.example.verseverwebt.ui.general.MainMenu
+import com.example.verseverwebt.user.permissions.PermissionManager
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.PurpleBookmark
@@ -294,8 +297,8 @@ fun PermissionQuery() {
                             checked = true
                         },
                         onPermissionsDenied = {
-                        checked = false
-                    })
+                            checked = false
+                        })
                 }
             }
         )
