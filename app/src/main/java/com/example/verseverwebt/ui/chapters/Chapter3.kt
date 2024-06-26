@@ -83,7 +83,6 @@ class Chapter3 : ComponentActivity(), SensorEventListener {
 
     //This function is called up when the data of the light sensor changes
     override fun onSensorChanged(event: SensorEvent?) {
-
         // Checks whether the lux sensor light value is below 200
         val lightValue = event?.values?.get(0) ?: 0f
         if (lightValue <= 50){
@@ -91,14 +90,11 @@ class Chapter3 : ComponentActivity(), SensorEventListener {
         }
         //hasWin = lightValue <= 100
     }
-
 }
 
 //This function contains the design for this activity
 @Composable
 fun Chapter3Content(hasWin: Boolean) {
-
-
     //Vertical text elements and a menu button
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -131,8 +127,6 @@ fun Chapter3Content(hasWin: Boolean) {
             fontSize = 13,
             textAlign = TextAlign.Center
         )
-
-
     }
     PageNumber("-30-")
 
@@ -170,4 +164,5 @@ fun Chapter3Win(){
             title = { Text("Congratulations!") },
             text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
         )
-    }}
+    }
+}

@@ -58,7 +58,6 @@ class Chapter4 : ComponentActivity() {
         startTime = savedInstanceState.getLong("startTime")
         endTime = savedInstanceState.getLong("endTime")
     }
-
 }
 
 //This function contains the design for this activity consisting of
@@ -113,7 +112,7 @@ fun IsDarkModeOn() {
 
     //boolean for the winner status and boolean variable for the current screen status
     val hasWin = remember { mutableStateOf(false) }
-    var currentDarkThemeState = isSystemInDarkTheme()
+    val currentDarkThemeState = isSystemInDarkTheme()
 
     //this function is executed as soon as the currentDarkThemeState has changed
     // and then checks whether it is a different status than initially

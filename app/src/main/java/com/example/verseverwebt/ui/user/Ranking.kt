@@ -17,7 +17,7 @@ import com.example.verseverwebt.ui.general.BackToMenuButton
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import com.example.verseverwebt.ui.theme.CustomTypography
-import com.example.verseverwebt.user.User
+import com.example.verseverwebt.valueobjects.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

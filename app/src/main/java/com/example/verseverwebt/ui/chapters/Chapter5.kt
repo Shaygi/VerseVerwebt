@@ -33,7 +33,6 @@ import kotlinx.coroutines.delay
 //Sixth Chapter
 //Player needs to charge phone
 class Chapter5 : ComponentActivity() {
-
     //a BroadcastReceiver object is created
     //is used to handle broadcast events related to the charging status
     private lateinit var chargingReceiver: BroadcastReceiver
@@ -75,10 +74,6 @@ class Chapter5 : ComponentActivity() {
         }
     }
 
-    private fun stopTimer(): Long {
-        endTime = System.currentTimeMillis()
-        return endTime - startTime
-    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong("startTime", startTime)
@@ -210,5 +205,3 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
         )
     }
 }
-
-

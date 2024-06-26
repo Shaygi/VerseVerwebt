@@ -77,7 +77,6 @@ class Chapter2 : ComponentActivity() {
                 }
             }
         }
-
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
     }
 
@@ -97,7 +96,7 @@ class Chapter2 : ComponentActivity() {
                         showDialog = true
                     }
 
-                    Chapter2Content(azimuth, showDialog,achieved, levelTime, onAchieved) { showDialog = it }
+                    Chapter2Content(azimuth, showDialog,achieved, levelTime) { showDialog = it }
 
                 }
             }
@@ -135,8 +134,7 @@ class Chapter2 : ComponentActivity() {
 private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
-
-fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, levelTime: Long, onAchieved: () -> Unit, updateShowDialog: (Boolean) -> Unit) {
+fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, levelTime: Long, updateShowDialog: (Boolean) -> Unit) {
 
     val context = LocalContext.current
 

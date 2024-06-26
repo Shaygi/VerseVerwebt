@@ -1,4 +1,4 @@
-package com.example.verseverwebt.user.permissions
+package com.example.verseverwebt.valueobjects.permissions
 
 import android.Manifest
 import android.app.Activity

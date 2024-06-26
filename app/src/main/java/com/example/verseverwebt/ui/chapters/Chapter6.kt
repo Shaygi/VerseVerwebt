@@ -173,7 +173,6 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
                 contentDescription = "Lock1_Closed"
             )
         }
-
     }
 
     PageNumber("-60-")
@@ -198,7 +197,6 @@ fun Chapter6Win(){
 
     saveTimeIfNotSaved(userId, 6, time)
 
-
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
@@ -210,7 +208,8 @@ fun Chapter6Win(){
             title = { Text("Congratulations!") },
             text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
         )
-    }}
+    }
+}
 
 //This function is responsible for the animation of unlocking the lock
 @Composable

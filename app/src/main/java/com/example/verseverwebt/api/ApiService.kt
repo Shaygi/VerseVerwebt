@@ -1,6 +1,6 @@
 package com.example.verseverwebt.api
 
-import com.example.verseverwebt.user.User
+import com.example.verseverwebt.valueobjects.User
 import retrofit2.Call
 import retrofit2.http.*
 

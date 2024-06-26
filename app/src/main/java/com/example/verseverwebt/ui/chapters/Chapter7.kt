@@ -28,7 +28,6 @@ import com.example.verseverwebt.R
 import com.example.verseverwebt.ui.theme.CustomTypography
 
 class Chapter7 : ComponentActivity() {
-
     //a variable of the type ContentObserver is created here for future use
     private lateinit var contentObserver: ContentObserver
 
@@ -82,7 +81,6 @@ class Chapter7 : ComponentActivity() {
 //This function contains the design for this activity
 @Composable
 fun Chapter7Content(hasWin: Boolean) {
-
     //Vertical text elements, a menu button and a picture of the treasure
     Column(
         modifier = Modifier.fillMaxSize(),

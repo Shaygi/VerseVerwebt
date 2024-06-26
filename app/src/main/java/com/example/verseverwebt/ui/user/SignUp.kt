@@ -17,12 +17,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.verseverwebt.ui.general.BackToMenuButton
 import com.example.verseverwebt.ui.general.MainMenu
-import com.example.verseverwebt.user.permissions.PermissionManager
+import com.example.verseverwebt.valueobjects.permissions.PermissionManager
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.PurpleBookmark
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import com.example.verseverwebt.user.User
+import com.example.verseverwebt.valueobjects.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,7 +55,7 @@ class SignUp : ComponentActivity() {
         }
     }
 
-    private fun userTimesToString(user: User): String? {
+    private fun userTimesToString(user: User): String {
         return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5, user.time6, user.time7)
             .joinToString(",")
     }
@@ -159,12 +159,9 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
                                             showDialog = true
                                         }
                                         else {
-                                            performSignUp(name, email, password, onSignUpSuccess = { user ->
+                                            performSignUp(name, email, password) { user ->
                                                 dialogMessage = "Account created successfully!"
                                                 onSignUpSuccess(user)
-                                                showDialog = true
-                                            }) { error ->
-                                                dialogMessage = error
                                                 showDialog = true
                                             }
                                         }
@@ -218,7 +215,7 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
     }
 }
 
-fun performSignUp(name: String, email: String, password: String, onSignUpSuccess: (User) -> Unit, onError: (String) -> Unit) {
+fun performSignUp(name: String, email: String, password: String, onSignUpSuccess: (User) -> Unit) {
     val newUser = User(1001, name, email, password, 0f, 0f, 0f, 0f, 0f, 0f, 0f, false, 0)
     ApiClient.instance.createUser(newUser).enqueue(object : Callback<Unit> {
         override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
