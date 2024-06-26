@@ -48,10 +48,8 @@ fun TableOfContentsContent() {
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(5.dp),
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackToMenuButton()
