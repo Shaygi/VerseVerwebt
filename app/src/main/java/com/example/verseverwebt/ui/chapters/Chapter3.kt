@@ -88,7 +88,6 @@ class Chapter3 : ComponentActivity(), SensorEventListener {
         if (lightValue <= 20){
             hasWin = true
         }
-        //hasWin = lightValue <= 100
     }
 }
 
