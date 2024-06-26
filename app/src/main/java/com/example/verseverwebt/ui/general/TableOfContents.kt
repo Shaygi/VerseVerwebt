@@ -63,7 +63,7 @@ fun TableOfContentsContent() {
         )
 
         Column {
-            //fetches loggedin user
+            //fetches loggedIn user
             val user = getUserId(context)
 
             (1..7).forEach { chapter ->

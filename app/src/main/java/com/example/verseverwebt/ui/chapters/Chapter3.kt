@@ -85,7 +85,7 @@ class Chapter3 : ComponentActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         // Checks whether the lux sensor light value is below 200
         val lightValue = event?.values?.get(0) ?: 0f
-        if (lightValue <= 50){
+        if (lightValue <= 20){
             hasWin = true
         }
         //hasWin = lightValue <= 100
