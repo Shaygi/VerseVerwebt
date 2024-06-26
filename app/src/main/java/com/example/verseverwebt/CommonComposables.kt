@@ -14,6 +14,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -54,7 +56,31 @@ fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
                 text = primaryText,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = playfair,
-                fontSize = fontSize
+                fontSize = fontSize,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun GreyButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier.padding(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier.padding(5.dp),
+            colors = ButtonDefaults.buttonColors(Color.Transparent),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Text(
+                text = primaryText,
+                fontSize = fontSize,
+                fontFamily = playfair,
+                color = Color.Gray,
+                textAlign = TextAlign.Center
             )
         }
     }

@@ -135,43 +135,42 @@ class MainMenu : ComponentActivity() {
             sharedPreferences.getBoolean("is_logged_in", false)
         }
     }
-
-    private suspend fun getNextChapter(context: Context): Int {
-        val user = getUserId(context)
-        return withContext(Dispatchers.Main) {
-            val nextCh = getIfTime(user, 7)
-            Log.d("MainMenu", "Last: $nextCh")
-            nextCh+1
-        }
+}
+suspend fun getNextChapter(context: Context): Int {
+    val user = getUserId(context)
+    return withContext(Dispatchers.Main) {
+        val nextCh = getIfTime(user, 7)
+        Log.d("MainMenu", "Last: $nextCh")
+        nextCh+1
     }
+}
 
 
-    suspend fun getIfTime(user: Long, i: Int): Int = withContext(Dispatchers.IO) {
-        if (i > 0) {
-            val chapterTimeResponse = ApiClient.instance.getChapterTime(user, i).execute()
-            if (chapterTimeResponse.isSuccessful) {
-                val chapterTime = chapterTimeResponse.body()
-                if (chapterTime == 0F) {
-                    return@withContext getIfTime(user, i - 1)
-                } else {
-                    return@withContext i
-                }
+suspend fun getIfTime(user: Long, i: Int): Int = withContext(Dispatchers.IO) {
+    if (i > 0) {
+        val chapterTimeResponse = ApiClient.instance.getChapterTime(user, i).execute()
+        if (chapterTimeResponse.isSuccessful) {
+            val chapterTime = chapterTimeResponse.body()
+            if (chapterTime == 0F) {
+                return@withContext getIfTime(user, i - 1)
             } else {
-                Log.e("MainMenu", "Error fetching Ch$i")
+                return@withContext i
             }
         } else {
-            val introCompletedResponse = ApiClient.instance.getIntroCompleted(user).execute()
-            if (introCompletedResponse.isSuccessful) {
-                val introCompleted = introCompletedResponse.body()
-                return@withContext if (introCompleted == false) {
-                    -1
-                } else {
-                    10
-                }
-            } else {
-                Log.e("MainMenu", "Error fetching ChapterIntro")
-            }
+            Log.e("MainMenu", "Error fetching Ch$i")
         }
-        100
+    } else {
+        val introCompletedResponse = ApiClient.instance.getIntroCompleted(user).execute()
+        if (introCompletedResponse.isSuccessful) {
+            val introCompleted = introCompletedResponse.body()
+            return@withContext if (introCompleted == false) {
+                -1
+            } else {
+                10
+            }
+        } else {
+            Log.e("MainMenu", "Error fetching ChapterIntro")
+        }
     }
+    100
 }
