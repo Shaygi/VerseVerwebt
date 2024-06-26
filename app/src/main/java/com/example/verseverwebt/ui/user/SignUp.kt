@@ -15,10 +15,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.example.verseverwebt.ui.general.BackToMenuButton
 import com.example.verseverwebt.ui.general.MainMenu
 import com.example.verseverwebt.valueobjects.permissions.PermissionManager
 import com.example.verseverwebt.api.ApiClient
+import com.example.verseverwebt.ui.chapters.ChapterIntro
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.PurpleBookmark
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
@@ -59,12 +61,6 @@ class SignUp : ComponentActivity() {
     private fun userTimesToString(user: User): String {
         return floatArrayOf(user.time1, user.time2, user.time3, user.time4, user.time5, user.time6, user.time7)
             .joinToString(",")
-    }
-
-    fun navigateToMainMenu() {
-        val intent = Intent(this, MainMenu::class.java)
-        startActivity(intent)
-        finish()
     }
 }
 
@@ -207,7 +203,7 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
                     onClick = {
                         showDialog = false
                         if (dialogMessage == "Account created successfully!") {
-                            (context as? SignUp)?.navigateToMainMenu()
+                            startChapterIntro(context)
                         }
                     }
                 ) {
@@ -219,6 +215,10 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
             }
         )
     }
+}
+
+fun startChapterIntro(context: Context) {
+    context.startActivity(Intent(context, ChapterIntro::class.java))
 }
 
 //signup also has login built in, so the newly signed up user doesn't have to log in.
