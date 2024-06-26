@@ -11,3 +11,4 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val PurpleBookmark= Color(0xFF8F7DB7)
+val DarkThemeBackground = Color(26,27,33)

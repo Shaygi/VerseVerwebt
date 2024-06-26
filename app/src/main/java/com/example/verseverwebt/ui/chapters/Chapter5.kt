@@ -29,6 +29,7 @@ import com.example.verseverwebt.ui.general.ToTheNextPage
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import kotlinx.coroutines.delay
+import com.example.verseverwebt.ui.theme.DarkThemeBackground
 
 //Player needs to charge phone
 class Chapter5 : ComponentActivity() {
@@ -107,7 +108,7 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
     val backgroundColor by animateColorAsState(
 
         targetValue = when {
-            achieved && isSystemInDarkTheme() -> Color.Black
+            achieved && isSystemInDarkTheme() -> DarkThemeBackground
             achieved && !isSystemInDarkTheme() -> Color.White
             !achieved && isSystemInDarkTheme() -> Color.DarkGray
             else -> Color.DarkGray
@@ -120,7 +121,7 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
             achieved && isSystemInDarkTheme() -> Color.White
             achieved && !isSystemInDarkTheme() -> Color.Black
             !achieved && isSystemInDarkTheme() -> Color.Gray
-            else -> Color.DarkGray
+            else -> Color.Black
         },
         animationSpec = tween(durationMillis = 2000), label = ""
     )
