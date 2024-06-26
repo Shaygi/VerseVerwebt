@@ -2,6 +2,7 @@
 
 Woven verses is a unique puzzle game that interacts with your phone's control center and sensors. The game is styled as a book and includes seven chapters, each featuring its own puzzle, as well as an introductory puzzle. Players can log in or register, and by solving puzzles, they can generate a high score that is displayed on a leaderboard. The total time taken to solve each chapter is added up to form the final score.
 
+
 ## Features
 
 Log in/Register: Players can create an account or log in to track their progress.
@@ -11,6 +12,7 @@ Chapter Puzzles: Each of the seven chapters presents a unique puzzle that requir
 Leaderboard: The time taken to solve each puzzle is recorded, and the total time is displayed on a leaderboard.
 
 Book-Style Design: The game is designed to resemble a book, enhancing the immersive experience.
+
 
 ## Getting started
 
@@ -25,6 +27,7 @@ To test the game using the Android Studio emulator, follow these steps:
 
 No additional installations are required.
 
+
 ## Installation
 
 1. Clone the repository:
@@ -35,7 +38,10 @@ git clone https://github.com/Shaygi/WovenVersesFrontend.git
 
 3. Build and run the project on the Pixel 3a API 34 emulator.
 
+
 ## Gameplay
+
+Directly upon creating an account, you will be forwarded to the Introductory Puzzle:
 
 1. Introductory Puzzle: Solve the initial puzzle by turning on the flashlight to get started.
 
@@ -57,6 +63,7 @@ git clone https://github.com/Shaygi/WovenVersesFrontend.git
 
 4. Leaderboard: Your total time to solve the puzzles will be recorded and displayed on the leaderboard.
 
+   
 ## PICTURES AS HELP
 Advanced Settings:
 
@@ -86,7 +93,6 @@ The game is designed to work seamlessly on a Pixel 3a API 34 emulator, and some 
 ## Licence
 
 This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
-
 
 
 ## Acknowledgements
