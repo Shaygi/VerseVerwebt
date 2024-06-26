@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.chapters
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -21,6 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.ui.general.AnimatedTextFlashing
+import com.example.verseverwebt.ui.general.AnimatedTypewriterText
+import com.example.verseverwebt.ui.general.BackToMenuButton
+import com.example.verseverwebt.ui.general.PageNumber
+import com.example.verseverwebt.ui.general.ToTheNextPage
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import kotlinx.coroutines.delay
@@ -28,7 +33,6 @@ import kotlinx.coroutines.delay
 //Sixth Chapter
 //Player needs to charge phone
 class Chapter5 : ComponentActivity() {
-
     //a BroadcastReceiver object is created
     //is used to handle broadcast events related to the charging status
     private lateinit var chargingReceiver: BroadcastReceiver
@@ -70,10 +74,6 @@ class Chapter5 : ComponentActivity() {
         }
     }
 
-    private fun stopTimer(): Long {
-        endTime = System.currentTimeMillis()
-        return endTime - startTime
-    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong("startTime", startTime)
@@ -205,5 +205,3 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
         )
     }
 }
-
-

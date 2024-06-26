@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.chapters
 
 import android.content.Context
 import android.graphics.Paint
@@ -27,6 +27,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.ui.general.AnimatedTypewriterText2
+import com.example.verseverwebt.ui.general.BackToMenuButton
+import com.example.verseverwebt.ui.general.PageNumber
+import com.example.verseverwebt.ui.general.ToTheNextPage
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import java.lang.Math.toDegrees
@@ -73,7 +77,6 @@ class Chapter2 : ComponentActivity() {
                 }
             }
         }
-
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
     }
 
@@ -93,7 +96,7 @@ class Chapter2 : ComponentActivity() {
                         showDialog = true
                     }
 
-                    Chapter2Content(azimuth, showDialog,achieved, levelTime, onAchieved) { showDialog = it }
+                    Chapter2Content(azimuth, showDialog,achieved, levelTime) { showDialog = it }
 
                 }
             }
@@ -131,8 +134,7 @@ class Chapter2 : ComponentActivity() {
 private val chapter2Text = mutableStateOf("In the North, a statue stands cold and tall,\nits gaze fixed East, never South at all,\nFor its heart forever the West does yearn,\nIn that direction, it will always turn.")
 
 @Composable
-
-fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, levelTime: Long, onAchieved: () -> Unit, updateShowDialog: (Boolean) -> Unit) {
+fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, levelTime: Long, updateShowDialog: (Boolean) -> Unit) {
 
     val context = LocalContext.current
 

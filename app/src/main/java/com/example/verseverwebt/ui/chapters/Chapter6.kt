@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.chapters
 
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
@@ -24,6 +24,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.example.verseverwebt.ui.general.AnimatedTypewriterText2
+import com.example.verseverwebt.ui.general.BackToMenuButton
+import com.example.verseverwebt.ui.general.PageNumber
+import com.example.verseverwebt.R
+import com.example.verseverwebt.ui.general.ToTheNextPage
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 
@@ -168,7 +173,6 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
                 contentDescription = "Lock1_Closed"
             )
         }
-
     }
 
     PageNumber("-60-")
@@ -193,7 +197,6 @@ fun Chapter6Win(){
 
     saveTimeIfNotSaved(userId, 6, time)
 
-
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
@@ -205,7 +208,8 @@ fun Chapter6Win(){
             title = { Text("Congratulations!") },
             text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
         )
-    }}
+    }
+}
 
 //This function is responsible for the animation of unlocking the lock
 @Composable

@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.general
 
 import android.content.Context
 import android.content.Intent
@@ -15,11 +15,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.verseverwebt.R
 import com.example.verseverwebt.api.ApiClient
+import com.example.verseverwebt.ui.chapters.Chapter1
+import com.example.verseverwebt.ui.chapters.Chapter2
+import com.example.verseverwebt.ui.chapters.Chapter3
+import com.example.verseverwebt.ui.chapters.Chapter4
+import com.example.verseverwebt.ui.chapters.Chapter5
+import com.example.verseverwebt.ui.chapters.Chapter6
+import com.example.verseverwebt.ui.chapters.Chapter7
+import com.example.verseverwebt.ui.chapters.ChapterIntro
+import com.example.verseverwebt.ui.chapters.getUserId
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
+import com.example.verseverwebt.ui.user.Login
+import com.example.verseverwebt.ui.user.Profile
+import com.example.verseverwebt.ui.user.Ranking
+import com.example.verseverwebt.ui.user.logUserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -135,43 +148,42 @@ class MainMenu : ComponentActivity() {
             sharedPreferences.getBoolean("is_logged_in", false)
         }
     }
-
-    private suspend fun getNextChapter(context: Context): Int {
-        val user = getUserId(context)
-        return withContext(Dispatchers.Main) {
-            val nextCh = getIfTime(user, 7)
-            Log.d("MainMenu", "Last: $nextCh")
-            nextCh+1
-        }
+}
+suspend fun getNextChapter(context: Context): Int {
+    val user = getUserId(context)
+    return withContext(Dispatchers.Main) {
+        val nextCh = getIfTime(user, 7)
+        Log.d("MainMenu", "Last: $nextCh")
+        nextCh+1
     }
+}
 
 
-    suspend fun getIfTime(user: Long, i: Int): Int = withContext(Dispatchers.IO) {
-        if (i > 0) {
-            val chapterTimeResponse = ApiClient.instance.getChapterTime(user, i).execute()
-            if (chapterTimeResponse.isSuccessful) {
-                val chapterTime = chapterTimeResponse.body()
-                if (chapterTime == 0F) {
-                    return@withContext getIfTime(user, i - 1)
-                } else {
-                    return@withContext i
-                }
+suspend fun getIfTime(user: Long, i: Int): Int = withContext(Dispatchers.IO) {
+    if (i > 0) {
+        val chapterTimeResponse = ApiClient.instance.getChapterTime(user, i).execute()
+        if (chapterTimeResponse.isSuccessful) {
+            val chapterTime = chapterTimeResponse.body()
+            if (chapterTime == 0F) {
+                return@withContext getIfTime(user, i - 1)
             } else {
-                Log.e("MainMenu", "Error fetching Ch$i")
+                return@withContext i
             }
         } else {
-            val introCompletedResponse = ApiClient.instance.getIntroCompleted(user).execute()
-            if (introCompletedResponse.isSuccessful) {
-                val introCompleted = introCompletedResponse.body()
-                return@withContext if (introCompleted == false) {
-                    -1
-                } else {
-                    10
-                }
-            } else {
-                Log.e("MainMenu", "Error fetching ChapterIntro")
-            }
+            Log.e("MainMenu", "Error fetching Ch$i")
         }
-        100
+    } else {
+        val introCompletedResponse = ApiClient.instance.getIntroCompleted(user).execute()
+        if (introCompletedResponse.isSuccessful) {
+            val introCompleted = introCompletedResponse.body()
+            return@withContext if (introCompleted == false) {
+                -1
+            } else {
+                10
+            }
+        } else {
+            Log.e("MainMenu", "Error fetching ChapterIntro")
+        }
     }
+    100
 }

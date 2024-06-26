@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.user
 
 import android.content.Context
 import android.content.Intent
@@ -16,11 +16,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.ui.general.BackToMenuButton
+import com.example.verseverwebt.ui.general.MainMenu
 import com.example.verseverwebt.api.ApiClient
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.PurpleBookmark
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
-import com.example.verseverwebt.user.User
+import com.example.verseverwebt.valueobjects.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -123,11 +125,11 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
                 apiService.checkIfExistsName(username).enqueue(object : Callback<Boolean> {
                     override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                         if (response.isSuccessful && response.body() == true) {
-                            performLogin(username, password, onLoginSuccess = { user ->
+                            performLogin(username, password) { user ->
                                 dialogMessage = "Login successful!"
                                 onLoginSuccess(user)
                                 showDialog = true
-                            }) { dialogMessage = "Error" }
+                            }
                         } else {
                             dialogMessage = "User with username $username does not exist"
                             showDialog = true
@@ -188,7 +190,7 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
     }
 }
 
-fun performLogin(username: String, password: String, onLoginSuccess: (User) -> Unit, onError: (String) -> Unit) {
+fun performLogin(username: String, password: String, onLoginSuccess: (User) -> Unit) {
     ApiClient.instance.getUsers().enqueue(object : Callback<List<User>> {
         override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
             if (response.isSuccessful) {

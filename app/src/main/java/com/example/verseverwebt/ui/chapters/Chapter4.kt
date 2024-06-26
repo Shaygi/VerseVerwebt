@@ -1,7 +1,6 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.chapters
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -16,16 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import com.example.verseverwebt.ui.general.AnimatedTypewriterText2
+import com.example.verseverwebt.ui.general.BackToMenuButton
+import com.example.verseverwebt.ui.general.PageNumber
+import com.example.verseverwebt.R
+import com.example.verseverwebt.ui.general.ToTheNextPage
 
 var oneTime = 0
 
@@ -57,7 +58,6 @@ class Chapter4 : ComponentActivity() {
         startTime = savedInstanceState.getLong("startTime")
         endTime = savedInstanceState.getLong("endTime")
     }
-
 }
 
 //This function contains the design for this activity consisting of
@@ -112,7 +112,7 @@ fun IsDarkModeOn() {
 
     //boolean for the winner status and boolean variable for the current screen status
     val hasWin = remember { mutableStateOf(false) }
-    var currentDarkThemeState = isSystemInDarkTheme()
+    val currentDarkThemeState = isSystemInDarkTheme()
 
     //this function is executed as soon as the currentDarkThemeState has changed
     // and then checks whether it is a different status than initially

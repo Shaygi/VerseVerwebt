@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.general
 
 import android.content.Context
 import android.content.Intent
@@ -34,6 +34,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.verseverwebt.R
 import com.example.verseverwebt.ui.theme.CustomTypography
 import kotlinx.coroutines.delay
 
@@ -54,7 +55,31 @@ fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
                 text = primaryText,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = playfair,
-                fontSize = fontSize
+                fontSize = fontSize,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun GreyButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier.padding(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier.padding(5.dp),
+            colors = ButtonDefaults.buttonColors(Color.Transparent),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Text(
+                text = primaryText,
+                fontSize = fontSize,
+                fontFamily = playfair,
+                color = Color.Gray,
+                textAlign = TextAlign.Center
             )
         }
     }

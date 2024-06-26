@@ -1,4 +1,4 @@
-package com.example.verseverwebt
+package com.example.verseverwebt.ui.chapters
 
 import androidx.activity.compose.setContent
 import android.database.ContentObserver
@@ -21,10 +21,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.verseverwebt.ui.general.AnimatedTypewriterText2
+import com.example.verseverwebt.ui.general.BackToMenuButton
+import com.example.verseverwebt.ui.general.PageNumber
+import com.example.verseverwebt.R
 import com.example.verseverwebt.ui.theme.CustomTypography
 
 class Chapter7 : ComponentActivity() {
-
     //a variable of the type ContentObserver is created here for future use
     private lateinit var contentObserver: ContentObserver
 
@@ -78,7 +81,6 @@ class Chapter7 : ComponentActivity() {
 //This function contains the design for this activity
 @Composable
 fun Chapter7Content(hasWin: Boolean) {
-
     //Vertical text elements, a menu button and a picture of the treasure
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -151,6 +153,7 @@ fun Chapter7Win() {
                 }
             },
             title = { Text("Congratulations!") },
-            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds. \n \n You found the treasure!") }
         )
-    }}
+    }
+}
