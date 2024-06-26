@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
-
+    //all api calls / mappings from the backend with Path and Body and Return type
     @GET("users")
     fun getUsers(): Call<List<User>>
 

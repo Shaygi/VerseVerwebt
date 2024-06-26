@@ -170,9 +170,9 @@ var levelTime: Long = 0
 fun stopTimer(): Long {
     endTime = System.currentTimeMillis()
     return endTime - startTime
-
 }
 
+//checks, if chapter has been played before and saves the time only if it hasn't
 fun saveTimeIfNotSaved(userId: Long, i: Int, time: Float) {
     ApiClient.instance.getChapterTime(userId, i).enqueue(object : Callback<Float> {
         override fun onResponse(call: Call<Float>, response: Response<Float>) {
@@ -204,6 +204,7 @@ fun saveTimeIfNotSaved(userId: Long, i: Int, time: Float) {
     })
 }
 
+//global getUserId method to ensure the logged in user is available everywhere
 fun getUserId(context: Context): Long {
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     return sharedPreferences.getLong("user_id", 0L)

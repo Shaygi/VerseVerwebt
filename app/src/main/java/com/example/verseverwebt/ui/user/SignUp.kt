@@ -42,6 +42,7 @@ class SignUp : ComponentActivity() {
         }
     }
 
+    //also a loginstate saving function, since login is embedded
     private fun saveLoginState(user: User) {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
@@ -135,22 +136,26 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
 
         Button(
             onClick = {
+                //check for permissions
                 if(!PermissionManager.isPermissionAllowed()){
                     dialogMessage = "You have to agree the Permissions"
                     showDialog = true
                 }
+                //check for passwords
                 else if (password != confirmPassword || password.isEmpty()) {
                     dialogMessage = "Passwords do not match"
                     showDialog = true
                 } else {
                     val apiService = ApiClient.instance
 
+                    //perform signup: check if unique constraint of name is met
                     apiService.checkIfExistsName(name).enqueue(object : Callback<Boolean> {
                         override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                             if (response.isSuccessful && response.body() == true) {
                                 dialogMessage = "Username already exists"
                                 showDialog = true
                             }
+                            //check if unique constraint of mail is met
                             else {
                                 apiService.checkIfExistsMail(email).enqueue(object : Callback<Boolean> {
                                     override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
@@ -158,6 +163,7 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
                                             dialogMessage = "Email already exists"
                                             showDialog = true
                                         }
+                                        //actual signup
                                         else {
                                             performSignUp(name, email, password) { user ->
                                                 dialogMessage = "Account created successfully!"
@@ -215,6 +221,7 @@ fun SignUpContent(onSignUpSuccess: (User) -> Unit) {
     }
 }
 
+//signup also has login built in, so the newly signed up user doesn't have to log in.
 fun performSignUp(name: String, email: String, password: String, onSignUpSuccess: (User) -> Unit) {
     val newUser = User(1001, name, email, password, 0f, 0f, 0f, 0f, 0f, 0f, 0f, false, 0)
     ApiClient.instance.createUser(newUser).enqueue(object : Callback<Unit> {

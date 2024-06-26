@@ -30,6 +30,7 @@ class Ranking : ComponentActivity() {
             var userRank by remember { mutableStateOf(0) }
 
             LaunchedEffect(Unit) {
+                //separate functions for calculating the ranking and retrieving it
                 ApiClient.instance.calculateRankings()
                 ApiClient.instance.getRankedUsers().enqueue(object : Callback<List<User>> {
                     override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
@@ -48,6 +49,7 @@ class Ranking : ComponentActivity() {
                 })
             }
 
+            //finding own rank
             for(user in users){
                 if(user.id == logUserId){
                     userRank = user.rank
@@ -104,12 +106,15 @@ fun RankingContent(users: List<User>, rank: Int) {
                                 .padding(vertical = 8.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            //both texts are in the same line, one is aligned to the start and the other to the end
                             Text(
+                                //for each user: their rank and their name
                                 text = "${user.rank}. ${user.name}",
                                 style = CustomTypography.bodyLarge,
                                 textAlign = TextAlign.Start
                             )
                             Text(
+                                //for each user: their total time
                                 text = "%.2f".format(user.time1 + user.time2 + user.time3 + user.time4 + user.time5 + user.time6 + user.time7) + " s",
                                 style = CustomTypography.bodyMedium,
                                 textAlign = TextAlign.End
@@ -121,6 +126,7 @@ fun RankingContent(users: List<User>, rank: Int) {
         }
 
         Text(
+            //if the user has not completed all chapters, N/A will be displayed as their rank and they will not show up in the ranking.
             text = if (rank > 0) "Your rank: $rank" else "Your rank: N/A",
             style = CustomTypography.bodyLarge,
             textAlign = TextAlign.Center

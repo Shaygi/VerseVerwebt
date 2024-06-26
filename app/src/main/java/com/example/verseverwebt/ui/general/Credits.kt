@@ -72,7 +72,7 @@ fun CreditsContent() {
         }
         item {
             Text(
-                text = "Sophie Brand, Shirin Erol, Lena Müller ",
+                text = "Sophie Brand, Shirin Erol, Val Müller",
                 style = CustomTypography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(bottom = 16.dp, start = 50.dp, end = 50.dp)
@@ -129,5 +129,3 @@ fun CreditsContent() {
         }
     }
 }
-
-

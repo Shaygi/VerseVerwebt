@@ -179,6 +179,7 @@ fun Chapter2Content(azimuth: Float, showDialog: Boolean, achieved:Boolean, level
         ToTheNextPage(nextClass = Chapter3::class.java)
     }
 
+    //shows up in each chapter, dialog that declares the user's success and shows them the approximate time they completed the level in
     if (showDialog) {
         val userId = getUserId(context)
         val time = levelTime.toFloat() / 1000

@@ -92,13 +92,16 @@ class MainMenu : ComponentActivity() {
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
             val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
 
+            //retrieve logged in user
             logUserId = sharedPreferences.getLong("user_id", 0L)
 
+            //different menu for loggedin and not loggedin
             if (isLoggedIn) {
                 ButtonColumn("-Start-", 18.sp) {
                     CoroutineScope(Dispatchers.Main).launch {
                         val next = getNextChapter(context)
 
+                        //switch which chapter should be started next depending on previous chapter
                         when(next) {
                             0 -> context.startActivity(Intent(context, ChapterIntro::class.java))
                             1 -> context.startActivity(Intent(context, Chapter1::class.java))
@@ -132,7 +135,9 @@ class MainMenu : ComponentActivity() {
                     }
                     (context as? MainMenu)?.recreate()
                 }
-            } else {
+            }
+            //menu for loggedout user
+            else {
                 ButtonColumn("Login", 18.sp) {
                     context.startActivity(Intent(context, Login::class.java))
                 }
@@ -149,6 +154,8 @@ class MainMenu : ComponentActivity() {
         }
     }
 }
+
+//searches for previous chapter and returns prev+1 = next
 suspend fun getNextChapter(context: Context): Int {
     val user = getUserId(context)
     return withContext(Dispatchers.Main) {
@@ -158,7 +165,7 @@ suspend fun getNextChapter(context: Context): Int {
     }
 }
 
-
+//calls itself as long as last played chapter was not found
 suspend fun getIfTime(user: Long, i: Int): Int = withContext(Dispatchers.IO) {
     if (i > 0) {
         val chapterTimeResponse = ApiClient.instance.getChapterTime(user, i).execute()

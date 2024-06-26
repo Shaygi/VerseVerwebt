@@ -62,6 +62,7 @@ fun ButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
     }
 }
 
+//specifically for greyed out text in table of contents
 @Composable
 fun GreyButtonColumn(primaryText: String, fontSize: TextUnit, onClick: () -> Unit) {
     Column(

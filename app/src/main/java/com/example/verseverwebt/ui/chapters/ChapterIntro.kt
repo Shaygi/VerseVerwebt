@@ -95,17 +95,18 @@ fun ChapterIntroContent() {
             BackToMenuButton()
             Spacer(modifier = Modifier.height(32.dp))
 
+            //intro can only be played once per person, so no check. and the method sets the introCompleted boolean to true anytime, anyways.
             ApiClient.instance.updateIntroCompleted(getUserId(context)).enqueue(object :
                 Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful) {
-                        Log.d("ChapterIntro", "Saved bool successfully")
+                        Log.d("ChapterIntro", "Saved boolean successfully")
                     } else {
-                        Log.e("ChapterIntro", "Error with saving bool")
+                        Log.e("ChapterIntro", "Error with saving boolean")
                     }
                 }
                 override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    Log.e("ChapterIntro", "Error with saving bool")
+                    Log.e("ChapterIntro", "Error with saving boolean")
                 }
             })
         }

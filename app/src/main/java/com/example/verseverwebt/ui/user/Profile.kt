@@ -78,6 +78,7 @@ fun ProfileContent(userName: String, userId: Long) {
         Spacer(modifier = Modifier.height(16.dp))
 
         times.forEachIndexed { index, time ->
+            //format: 2 digits after . in float
             val textTime = "%.2f".format(time)
             Text(
                 text = "Time for Chapter ${index + 1}: $textTime",

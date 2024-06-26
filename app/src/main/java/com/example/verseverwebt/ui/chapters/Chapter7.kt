@@ -152,6 +152,7 @@ fun Chapter7Win() {
                     Text("OK")
                 }
             },
+            //end message, shows the player that they completed all available levels
             title = { Text("Congratulations!") },
             text = { Text("You completed the chapter in ${levelTime / 1000} seconds. \n \n You found the treasure!") }
         )

@@ -63,6 +63,7 @@ fun TableOfContentsContent() {
         )
 
         Column {
+            //fetches loggedin user
             val user = getUserId(context)
 
             (1..7).forEach { chapter ->
@@ -74,6 +75,7 @@ fun TableOfContentsContent() {
                     }
                 }
 
+                //switches if the chapter was completed or not, only playable if chapter has been completed previously.
                 when (chapterStatus) {
                     0 -> {
                         ButtonColumn("Chapter $chapter", 18.sp) {
@@ -101,6 +103,7 @@ fun TableOfContentsContent() {
     }
 }
 
+//checks, if the chapter was played before
 suspend fun getIfChapter(user: Long, chapter: Int): Int {
     return try {
         val chapterTimeResponse = ApiClient.instance.getChapterTime(user, chapter).execute()

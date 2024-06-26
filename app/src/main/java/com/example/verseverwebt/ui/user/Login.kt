@@ -41,6 +41,7 @@ class Login : ComponentActivity() {
         }
     }
 
+    //saved variables pertaining to user in current context
     private fun saveLoginState(user: User) {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
@@ -122,6 +123,7 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
             onClick = {
                 val apiService = ApiClient.instance
 
+                //checks if the user exists and then performs login. different errors for wrong username or password.
                 apiService.checkIfExistsName(username).enqueue(object : Callback<Boolean> {
                     override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                         if (response.isSuccessful && response.body() == true) {
@@ -190,6 +192,7 @@ fun LoginContent(onLoginSuccess: (User) -> Unit) {
     }
 }
 
+//login function, compares passwords.
 fun performLogin(username: String, password: String, onLoginSuccess: (User) -> Unit) {
     ApiClient.instance.getUsers().enqueue(object : Callback<List<User>> {
         override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
