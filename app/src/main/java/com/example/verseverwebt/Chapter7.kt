@@ -151,6 +151,7 @@ fun Chapter7Win() {
                 }
             },
             title = { Text("Congratulations!") },
-            text = { Text("You completed the chapter in ${levelTime / 1000} seconds.") }
+            text = { Text("You completed the chapter in ${levelTime / 1000} seconds. \n \n You found the treasure!") }
         )
-    }}
+    }
+}
