@@ -143,7 +143,7 @@ fun Chapter6Content(hasWin: Boolean , startSpeechRecognition: () -> Unit) {
                     "Among the echoes, listen well, " +
                     "To ancient rhymes that secrets tell:  " +
                     "In the whispers of time the Voices unfold, " +
-                    "Begin with five, as legends foretold." +
+                    "Begin with five, as legends foretold. " +
                     "Two steps forth, then one step before. " +
                     "Forward again, two steps more, " +
                     "The path unveiled, the treasure's door. ",

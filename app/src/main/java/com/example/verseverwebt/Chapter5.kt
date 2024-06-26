@@ -11,6 +11,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -94,7 +95,7 @@ class Chapter5 : ComponentActivity() {
 @Composable
 fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
     val context = LocalContext.current
-   
+    var showNextButton by remember { mutableStateOf(false) } // Track the visibility of the button
     var showDialog by remember { mutableStateOf(false) }
 
     var showInitialText by remember { mutableStateOf(true) }
@@ -105,12 +106,23 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
 
     //background color that changes depending on the status of achievement
     val backgroundColor by animateColorAsState(
-        targetValue = if (achieved) Color.White else Color.Gray,
+
+        targetValue = when {
+            achieved && isSystemInDarkTheme() -> Color.Black
+            achieved && !isSystemInDarkTheme() -> Color.White
+            !achieved && isSystemInDarkTheme() -> Color.DarkGray
+            else -> Color.DarkGray
+        },
         animationSpec = tween(durationMillis = 2000), label = ""
     )
     //text color that changes depending on the status of achievement
     val textColor by animateColorAsState(
-        targetValue = if (achieved) Color.Black else Color.DarkGray,
+        targetValue = when {
+            achieved && isSystemInDarkTheme() -> Color.White
+            achieved && !isSystemInDarkTheme() -> Color.Black
+            !achieved && isSystemInDarkTheme() -> Color.Gray
+            else -> Color.DarkGray
+        },
         animationSpec = tween(durationMillis = 2000), label = ""
     )
 
@@ -122,6 +134,9 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
             //level completed
             levelTime = stopTimer()
             showDialog = true
+            // Delay before showing the next button
+            delay(1000) // Adjust this value as needed
+            showNextButton = true
         }
     }
 
@@ -168,7 +183,8 @@ fun Chapter5Content(isCharging: Boolean, achieved: Boolean) {
     PageNumber("-50-")
 
     //The button is available to switch to the next chapter
-    if(achieved) {
+    if(showNextButton) {
+
         ToTheNextPage(nextClass = Chapter6::class.java)
     }
     if (showDialog) {
