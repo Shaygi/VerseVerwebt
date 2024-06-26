@@ -30,7 +30,6 @@ import com.example.verseverwebt.ui.theme.CustomTypography
 import com.example.verseverwebt.ui.theme.VerseVerwebtTheme
 import kotlinx.coroutines.delay
 
-//Sixth Chapter
 //Player needs to charge phone
 class Chapter5 : ComponentActivity() {
     //a BroadcastReceiver object is created

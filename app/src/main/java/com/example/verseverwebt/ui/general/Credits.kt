@@ -35,6 +35,7 @@ class Credits : ComponentActivity() {
     }
 }
 
+//This function creates a scrollable view with many text elements for the credits
 @Composable
 fun CreditsContent() {
     LazyColumn(
