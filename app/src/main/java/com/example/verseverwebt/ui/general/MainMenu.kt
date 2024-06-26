@@ -179,7 +179,7 @@ suspend fun getIfTime(user: Long, i: Int): Int = withContext(Dispatchers.IO) {
             return@withContext if (introCompleted == false) {
                 -1
             } else {
-                10
+                0
             }
         } else {
             Log.e("MainMenu", "Error fetching ChapterIntro")
